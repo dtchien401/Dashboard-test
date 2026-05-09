@@ -16,7 +16,6 @@
     .tab{transition:.18s ease}.tab.active{background:var(--red);color:white;box-shadow:0 10px 24px rgba(215,25,32,.22)}
     .badge-up{background:#ecfdf5;color:#047857}.badge-down{background:#fef2f2;color:#b91c1c}
     .table-row:hover{background:#fff7f7}
-    .loading-overlay { background: rgba(243, 244, 246, 0.7); backdrop-filter: blur(4px); z-index: 50; }
   </style>
 </head>
 <body>
@@ -27,12 +26,12 @@
           <div>
             <div class="text-xs uppercase tracking-[.25em] text-red-100 font-bold">California Fitness & Yoga</div>
             <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-1 uppercase italic">Performance Command Center</h1>
-            <p class="text-red-50 mt-2 max-w-2xl opacity-80">Select period and club filters below to fetch real-time performance data from Google Sheets.</p>
+            <p class="text-red-50 mt-2 max-w-2xl opacity-80">Select filters and click confirm to fetch real-time data from your Google Sheet.</p>
           </div>
           <div class="bg-white/10 border border-white/15 rounded-2xl p-5 min-w-[260px]">
-            <div class="text-xs text-red-100 uppercase tracking-widest font-bold">Selection Status</div>
+            <div class="text-xs text-red-100 uppercase tracking-widest font-bold">System Status</div>
             <div class="text-2xl font-black mt-1" id="dataStatus">Initializing...</div>
-            <div id="lastUpdate" class="text-xs text-red-200 mt-2 font-medium">Waiting for filter selection</div>
+            <div id="lastUpdate" class="text-xs text-red-200 mt-2 font-medium">Connecting to API...</div>
           </div>
         </div>
       </div>
@@ -42,19 +41,19 @@
       <section class="card p-6 mb-8 border-t-4 border-red-600 shadow-xl relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-5 items-end">
           <div>
-            <label class="mini-label">1. Select Period</label>
-            <select id="periodFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3.5 bg-white font-bold text-gray-700 focus:ring-2 focus:ring-red-500"></select>
+            <label class="mini-label">1. Period</label>
+            <select id="periodFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3.5 bg-white font-bold text-gray-700"></select>
           </div>
           <div>
-            <label class="mini-label">2. Select Region</label>
+            <label class="mini-label">2. Region</label>
             <select id="regionFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3.5 bg-white font-bold text-gray-700"></select>
           </div>
           <div>
-            <label class="mini-label">3. Select Club</label>
+            <label class="mini-label">3. Club</label>
             <select id="clubFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3.5 bg-white font-bold text-gray-700"></select>
           </div>
-          <button id="applyBtn" class="bg-[#d71920] hover:bg-[#b9141a] hover:scale-[1.02] active:scale-95 transition-all text-white rounded-xl px-4 py-4 font-black uppercase tracking-widest shadow-lg shadow-red-500/30">
-            Confirm & Fetch Data
+          <button id="applyBtn" class="bg-[#d71920] hover:bg-[#b9141a] transition-all text-white rounded-xl px-4 py-4 font-black uppercase tracking-widest shadow-lg shadow-red-500/30">
+            Confirm & Fetch
           </button>
         </div>
       </section>
@@ -63,45 +62,40 @@
         <section class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6" id="kpiCards"></section>
 
         <nav class="flex flex-wrap gap-2 mb-6">
-          <button class="tab active px-6 py-3.5 rounded-2xl bg-white border border-gray-200 font-extrabold uppercase text-xs tracking-wider" data-tab="cash">Cash Collection</button>
-          <button class="tab px-6 py-3.5 rounded-2xl bg-white border border-gray-200 font-extrabold uppercase text-xs tracking-wider" data-tab="ptss">PT Sessions</button>
-          <button class="tab px-6 py-3.5 rounded-2xl bg-white border border-gray-200 font-extrabold uppercase text-xs tracking-wider" data-tab="club">Club Ranking</button>
+          <button class="tab active px-6 py-3.5 rounded-2xl bg-white border border-gray-200 font-extrabold uppercase text-xs" data-tab="cash">Cash Mix</button>
+          <button class="tab px-6 py-3.5 rounded-2xl bg-white border border-gray-200 font-extrabold uppercase text-xs" data-tab="ptss">PT Sessions</button>
+          <button class="tab px-6 py-3.5 rounded-2xl bg-white border border-gray-200 font-extrabold uppercase text-xs" data-tab="club">Ranking</button>
         </nav>
 
         <div id="tabContainer">
           <section id="cash" class="tabPanel grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="card p-6 lg:col-span-2">
               <div class="mini-label mb-2">Revenue Mix</div>
-              <h2 class="text-xl font-black mb-4">Membership Sales vs PT Sales</h2>
               <canvas id="cashMixChart" height="120"></canvas>
             </div>
-            <div class="card p-6 flex flex-col justify-center">
-              <div class="mini-label mb-4">Strategic Signal</div>
+            <div class="card p-6">
+              <div class="mini-label mb-4">Performance Alert</div>
               <div id="cashAlerts" class="space-y-4"></div>
             </div>
           </section>
 
           <section id="ptss" class="tabPanel hidden card p-6">
-            <div class="mini-label mb-2">Service Performance</div>
-            <h2 class="text-xl font-black mb-6">PT Sessions Served by Club</h2>
+            <div class="mini-label mb-4">PT Sessions Served</div>
             <canvas id="ptssChart" height="100"></canvas>
           </section>
 
           <section id="club" class="tabPanel hidden card p-6">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
-              <div>
-                <div class="mini-label">Management View</div>
-                <h2 class="text-xl font-black">Performance Detail Table</h2>
-              </div>
-              <input id="searchClub" placeholder="Search club name..." class="border border-gray-200 rounded-xl px-4 py-2 w-full md:w-64" />
+            <div class="flex justify-between items-center mb-6">
+              <h2 class="text-xl font-black uppercase italic">Club Leaderboard</h2>
+              <input id="searchClub" placeholder="Search..." class="border rounded-xl px-4 py-2 text-sm" />
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
-                <thead class="bg-gray-50 text-left text-gray-500 uppercase text-[10px] font-bold">
+                <thead class="bg-gray-50 text-left text-[10px] font-bold text-gray-400 uppercase">
                   <tr>
                     <th class="p-4">Club</th>
                     <th>Region</th>
-                    <th>Cash Total</th>
+                    <th>Total Cash</th>
                     <th>PTSS</th>
                     <th>Guest</th>
                     <th>Status</th>
@@ -119,7 +113,9 @@
 <script>
 'use strict';
 
+// URL CỦA BẠN ĐÃ ĐƯỢC CẬP NHẬT TẠI ĐÂY
 const CONFIG = { API_URL: 'https://script.google.com/macros/s/AKfycbyhPXqJkkx4dJGalS7_tX_3fEys9RYDQDI_sg-toh3n8sXqpS3lOdE4SrYDlQF0C41TuA/exec' };
+
 let charts = {};
 let activeTab = 'cash';
 let currentData = [];
@@ -129,63 +125,47 @@ function setStatus(t){ byId('dataStatus').innerText = t; }
 function money(v){ return '$' + Number(v || 0).toLocaleString(undefined, {maximumFractionDigits:0}); }
 function pct(v){ return (Number(v || 0) * 100).toFixed(1) + '%'; }
 
-/**
- * 1. INITIALIZE FILTERS
- */
+// 1. Tải danh sách Filter khi mở trang
 async function init() {
-  setStatus('Loading Filters...');
+  setStatus('Syncing...');
   try {
     const res = await callAPI('getFilters');
-    const { months, regions, clubs } = res;
-    
-    populateSelect('periodFilter', months);
-    populateSelect('regionFilter', ['ALL', ...regions]);
-    populateSelect('clubFilter', ['ALL', ...clubs]);
-    
+    populateSelect('periodFilter', res.months);
+    populateSelect('regionFilter', ['ALL', ...res.regions]);
+    populateSelect('clubFilter', ['ALL', ...res.clubs]);
     setStatus('Ready');
-    byId('lastUpdate').innerText = 'Please select and click Confirm';
+    byId('lastUpdate').innerText = 'Filters loaded. Please select and confirm.';
   } catch (e) {
     setStatus('Error');
-    byId('lastUpdate').innerText = 'Failed to load filter options.';
+    byId('lastUpdate').innerText = 'Connection failed. Check API permissions.';
   }
 }
 
-/**
- * 2. FETCH DATA ON CONFIRM
- */
+// 2. Tải dữ liệu khi nhấn Confirm
 byId('applyBtn').onclick = async () => {
   const period = byId('periodFilter').value;
   const region = byId('regionFilter').value;
   const club = byId('clubFilter').value;
 
-  // UI Feedback
-  setStatus('Syncing...');
+  setStatus('Fetching...');
   byId('applyBtn').disabled = true;
-  byId('applyBtn').innerText = 'Fetching...';
+  byId('applyBtn').innerText = 'Loading...';
   
   try {
     const data = await callAPI('fetchData', { period, region, club });
     currentData = data;
-    
-    // Unlock Dashboard
     byId('dashboardContent').classList.remove('opacity-20', 'pointer-events-none');
-    
     renderDashboard();
-    
     setStatus('Active');
-    byId('lastUpdate').innerText = `Data loaded for ${period} at ${new Date().toLocaleTimeString()}`;
+    byId('lastUpdate').innerText = `Last update: ${new Date().toLocaleTimeString()}`;
   } catch (e) {
     setStatus('Failed');
-    alert('Failed to fetch data. Please check your internet or API permission.');
   } finally {
     byId('applyBtn').disabled = false;
-    byId('applyBtn').innerText = 'Confirm & Fetch Data';
+    byId('applyBtn').innerText = 'Confirm & Fetch';
   }
 };
 
-/**
- * CORE FUNCTIONS
- */
 function renderDashboard() {
   const nms = currentData.reduce((a,b) => a + (b.membership || 0), 0);
   const pt = currentData.reduce((a,b) => a + (b.ptSales || 0), 0);
@@ -193,20 +173,19 @@ function renderDashboard() {
   const gst = currentData.reduce((a,b) => a + (b.guest || 0), 0);
   const nmu = currentData.reduce((a,b) => a + (b.nmu || 0), 0);
 
-  // Update KPI Cards
   const kpis = [
-    { label: 'Total Cash', val: money(nms + pt), sub: 'Period Revenue' },
-    { label: 'Membership', val: money(nms), sub: pct((nms+pt) ? nms/(nms+pt) : 0) + ' Mix' },
-    { label: 'PT Sales', val: money(pt), sub: pct((nms+pt) ? pt/(nms+pt) : 0) + ' Mix' },
-    { label: 'PTSS Served', val: ptss.toLocaleString(), sub: 'Sessions' },
-    { label: 'Guest Close', val: pct(gst ? nmu/gst : 0), sub: nmu + ' closed' }
+    { label: 'Total Cash', val: money(nms + pt), sub: 'Overall Revenue' },
+    { label: 'NMS', val: money(nms), sub: 'New Membership' },
+    { label: 'PT Sales', val: money(pt), sub: 'Personal Training' },
+    { label: 'PTSS', val: ptss.toLocaleString(), sub: 'Sessions' },
+    { label: 'Close Rate', val: pct(gst ? nmu/gst : 0), sub: nmu + ' closed' }
   ];
 
   byId('kpiCards').innerHTML = kpis.map(k => `
     <div class="card p-5">
       <div class="mini-label">${k.label}</div>
       <div class="metric mt-1">${k.val}</div>
-      <div class="text-[10px] font-bold text-gray-400 mt-2 uppercase tracking-wider">${k.sub}</div>
+      <div class="text-[10px] font-bold text-gray-400 mt-2 uppercase tracking-widest">${k.sub}</div>
     </div>
   `).join('');
 
@@ -217,27 +196,23 @@ function updateTabContent(nms, pt, ptss) {
   if (activeTab === 'cash') {
     drawChart('cashMixChart', 'doughnut', {
       labels: ['Membership', 'PT Sales'],
-      datasets: [{ data: [nms, pt], backgroundColor: ['#d71920', '#111827'], borderWeight: 5 }]
+      datasets: [{ data: [nms, pt], backgroundColor: ['#d71920', '#111827'] }]
     });
     
     const ptMix = pt / (nms + pt || 1);
     byId('cashAlerts').innerHTML = `
       <div class="p-5 rounded-2xl ${ptMix < 0.42 ? 'bg-red-50 border-l-4 border-red-500' : 'bg-green-50 border-l-4 border-green-500'}">
-        <div class="font-black text-sm uppercase">PT Contribution: ${pct(ptMix)}</div>
-        <p class="text-xs mt-2 leading-relaxed">${ptMix < 0.42 ? 'Alert: PT Mix is below 42% threshold. Focus on PT attach rate for new members.' : 'Healthy: PT contribution is on track with corporate standards.'}</p>
-      </div>
-      <div class="p-5 rounded-2xl bg-gray-50 border-l-4 border-gray-400">
-        <div class="font-black text-sm uppercase">Top Contributor</div>
-        <p class="text-xs mt-1 italic">${currentData.length > 0 ? currentData.sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales))[0].club : 'N/A'}</p>
+        <div class="font-black text-sm uppercase">PT Mix: ${pct(ptMix)}</div>
+        <p class="text-xs mt-2 leading-relaxed">${ptMix < 0.42 ? 'Action required: Boost PT Sales conversion.' : 'Good: PT contribution is meeting targets.'}</p>
       </div>
     `;
   }
 
   if (activeTab === 'ptss') {
-    const sorted = [...currentData].sort((a,b) => b.ptss - a.ptss).slice(0, 12);
+    const sorted = [...currentData].sort((a,b) => b.ptss - a.ptss).slice(0, 10);
     drawChart('ptssChart', 'bar', {
       labels: sorted.map(d => d.club),
-      datasets: [{ label: 'Sessions Served', data: sorted.map(d => d.ptss), backgroundColor: '#d71920', borderRadius: 8 }]
+      datasets: [{ label: 'PTSS', data: sorted.map(d => d.ptss), backgroundColor: '#d71920' }]
     }, true);
   }
 
@@ -251,8 +226,8 @@ function renderClubTable() {
     .sort((a,b) => (b.membership + b.ptSales) - (a.membership + a.ptSales));
 
   byId('clubTable').innerHTML = rows.map(d => `
-    <tr class="table-row border-b transition-colors">
-      <td class="p-4 font-black uppercase text-xs tracking-tighter">${d.club}</td>
+    <tr class="table-row border-b">
+      <td class="p-4 font-black uppercase text-xs">${d.club}</td>
       <td class="text-gray-500 text-xs">${d.region}</td>
       <td class="font-bold">${money(d.membership + d.ptSales)}</td>
       <td>${d.ptss.toLocaleString()}</td>
@@ -264,16 +239,12 @@ function renderClubTable() {
   `).join('');
 }
 
-/**
- * UTILS
- */
 async function callAPI(mode, params = {}) {
   return new Promise((resolve, reject) => {
-    const cb = 'callback_' + Math.round(Math.random() * 1000000);
+    const cb = 'cb_' + Math.round(Math.random() * 1000000);
     const script = document.createElement('script');
     let url = `${CONFIG.API_URL}?mode=${mode}&callback=${cb}`;
     for (let k in params) url += `&${k}=${encodeURIComponent(params[k])}`;
-    
     window[cb] = (res) => {
       if (res.success) resolve(res.data);
       else reject(res.error);
@@ -290,12 +261,7 @@ function drawChart(id, type, data, isHorizontal = false) {
   if (charts[id]) charts[id].destroy();
   charts[id] = new Chart(byId(id), {
     type, data,
-    options: {
-      indexAxis: isHorizontal ? 'y' : 'x',
-      responsive: true,
-      plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { weight: 'bold', size: 10 } } } },
-      scales: isHorizontal ? {} : { y: { beginAtZero: true, ticks: { callback: v => typeof v === 'number' && v >= 1000 ? '$' + v/1000 + 'k' : v } } }
-    }
+    options: { indexAxis: isHorizontal ? 'y' : 'x', responsive: true }
   });
 }
 
@@ -303,7 +269,6 @@ function populateSelect(id, items) {
   byId(id).innerHTML = items.map(i => `<option value="${i}">${i}</option>`).join('');
 }
 
-// Tab Switching
 document.querySelectorAll('.tab').forEach(t => {
   t.onclick = () => {
     document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
@@ -315,18 +280,9 @@ document.querySelectorAll('.tab').forEach(t => {
   };
 });
 
-byId('regionFilter').onchange = () => {
-  const reg = byId('regionFilter').value;
-  const filteredClubs = reg === 'ALL' ? [] : [...new Set(currentData.filter(d => d.region === reg).map(d => d.club))];
-  // Note: Only works if we have pre-loaded some data or if the getFilters returns a mapping. 
-  // For simplicity, we keep the original full club list unless you want server-side re-fetch.
-};
-
 byId('searchClub').oninput = renderClubTable;
 
-// Start
 init();
-
 </script>
 </body>
 </html>
