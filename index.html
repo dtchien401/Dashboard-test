@@ -91,32 +91,68 @@ const days = Array.from({length:31}, (_,i)=>'May '+(i+1));
 const charts = {};
 let activeTab = 'cash';
 
-const rawData = [
+// =====================================================
+// GOOGLE SHEET DATA MAPPING
+// 1) Deploy Code.gs as Web App
+// 2) Paste the Web App URL below
+// 3) Dashboard will load real data from Google Sheet
+// =====================================================
+const CONFIG = {
+  API_URL: 'https://script.google.com/macros/s/AKfycbztoKT8PrGAsWL-0sYdKq_2WSyyEpMANGs2LB2dNXhzjbGz_aztt59_bsSfiStXtsPUAg/exec'
+};
+
+let data = [];
+
+// Fallback demo data, used only when API_URL is not set or API fails.
+const fallbackRawData = [
   ['AMU','South',1640.03,1895.54,220,52,51,3.17],['AMY','South',7049.63,5826.98,321,27,18,3],['BDS','South',4755.48,2485.92,480,22,25,8],['CPT','North',4530.20,3183.03,569,27,37,12],['CTC','South',7095.68,6032.68,751,37,29,16.5],['DNG','Central',4724.15,3556.86,480,72,33,9],['FDC','South',5996.55,5032.09,392,5,48,13],['GDC','South',6969.29,5230.65,711,18,24,6],['GMC','South',2333.23,4829.98,214,19,16,4.5],['GVC','South',2662.71,1177.35,220,26,10,5],['HDC','South',943.56,545.97,388,13,19,8],['HDY','North',824.49,934.50,277,28,37,2],['HVP','South',25311.63,1026.78,723,20,29,8],['LMC','South',8785.87,8590.84,653,18,67,31],['LTC','South',145.62,648.49,0,0,0,0],['MAC','North',4547.31,2781.71,179,55,44,6],['MPC','North',9611.33,6573.36,398,16,66,11],['NTC','Central',3261.98,2772.44,449,52,32,4],['PBH','South',2069.92,1706.65,202,25,28,5.5],['PCH','North',3360.37,1567.57,172,77,60,7],['PCO','South',6322.08,3131.59,572,21,41,14.61],['PPC','South',224.35,0,0,0,0,0],['RCC','North',7803.62,2020.59,383,41,31,10],['SCT','North',13644.88,5278.84,371,44,55,4.5],['TCM','North',6528.27,7813.39,544,54,61,17],['TDC','South',5198.72,4822.21,642,31,43,5],['TDU','South',26833.04,23940.44,779,65,75,42],['TTC','South',0,19194.95,885,19,16,0],['VSC','North',4626.40,4213.61,316,35,54,8.5],['VTC','South',2657.04,2004.98,139,27,14,9.23],['VVO','South',7881.86,5638.88,529,36,42,12],['WPC','North',6940.77,5949.76,576,19,28,8.5]
 ];
 
 function makeDaily(total, seed){
   const weights = [0, .10, .12, .18, .15, .17, .13, .15];
   const arr = Array(31).fill(0);
-  weights.forEach((w,i)=>{ arr[i] = +(total * w * (0.94 + ((seed+i)%5)*0.03)).toFixed(2); });
-  const diff = +(total - arr.reduce((a,b)=>a+b,0)).toFixed(2);
+  weights.forEach((w,i)=>{ arr[i] = +(Number(total || 0) * w * (0.94 + ((seed+i)%5)*0.03)).toFixed(2); });
+  const diff = +(Number(total || 0) - arr.reduce((a,b)=>a+b,0)).toFixed(2);
   arr[7] = +(arr[7] + diff).toFixed(2);
   return arr;
 }
 
-const data = rawData.map((r,idx)=>{
-  const [club,region,membership,ptSales,ptss,guestMkt,guestClub,nmu] = r;
-  const guest = guestMkt + guestClub;
-  const total = membership + ptSales;
-  return {
-    club, region, membership, ptSales, ptss, guestMkt, guestClub, guest, nmu,
-    target: total * 1.05 || 1,
-    dailyMembership: makeDaily(membership, idx),
-    dailyPt: makeDaily(ptSales, idx+2),
-    dailyPtss: makeDaily(ptss, idx+4),
-    dailyGuest: makeDaily(guest, idx+1)
-  };
-});
+function mapFallbackData(){
+  return fallbackRawData.map((r,idx)=>{
+    const [club,region,membership,ptSales,ptss,guestMkt,guestClub,nmu] = r;
+    const guest = guestMkt + guestClub;
+    const total = membership + ptSales;
+    return {club, region, membership, ptSales, ptss, guestMkt, guestClub, guest, nmu, target: total * 1.05 || 1, dailyMembership: makeDaily(membership, idx), dailyPt: makeDaily(ptSales, idx+2), dailyPtss: makeDaily(ptss, idx+4), dailyGuest: makeDaily(guest, idx+1)};
+  });
+}
+
+async function loadData(){
+  data = mapFallbackData();
+  if (!CONFIG.API_URL || CONFIG.API_URL.includes('PASTE_YOUR')) return;
+  try {
+    const res = await fetch(CONFIG.API_URL, { method: 'GET', cache: 'no-store' });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message || 'API returned success=false');
+    data = json.data.map((row,idx)=>({
+      club: row.club,
+      region: row.region || 'Unassigned',
+      membership: Number(row.membership || 0),
+      ptSales: Number(row.ptSales || 0),
+      ptss: Number(row.ptss || 0),
+      guestMkt: Number(row.guestMkt || 0),
+      guestClub: Number(row.guestClub || 0),
+      guest: Number(row.guest || 0),
+      nmu: Number(row.nmu || 0),
+      target: Number(row.target || ((Number(row.membership || 0) + Number(row.ptSales || 0)) * 1.05) || 1),
+      dailyMembership: Array.isArray(row.dailyMembership) ? row.dailyMembership : makeDaily(row.membership, idx),
+      dailyPt: Array.isArray(row.dailyPt) ? row.dailyPt : makeDaily(row.ptSales, idx+2),
+      dailyPtss: Array.isArray(row.dailyPtss) ? row.dailyPtss : makeDaily(row.ptss, idx+4),
+      dailyGuest: Array.isArray(row.dailyGuest) ? row.dailyGuest : makeDaily(row.guest, idx+1)
+    }));
+  } catch (err) {
+    console.error('Cannot load Google Sheet data. Using fallback demo data.', err);
+  }
+}
 
 function money(value){
   const n = Number(value || 0);
@@ -242,7 +278,7 @@ function renderDashboard(){
 
 function runSelfTests(){
   console.assert(typeof renderDashboard === 'function', 'renderDashboard must be defined');
-  console.assert(data.length === 32, 'Expected 32 active clubs in embedded data');
+  console.assert(data.length > 0, 'Expected at least 1 club in dashboard data');
   console.assert(sum(data,'membership') > 0, 'Membership total should be positive');
   console.assert(sum(data,'ptSales') > 0, 'PT sales total should be positive');
   console.assert(byId('clubFilter').options.length === 33, 'Club filter should include All + 32 clubs');
@@ -252,7 +288,8 @@ function runSelfTests(){
 window.renderDashboard = renderDashboard;
 window.renderClubTable = renderClubTable;
 
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded', async ()=>{
+  await loadData();
   setupFilters();
   renderDashboard();
   runSelfTests();
