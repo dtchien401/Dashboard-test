@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cali Performance Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{--red:#d71920;--ink:#111827;--muted:#6b7280;--line:#e5e7eb;--soft:#f8fafc;}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Arial,sans-serif;background:#f3f4f6;color:var(--ink)}
+    .hero{background:linear-gradient(135deg,#111 0%,#2b0d0f 54%,#d71920 140%)}
+    .card{background:white;border:1px solid #ececec;border-radius:22px;box-shadow:0 10px 30px rgba(15,23,42,.06)}
+    .mini-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800}
+    .metric{font-size:28px;font-weight:950;letter-spacing:-.04em}
+    .tab{transition:.18s ease}.tab.active{background:var(--red);color:white;box-shadow:0 10px 24px rgba(215,25,32,.22)}
+    .badge-up{background:#ecfdf5;color:#047857}.badge-down{background:#fef2f2;color:#b91c1c}.badge-neutral{background:#f3f4f6;color:#374151}
+    .table-row:hover{background:#fff7f7} select,input{outline:none}
+  </style>
+</head>
+<body>
+  <div class="min-h-screen">
+    <header class="hero text-white px-6 py-7 md:px-10">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <div class="text-xs uppercase tracking-[.25em] text-red-100 font-bold">California Fitness & Yoga</div>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-1">Performance Command Center</h1>
+            <p class="text-red-50 mt-2 max-w-2xl">Dashboard prototype nhúng dữ liệu May 2026: NMS, PT Sales, PTSS Served, Guest from MKT, Guest from Club Dept và NMU theo club.</p>
+          </div>
+          <div class="bg-white/10 border border-white/15 rounded-2xl p-4 min-w-[240px]">
+            <div class="text-xs text-red-100 uppercase tracking-widest font-bold">MTD Snapshot</div>
+            <div class="text-3xl font-black mt-1" id="headerTotal">$0</div>
+            <div class="text-sm text-red-50">Total NMS + PT Sales | USD</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 md:px-8 -mt-5 pb-12">
+      <section class="card p-4 md:p-5 mb-5">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+          <div><label class="mini-label">Period</label><select id="periodFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"><option value="MTD">MTD - May 2026 | Actual Data</option><option value="TODAY">Today</option><option value="WTD">WTD</option><option value="YTD">YTD</option></select></div>
+          <div><label class="mini-label">Region</label><select id="regionFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
+          <div><label class="mini-label">Club</label><select id="clubFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
+          <div><label class="mini-label">Compare</label><select id="compareFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"><option value="TARGET">vs Target</option><option value="LM">vs Last Month</option><option value="LY">vs Last Year</option></select></div>
+          <button id="applyBtn" class="bg-[#d71920] hover:bg-[#b9141a] text-white rounded-xl px-4 py-3 font-bold">Apply Filter</button>
+        </div>
+      </section>
+
+      <section class="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4 mb-5" id="kpiCards"></section>
+
+      <nav class="flex flex-wrap gap-2 mb-5">
+        <button class="tab active px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="cash">Cash Collection</button>
+        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="ptss">PT Sessions Served</button>
+        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="guest">Guest Sources</button>
+        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="club">Club Ranking</button>
+      </nav>
+
+      <section id="cash" class="tabPanel grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="card p-5 lg:col-span-2"><div class="flex justify-between items-start mb-4"><div><div class="mini-label">Revenue Mix</div><h2 class="text-xl font-black">Membership Sales vs PT Sales</h2></div><span class="px-3 py-1 rounded-full bg-red-50 text-red-700 text-xs font-bold">Cash Collection</span></div><canvas id="cashMixChart" height="115"></canvas></div>
+        <div class="card p-5"><div class="mini-label">Smart Alert</div><h2 class="text-xl font-black mb-4">Performance Signals</h2><div id="cashAlerts" class="space-y-3"></div></div>
+        <div class="card p-5 lg:col-span-3"><div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2"><div><div class="mini-label">Daily Trend</div><h2 class="text-xl font-black">Cash Collection Trend</h2></div><div class="text-sm text-gray-500">Membership + PT sales by day</div></div><canvas id="cashTrendChart" height="90"></canvas></div>
+      </section>
+
+      <section id="ptss" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="card p-5 lg:col-span-2"><div class="mini-label">PT Productivity</div><h2 class="text-xl font-black mb-4">PT Sessions Served by Club</h2><canvas id="ptssClubChart" height="120"></canvas></div>
+        <div class="card p-5"><div class="mini-label">Quality View</div><h2 class="text-xl font-black mb-4">Service Health</h2><div id="ptssInsights" class="space-y-3"></div></div>
+        <div class="card p-5 lg:col-span-3"><div class="mini-label">Trend</div><h2 class="text-xl font-black mb-4">Sessions Served Trend</h2><canvas id="ptssTrendChart" height="90"></canvas></div>
+      </section>
+
+      <section id="guest" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="card p-5"><div class="mini-label">Source Mix</div><h2 class="text-xl font-black mb-4">Guest by Source</h2><canvas id="guestSourceChart" height="210"></canvas></div>
+        <div class="card p-5 lg:col-span-2"><div class="mini-label">Funnel Quality</div><h2 class="text-xl font-black mb-4">Guest → Close by Source</h2><canvas id="guestCloseChart" height="120"></canvas></div>
+        <div class="card p-5 lg:col-span-3"><div class="mini-label">Guest Table</div><h2 class="text-xl font-black mb-4">Source Performance Detail</h2><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-left text-gray-500 border-b"><tr><th class="py-3">Source</th><th>Guest</th><th>NMU / Closed</th><th>Close Rate</th><th>Action Signal</th></tr></thead><tbody id="guestTable"></tbody></table></div></div>
+      </section>
+
+      <section id="club" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="card p-5 lg:col-span-2"><div class="mini-label">Ranking</div><h2 class="text-xl font-black mb-4">Top Club Performance</h2><canvas id="rankingChart" height="135"></canvas></div>
+        <div class="card p-5"><div class="mini-label">Management Focus</div><h2 class="text-xl font-black mb-4">Clubs Need Attention</h2><div id="focusList" class="space-y-3"></div></div>
+        <div class="card p-5 lg:col-span-3"><div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-4"><div><div class="mini-label">Club Detail</div><h2 class="text-xl font-black">Club Performance Table</h2></div><input id="searchClub" placeholder="Search club..." class="border border-gray-200 rounded-xl px-4 py-2" /></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-left text-gray-500 border-b"><tr><th class="py-3">Club</th><th>Region</th><th>Membership</th><th>PT Sales</th><th>Cash Total</th><th>PTSS</th><th>Guest</th><th>NMU</th><th>Close Rate</th><th>Status</th></tr></thead><tbody id="clubTable"></tbody></table></div></div>
+      </section>
+    </main>
+  </div>
+
+<script>
+'use strict';
+
+const days = Array.from({length:31}, (_,i)=>'May '+(i+1));
+const charts = {};
+let activeTab = 'cash';
+
+const rawData = [
+  ['AMU','South',1640.03,1895.54,220,52,51,3.17],['AMY','South',7049.63,5826.98,321,27,18,3],['BDS','South',4755.48,2485.92,480,22,25,8],['CPT','North',4530.20,3183.03,569,27,37,12],['CTC','South',7095.68,6032.68,751,37,29,16.5],['DNG','Central',4724.15,3556.86,480,72,33,9],['FDC','South',5996.55,5032.09,392,5,48,13],['GDC','South',6969.29,5230.65,711,18,24,6],['GMC','South',2333.23,4829.98,214,19,16,4.5],['GVC','South',2662.71,1177.35,220,26,10,5],['HDC','South',943.56,545.97,388,13,19,8],['HDY','North',824.49,934.50,277,28,37,2],['HVP','South',25311.63,1026.78,723,20,29,8],['LMC','South',8785.87,8590.84,653,18,67,31],['LTC','South',145.62,648.49,0,0,0,0],['MAC','North',4547.31,2781.71,179,55,44,6],['MPC','North',9611.33,6573.36,398,16,66,11],['NTC','Central',3261.98,2772.44,449,52,32,4],['PBH','South',2069.92,1706.65,202,25,28,5.5],['PCH','North',3360.37,1567.57,172,77,60,7],['PCO','South',6322.08,3131.59,572,21,41,14.61],['PPC','South',224.35,0,0,0,0,0],['RCC','North',7803.62,2020.59,383,41,31,10],['SCT','North',13644.88,5278.84,371,44,55,4.5],['TCM','North',6528.27,7813.39,544,54,61,17],['TDC','South',5198.72,4822.21,642,31,43,5],['TDU','South',26833.04,23940.44,779,65,75,42],['TTC','South',0,19194.95,885,19,16,0],['VSC','North',4626.40,4213.61,316,35,54,8.5],['VTC','South',2657.04,2004.98,139,27,14,9.23],['VVO','South',7881.86,5638.88,529,36,42,12],['WPC','North',6940.77,5949.76,576,19,28,8.5]
+];
+
+function makeDaily(total, seed){
+  const weights = [0, .10, .12, .18, .15, .17, .13, .15];
+  const arr = Array(31).fill(0);
+  weights.forEach((w,i)=>{ arr[i] = +(total * w * (0.94 + ((seed+i)%5)*0.03)).toFixed(2); });
+  const diff = +(total - arr.reduce((a,b)=>a+b,0)).toFixed(2);
+  arr[7] = +(arr[7] + diff).toFixed(2);
+  return arr;
+}
+
+const data = rawData.map((r,idx)=>{
+  const [club,region,membership,ptSales,ptss,guestMkt,guestClub,nmu] = r;
+  const guest = guestMkt + guestClub;
+  const total = membership + ptSales;
+  return {
+    club, region, membership, ptSales, ptss, guestMkt, guestClub, guest, nmu,
+    target: total * 1.05 || 1,
+    dailyMembership: makeDaily(membership, idx),
+    dailyPt: makeDaily(ptSales, idx+2),
+    dailyPtss: makeDaily(ptss, idx+4),
+    dailyGuest: makeDaily(guest, idx+1)
+  };
+});
+
+function money(value){
+  const n = Number(value || 0);
+  if (Math.abs(n) >= 1_000_000) return '$' + (n / 1_000_000).toFixed(1) + 'M';
+  if (Math.abs(n) >= 1_000) return '$' + (n / 1_000).toFixed(1) + 'K';
+  return '$' + n.toFixed(0);
+}
+function pct(value){ return Number.isFinite(value) ? (value * 100).toFixed(1) + '%' : '0.0%'; }
+function sum(rows,key){ return rows.reduce((acc,row)=>acc + Number(row[key] || 0), 0); }
+function sumDaily(rows,key){ return days.map((_,i)=>rows.reduce((acc,row)=>acc + Number((row[key] || [])[i] || 0), 0)); }
+function byId(id){ return document.getElementById(id); }
+function getFiltered(){
+  const region = byId('regionFilter').value;
+  const club = byId('clubFilter').value;
+  return data.filter(row => (region === 'ALL' || row.region === region) && (club === 'ALL' || row.club === club));
+}
+function destroyChart(id){ if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+function drawChart(id, config){
+  const canvas = byId(id);
+  if (!canvas || typeof Chart === 'undefined') return;
+  destroyChart(id);
+  charts[id] = new Chart(canvas, config);
+}
+function statusBadge(rate){
+  if (rate >= 1) return '<span class="badge-up px-2 py-1 rounded-full text-xs font-bold">On Track</span>';
+  if (rate >= .9) return '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">Watch</span>';
+  return '<span class="badge-down px-2 py-1 rounded-full text-xs font-bold">Action</span>';
+}
+
+function setupFilters(){
+  const regions = [...new Set(data.map(d=>d.region))].sort();
+  const clubs = [...new Set(data.map(d=>d.club))].sort();
+  byId('regionFilter').innerHTML = '<option value="ALL">All Regions</option>' + regions.map(r=>`<option value="${r}">${r}</option>`).join('');
+  byId('clubFilter').innerHTML = '<option value="ALL">All Clubs</option>' + clubs.map(c=>`<option value="${c}">${c}</option>`).join('');
+  byId('applyBtn').addEventListener('click', renderDashboard);
+  byId('regionFilter').addEventListener('change', renderDashboard);
+  byId('clubFilter').addEventListener('change', renderDashboard);
+  byId('searchClub').addEventListener('input', renderClubTable);
+  document.querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTab = btn.dataset.tab;
+      document.querySelectorAll('.tabPanel').forEach(panel=>panel.classList.add('hidden'));
+      byId(activeTab).classList.remove('hidden');
+      renderDashboard();
+    });
+  });
+}
+
+function renderCards(rows){
+  const membership = sum(rows,'membership'), pt = sum(rows,'ptSales'), total = membership + pt;
+  const ptss = sum(rows,'ptss'), guest = sum(rows,'guest'), nmu = sum(rows,'nmu');
+  byId('headerTotal').textContent = money(total);
+  const cards = [
+    ['Total Cash', money(total), 'Actual MTD', 'badge-up'],
+    ['Membership Sales', money(membership), pct(total ? membership/total : 0) + ' mix', 'badge-neutral'],
+    ['PT Sales', money(pt), pct(total ? pt/total : 0) + ' mix', pt/total >= .42 ? 'badge-up' : 'badge-neutral'],
+    ['PTSS Served', Math.round(ptss).toLocaleString(), 'sessions', 'badge-up'],
+    ['Guest Close Rate', pct(guest ? nmu/guest : 0), Math.round(guest).toLocaleString() + ' guests', 'badge-neutral']
+  ];
+  byId('kpiCards').innerHTML = cards.map(c=>`<div class="card p-4"><div class="mini-label">${c[0]}</div><div class="metric mt-1">${c[1]}</div><span class="${c[3]} px-2 py-1 rounded-full text-xs font-bold">${c[2]}</span></div>`).join('');
+}
+
+function renderCash(rows){
+  const membership = sum(rows,'membership'), pt = sum(rows,'ptSales'), total = membership + pt;
+  drawChart('cashMixChart',{type:'bar',data:{labels:['Membership Sales','PT Sales'],datasets:[{label:'Cash Collection',data:[membership,pt],borderRadius:14}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>money(v)}}}}});
+  drawChart('cashTrendChart',{type:'line',data:{labels:days,datasets:[{label:'Membership',data:sumDaily(rows,'dailyMembership'),tension:.35},{label:'PT Sales',data:sumDaily(rows,'dailyPt'),tension:.35}]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{ticks:{callback:v=>money(v)}}}}});
+  const sorted = [...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
+  const top = sorted[0];
+  const lowMix = [...rows].filter(d=>d.membership+d.ptSales>0).sort((a,b)=>(a.ptSales/(a.membership+a.ptSales))-(b.ptSales/(b.membership+b.ptSales)))[0];
+  const ptMix = total ? pt/total : 0;
+  byId('cashAlerts').innerHTML = `<div class="p-4 rounded-2xl bg-red-50"><b>PT Mix:</b> ${pct(ptMix)}. ${ptMix<.42?'Need stronger PT conversion from active members.':'Healthy PT contribution.'}</div><div class="p-4 rounded-2xl bg-gray-50"><b>Top cash club:</b> ${top?top.club:'-'} · ${top?money(top.membership+top.ptSales):'$0'}</div><div class="p-4 rounded-2xl bg-gray-50"><b>Action:</b> Review low PT mix club ${lowMix?lowMix.club:'-'} and compare PT attach behavior.</div>`;
+}
+
+function renderPtss(rows){
+  const sorted = [...rows].sort((a,b)=>b.ptss-a.ptss).slice(0,12);
+  drawChart('ptssClubChart',{type:'bar',data:{labels:sorted.map(d=>d.club),datasets:[{label:'PTSS',data:sorted.map(d=>d.ptss),borderRadius:12}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}}}});
+  drawChart('ptssTrendChart',{type:'line',data:{labels:days,datasets:[{label:'PTSS Served',data:sumDaily(rows,'dailyPtss'),tension:.35}]},options:{responsive:true,plugins:{legend:{display:false}}}});
+  const total = sum(rows,'ptss');
+  const best = sorted[0];
+  const weak = [...rows].filter(d=>d.ptss>0).sort((a,b)=>a.ptss-b.ptss)[0];
+  byId('ptssInsights').innerHTML = `<div class="p-4 rounded-2xl bg-gray-50"><b>Total served:</b> ${Math.round(total).toLocaleString()} sessions</div><div class="p-4 rounded-2xl bg-red-50"><b>Lowest active:</b> ${weak?weak.club:'-'} · ${weak?Math.round(weak.ptss):0} sessions</div><div class="p-4 rounded-2xl bg-gray-50"><b>Best practice:</b> ${best?best.club:'-'} leads served volume. Check booking discipline and member frequency.</div>`;
+}
+
+function renderGuest(rows){
+  const mkt = sum(rows,'guestMkt'), club = sum(rows,'guestClub'), totalGuest = mkt + club, nmu = sum(rows,'nmu');
+  const sourceData = [
+    {source:'Guest from MKT', guest:mkt, closed: totalGuest ? nmu * (mkt/totalGuest) : 0},
+    {source:'Guest from Club Dept', guest:club, closed: totalGuest ? nmu * (club/totalGuest) : 0}
+  ];
+  drawChart('guestSourceChart',{type:'doughnut',data:{labels:sourceData.map(d=>d.source),datasets:[{data:sourceData.map(d=>d.guest)}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+  drawChart('guestCloseChart',{type:'bar',data:{labels:sourceData.map(d=>d.source),datasets:[{label:'Guest',data:sourceData.map(d=>d.guest),borderRadius:10},{label:'NMU / Closed',data:sourceData.map(d=>d.closed),borderRadius:10}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+  byId('guestTable').innerHTML = sourceData.map(d=>`<tr class="table-row border-b"><td class="py-3 font-bold">${d.source}</td><td>${Math.round(d.guest).toLocaleString()}</td><td>${d.closed.toFixed(1)}</td><td>${pct(d.guest ? d.closed/d.guest : 0)}</td><td>${d.guest && d.closed/d.guest<.18?'Improve follow-up script':'Scale this source'}</td></tr>`).join('');
+}
+
+function renderRanking(rows){
+  const sorted = [...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
+  const top = sorted.slice(0,10);
+  const bottom = sorted.filter(d=>d.membership+d.ptSales>0).slice(-5).reverse();
+  drawChart('rankingChart',{type:'bar',data:{labels:top.map(d=>d.club),datasets:[{label:'Cash Total',data:top.map(d=>d.membership+d.ptSales),borderRadius:12}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>money(v)}}}}});
+  byId('focusList').innerHTML = bottom.map(d=>`<div class="p-4 rounded-2xl bg-gray-50 flex justify-between gap-3"><div><b>${d.club}</b><div class="text-xs text-gray-500">${d.region} · PTSS ${Math.round(d.ptss)}</div></div><div>${statusBadge((d.membership+d.ptSales)/(d.target||1))}</div></div>`).join('');
+  renderClubTable();
+}
+
+function renderClubTable(){
+  const q = (byId('searchClub').value || '').toLowerCase();
+  const rows = getFiltered().filter(d=>d.club.toLowerCase().includes(q)).sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
+  byId('clubTable').innerHTML = rows.map(d=>{
+    const total = d.membership + d.ptSales;
+    return `<tr class="table-row border-b"><td class="py-3 font-black">${d.club}</td><td>${d.region}</td><td>${money(d.membership)}</td><td>${money(d.ptSales)}</td><td class="font-bold">${money(total)}</td><td>${Math.round(d.ptss).toLocaleString()}</td><td>${Math.round(d.guest).toLocaleString()}</td><td>${d.nmu}</td><td>${pct(d.guest ? d.nmu/d.guest : 0)}</td><td>${statusBadge(total/(d.target||1))}</td></tr>`;
+  }).join('');
+}
+
+function renderDashboard(){
+  const rows = getFiltered();
+  renderCards(rows);
+  if (activeTab === 'cash') renderCash(rows);
+  if (activeTab === 'ptss') renderPtss(rows);
+  if (activeTab === 'guest') renderGuest(rows);
+  if (activeTab === 'club') renderRanking(rows);
+}
+
+function runSelfTests(){
+  console.assert(typeof renderDashboard === 'function', 'renderDashboard must be defined');
+  console.assert(data.length === 32, 'Expected 32 active clubs in embedded data');
+  console.assert(sum(data,'membership') > 0, 'Membership total should be positive');
+  console.assert(sum(data,'ptSales') > 0, 'PT sales total should be positive');
+  console.assert(byId('clubFilter').options.length === 33, 'Club filter should include All + 32 clubs');
+  console.assert(makeDaily(100,1).length === 31, 'Daily series should have 31 days');
+}
+
+window.renderDashboard = renderDashboard;
+window.renderClubTable = renderClubTable;
+
+document.addEventListener('DOMContentLoaded',()=>{
+  setupFilters();
+  renderDashboard();
+  runSelfTests();
+});
+</script>
+</body>
+</html>
