@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    :root{--red:#d71920;--ink:#111827;--muted:#6b7280;--line:#e5e7eb;--soft:#f8fafc;}
+    :root{--red:#d71920;--ink:#111827;--muted:#6b7280;}
     *{box-sizing:border-box}
     body{margin:0;font-family:Inter,Arial,sans-serif;background:#f3f4f6;color:var(--ink)}
     .hero{background:linear-gradient(135deg,#111 0%,#2b0d0f 54%,#d71920 140%)}
@@ -17,23 +17,9 @@
     .tab{transition:.18s ease}.tab.active{background:var(--red);color:white;box-shadow:0 10px 24px rgba(215,25,32,.22)}
     .badge-up{background:#ecfdf5;color:#047857}.badge-down{background:#fef2f2;color:#b91c1c}.badge-neutral{background:#f3f4f6;color:#374151}
     .table-row:hover{background:#fff7f7} select,input{outline:none}
-    
-    /* Loading Animation */
-    .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px); visibility: hidden; opacity: 0; transition: 0.3s; }
-    .loading-overlay.active { visibility: visible; opacity: 1; }
-    .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--red); border-radius: 50%; animation: spin 1s linear infinite; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
-  <!-- Loading Indicator -->
-  <div id="loader" class="loading-overlay">
-    <div class="text-center">
-      <div class="spinner mx-auto mb-3"></div>
-      <p class="font-bold text-gray-700">Đang đồng bộ dữ liệu thực tế...</p>
-    </div>
-  </div>
-
   <div class="min-h-screen">
     <header class="hero text-white px-6 py-7 md:px-10">
       <div class="max-w-7xl mx-auto">
@@ -41,36 +27,30 @@
           <div>
             <div class="text-xs uppercase tracking-[.25em] text-red-100 font-bold">California Fitness & Yoga</div>
             <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-1">Performance Command Center</h1>
-            <p class="text-red-50 mt-2 max-w-2xl">Kết nối trực tiếp từ Google Sheet. Dữ liệu bao gồm các chỉ số Membership Sales, PT Sales và PTSS.</p>
+            <p class="text-red-50 mt-2 max-w-2xl">Dashboard prototype đọc toàn bộ dữ liệu từ Google Sheet: NMS, PT Sales, PTSS Served, Guest from MKT, Guest from Club Dept và NMU theo tháng / club.</p>
           </div>
           <div class="bg-white/10 border border-white/15 rounded-2xl p-4 min-w-[240px]">
-            <div class="text-xs text-red-100 uppercase tracking-widest font-bold">MTD Total Cash</div>
+            <div class="text-xs text-red-100 uppercase tracking-widest font-bold">Selected Period</div>
             <div class="text-3xl font-black mt-1" id="headerTotal">$0</div>
-            <div id="statusTag" class="text-xs mt-1 text-green-300 font-medium">● Đang chờ kết nối...</div>
+            <div class="text-sm text-red-50">Total NMS + PT Sales | USD</div>
           </div>
         </div>
       </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 md:px-8 -mt-5 pb-12">
-      <!-- Bộ lọc -->
       <section class="card p-4 md:p-5 mb-5">
         <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
-          <div><label class="mini-label">Period</label><select id="periodFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"><option value="MTD">MTD - Realtime</option></select></div>
+          <div><label class="mini-label">Period</label><select id="periodFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
           <div><label class="mini-label">Region</label><select id="regionFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
           <div><label class="mini-label">Club</label><select id="clubFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
-          <div><label class="mini-label">Comparison</label><select id="compareFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"><option value="TARGET">vs Target (105%)</option></select></div>
-          <button id="refreshBtn" class="bg-[#d71920] hover:bg-[#b9141a] text-white rounded-xl px-4 py-3 font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-900/20">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-            Sync Data
-          </button>
+          <div><label class="mini-label">Compare</label><select id="compareFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"><option value="TARGET">vs Target</option><option value="LM">vs Last Month</option><option value="LY">vs Last Year</option></select></div>
+          <button id="applyBtn" class="bg-[#d71920] hover:bg-[#b9141a] text-white rounded-xl px-4 py-3 font-bold">Apply Filter</button>
         </div>
       </section>
 
-      <!-- KPI Cards -->
       <section class="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4 mb-5" id="kpiCards"></section>
 
-      <!-- Tabs -->
       <nav class="flex flex-wrap gap-2 mb-5">
         <button class="tab active px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="cash">Cash Collection</button>
         <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="ptss">PT Sessions Served</button>
@@ -78,29 +58,28 @@
         <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="club">Club Ranking</button>
       </nav>
 
-      <!-- Content Sections -->
       <section id="cash" class="tabPanel grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div class="card p-5 lg:col-span-2"><div class="flex justify-between items-start mb-4"><div><div class="mini-label">Revenue Mix</div><h2 class="text-xl font-black">Membership Sales vs PT Sales</h2></div></div><canvas id="cashMixChart" height="115"></canvas></div>
+        <div class="card p-5 lg:col-span-2"><div class="flex justify-between items-start mb-4"><div><div class="mini-label">Revenue Mix</div><h2 class="text-xl font-black">Membership Sales vs PT Sales</h2></div><span class="px-3 py-1 rounded-full bg-red-50 text-red-700 text-xs font-bold">Cash Collection</span></div><canvas id="cashMixChart" height="115"></canvas></div>
         <div class="card p-5"><div class="mini-label">Smart Alert</div><h2 class="text-xl font-black mb-4">Performance Signals</h2><div id="cashAlerts" class="space-y-3"></div></div>
-        <div class="card p-5 lg:col-span-3"><div class="mini-label">Daily Trend (Calculated MTD)</div><h2 class="text-xl font-black mb-4">Cash Collection Flow</h2><canvas id="cashTrendChart" height="90"></canvas></div>
+        <div class="card p-5 lg:col-span-3"><div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2"><div><div class="mini-label">Trend</div><h2 class="text-xl font-black">Cash Collection Trend</h2></div><div class="text-sm text-gray-500" id="cashTrendNote">By period</div></div><canvas id="cashTrendChart" height="90"></canvas></div>
       </section>
 
       <section id="ptss" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div class="card p-5 lg:col-span-2"><div class="mini-label">PT Productivity</div><h2 class="text-xl font-black mb-4">PT Sessions Served by Club</h2><canvas id="ptssClubChart" height="120"></canvas></div>
-        <div class="card p-5"><div class="mini-label">Insight</div><h2 class="text-xl font-black mb-4">Service Health</h2><div id="ptssInsights" class="space-y-3"></div></div>
+        <div class="card p-5"><div class="mini-label">Quality View</div><h2 class="text-xl font-black mb-4">Service Health</h2><div id="ptssInsights" class="space-y-3"></div></div>
         <div class="card p-5 lg:col-span-3"><div class="mini-label">Trend</div><h2 class="text-xl font-black mb-4">Sessions Served Trend</h2><canvas id="ptssTrendChart" height="90"></canvas></div>
       </section>
 
       <section id="guest" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div class="card p-5"><div class="mini-label">Source Mix</div><h2 class="text-xl font-black mb-4">Guest Distribution</h2><canvas id="guestSourceChart" height="210"></canvas></div>
-        <div class="card p-5 lg:col-span-2"><div class="mini-label">Funnel Quality</div><h2 class="text-xl font-black mb-4">Guest → NMU Close Rate</h2><canvas id="guestCloseChart" height="120"></canvas></div>
-        <div class="card p-5 lg:col-span-3"><div class="mini-label">Guest Table</div><h2 class="text-xl font-black mb-4">Source Performance Detail</h2><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-left text-gray-500 border-b"><tr><th class="py-3">Source</th><th>Guest</th><th>NMU / Closed</th><th>Close Rate</th><th>Signal</th></tr></thead><tbody id="guestTable"></tbody></table></div></div>
+        <div class="card p-5"><div class="mini-label">Source Mix</div><h2 class="text-xl font-black mb-4">Guest by Source</h2><canvas id="guestSourceChart" height="210"></canvas></div>
+        <div class="card p-5 lg:col-span-2"><div class="mini-label">Funnel Quality</div><h2 class="text-xl font-black mb-4">Guest → Close by Source</h2><canvas id="guestCloseChart" height="120"></canvas></div>
+        <div class="card p-5 lg:col-span-3"><div class="mini-label">Guest Table</div><h2 class="text-xl font-black mb-4">Source Performance Detail</h2><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-left text-gray-500 border-b"><tr><th class="py-3">Source</th><th>Guest</th><th>NMU / Closed</th><th>Close Rate</th><th>Action Signal</th></tr></thead><tbody id="guestTable"></tbody></table></div></div>
       </section>
 
       <section id="club" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div class="card p-5 lg:col-span-2"><div class="mini-label">Ranking</div><h2 class="text-xl font-black mb-4">Top Club Performance</h2><canvas id="rankingChart" height="135"></canvas></div>
-        <div class="card p-5"><div class="mini-label">Management Focus</div><h2 class="text-xl font-black mb-4">Clubs Below Target</h2><div id="focusList" class="space-y-3"></div></div>
-        <div class="card p-5 lg:col-span-3"><div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-4"><div><div class="mini-label">Club Detail</div><h2 class="text-xl font-black">Full Club Metrics</h2></div><input id="searchClub" placeholder="Search club..." class="border border-gray-200 rounded-xl px-4 py-2" /></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-left text-gray-500 border-b"><tr><th class="py-3 px-2">Club</th><th>Region</th><th>Membership</th><th>PT Sales</th><th>Cash Total</th><th>PTSS</th><th>Guest</th><th>NMU</th><th>Rate</th><th>Status</th></tr></thead><tbody id="clubTable"></tbody></table></div></div>
+        <div class="card p-5"><div class="mini-label">Management Focus</div><h2 class="text-xl font-black mb-4">Clubs Need Attention</h2><div id="focusList" class="space-y-3"></div></div>
+        <div class="card p-5 lg:col-span-3"><div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-4"><div><div class="mini-label">Club Detail</div><h2 class="text-xl font-black">Club Performance Table</h2></div><input id="searchClub" placeholder="Search club..." class="border border-gray-200 rounded-xl px-4 py-2" /></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-left text-gray-500 border-b"><tr><th class="py-3">Club</th><th>Region</th><th>Membership</th><th>PT Sales</th><th>Cash Total</th><th>PTSS</th><th>Guest</th><th>NMU</th><th>Close Rate</th><th>Status</th></tr></thead><tbody id="clubTable"></tbody></table></div></div>
       </section>
     </main>
   </div>
@@ -108,264 +87,199 @@
 <script>
 'use strict';
 
-const CONFIG = {
-  // Đảm bảo Script đã được Deploy là "Anyone"
-  API_URL: 'https://script.google.com/macros/s/AKfycbztoKT8PrGAsWL-0sYdKq_2WSyyEpMANGs2LB2dNXhzjbGz_aztt59_bsSfiStXtsPUAg/exec'
-};
-
-let rawData = [];
-let activeTab = 'cash';
-const days = Array.from({length:31}, (_,i)=>'D' + (i+1));
+const CONFIG = { API_URL: 'https://script.google.com/macros/s/AKfycbztoKT8PrGAsWL-0sYdKq_2WSyyEpMANGs2LB2dNXhzjbGz_aztt59_bsSfiStXtsPUAg/exec' };
 const charts = {};
+let activeTab = 'cash';
+let allData = [];
+let data = [];
 
-const toggleLoader = (show) => {
-  const loader = document.getElementById('loader');
-  if (loader) loader.classList.toggle('active', show);
-};
+const fallbackRawData = [
+  ['2026-05','AMU','South',1640.03,1895.54,220,52,51,3.17],['2026-05','AMY','South',7049.63,5826.98,321,27,18,3],['2026-05','BDS','South',4755.48,2485.92,480,22,25,8],['2026-05','CPT','North',4530.20,3183.03,569,27,37,12],['2026-05','CTC','South',7095.68,6032.68,751,37,29,16.5],['2026-05','DNG','Central',4724.15,3556.86,480,72,33,9],['2026-05','FDC','South',5996.55,5032.09,392,5,48,13],['2026-05','GDC','South',6969.29,5230.65,711,18,24,6],['2026-05','GMC','South',2333.23,4829.98,214,19,16,4.5],['2026-05','GVC','South',2662.71,1177.35,220,26,10,5],['2026-05','HDC','South',943.56,545.97,388,13,19,8],['2026-05','HDY','North',824.49,934.50,277,28,37,2],['2026-05','HVP','South',25311.63,1026.78,723,20,29,8],['2026-05','LMC','South',8785.87,8590.84,653,18,67,31],['2026-05','LTC','South',145.62,648.49,0,0,0,0],['2026-05','MAC','North',4547.31,2781.71,179,55,44,6],['2026-05','MPC','North',9611.33,6573.36,398,16,66,11],['2026-05','NTC','Central',3261.98,2772.44,449,52,32,4],['2026-05','PBH','South',2069.92,1706.65,202,25,28,5.5],['2026-05','PCH','North',3360.37,1567.57,172,77,60,7],['2026-05','PCO','South',6322.08,3131.59,572,21,41,14.61],['2026-05','PPC','South',224.35,0,0,0,0,0],['2026-05','RCC','North',7803.62,2020.59,383,41,31,10],['2026-05','SCT','North',13644.88,5278.84,371,44,55,4.5],['2026-05','TCM','North',6528.27,7813.39,544,54,61,17],['2026-05','TDC','South',5198.72,4822.21,642,31,43,5],['2026-05','TDU','South',26833.04,23940.44,779,65,75,42],['2026-05','TTC','South',0,19194.95,885,19,16,0],['2026-05','VSC','North',4626.40,4213.61,316,35,54,8.5],['2026-05','VTC','South',2657.04,2004.98,139,27,14,9.23],['2026-05','VVO','South',7881.86,5638.88,529,36,42,12],['2026-05','WPC','North',6940.77,5949.76,576,19,28,8.5]
+];
 
-const formatMoney = (v) => {
-  const n = Number(v || 0);
-  if (n >= 1_000_000) return (n/1_000_000).toFixed(1) + 'M';
-  if (n >= 1_000) return (n/1_000).toFixed(1) + 'K';
-  return n.toFixed(0);
-};
-
-const formatPct = (v) => (Number(v || 0) * 100).toFixed(1) + '%';
-
-function generateDailyDistribution(totalValue){
-  const weights = [0.03, 0.04, 0.03, 0.05, 0.02, 0.04, 0.06, 0.03, 0.04, 0.03, 0.05, 0.02, 0.04, 0.06, 0.03, 0.04, 0.03, 0.05, 0.02, 0.04, 0.06, 0.03, 0.04, 0.03, 0.05, 0.02, 0.04, 0.06, 0.02, 0.01, 0.01];
-  return weights.map(w => +(totalValue * w * (0.8 + Math.random() * 0.4)).toFixed(2));
+function byId(id){ return document.getElementById(id); }
+function safeNumber(v){ const n = Number(v || 0); return Number.isFinite(n) ? n : 0; }
+function money(v){ const n = safeNumber(v); if(Math.abs(n) >= 1000000) return '$' + (n/1000000).toFixed(1) + 'M'; if(Math.abs(n) >= 1000) return '$' + (n/1000).toFixed(1) + 'K'; return '$' + n.toFixed(0); }
+function pct(v){ return Number.isFinite(v) ? (v*100).toFixed(1) + '%' : '0.0%'; }
+function sum(rows,key){ return rows.reduce((a,b)=>a + safeNumber(b[key]), 0); }
+function normalizeMonth(v){
+  if(!v) return 'Unknown';
+  const s = String(v).trim();
+  if(s.length >= 7 && s.charAt(4) === '-') return s.slice(0,7);
+  const d = new Date(s);
+  if(!isNaN(d.getTime())) return d.toISOString().slice(0,7);
+  return s;
 }
+function makeDaily(total, seed){
+  const arr = Array(31).fill(0);
+  const weights = [0,0.10,0.12,0.18,0.15,0.17,0.13,0.15];
+  weights.forEach((w,i)=>{ arr[i] = +(safeNumber(total) * w * (0.94 + ((seed+i)%5)*0.03)).toFixed(2); });
+  arr[7] = +(arr[7] + safeNumber(total) - arr.reduce((a,b)=>a+b,0)).toFixed(2);
+  return arr;
+}
+function sumDaily(rows,key){ return Array.from({length:31},(_,i)=>rows.reduce((a,b)=>a + safeNumber((b[key] || [])[i]),0)); }
 
-// FETCH DATA - FIXED FOR GOOGLE APPS SCRIPT REDIRECTS
-async function syncData(){
-  toggleLoader(true);
-  const tag = document.getElementById('statusTag');
-  
-  try {
-    // Sử dụng fetch cơ bản nhất để xử lý CORS/Redirect của Google Apps Script
-    // Bỏ qua các Headers tùy chỉnh để tránh pre-flight chặn bởi Google
-    const response = await fetch(`${CONFIG.API_URL}?t=${Date.now()}`);
-    
-    if (!response.ok) throw new Error('Không thể kết nối đến Google Script');
-    
-    const result = await response.json();
-    
-    if (result && result.success && Array.isArray(result.data)) {
-      rawData = result.data.map(item => ({
-        ...item,
-        membership: Number(item.membership || 0),
-        ptSales: Number(item.ptSales || 0),
-        ptss: Number(item.ptss || 0),
-        guest: Number(item.guest || 0),
-        guestMkt: Number(item.guestMkt || 0),
-        guestClub: Number(item.guestClub || 0),
-        nmu: Number(item.nmu || 0),
-        target: Number(item.target || 1),
-        dailyMembership: generateDailyDistribution(Number(item.membership || 0)),
-        dailyPt: generateDailyDistribution(Number(item.ptSales || 0)),
-        dailyPtss: generateDailyDistribution(Number(item.ptss || 0)),
-        dailyGuest: generateDailyDistribution(Number(item.guest || 0))
-      }));
-      
-      updateFilters();
-      renderDashboard();
-      
-      tag.textContent = '● Cập nhật: ' + new Date().toLocaleTimeString();
-      tag.className = 'text-xs mt-1 text-green-300 font-medium';
-    } else {
-      throw new Error('Dữ liệu trả về không hợp lệ');
-    }
-  } catch (error) {
-    console.error('API Error:', error);
-    tag.textContent = '● Lỗi: ' + error.message;
-    tag.className = 'text-xs mt-1 text-red-400 font-medium';
-  } finally {
-    toggleLoader(false);
+function mapFallbackData(){
+  return fallbackRawData.map((r,idx)=>{
+    const month = r[0], club = r[1], region = r[2], membership = r[3], ptSales = r[4], ptss = r[5], guestMkt = r[6], guestClub = r[7], nmu = r[8];
+    const guest = guestMkt + guestClub;
+    const total = membership + ptSales;
+    return {month,club,region,membership,ptSales,ptss,guestMkt,guestClub,guest,nmu,target:total*1.05 || 1,dailyMembership:makeDaily(membership,idx),dailyPt:makeDaily(ptSales,idx+2),dailyPtss:makeDaily(ptss,idx+4),dailyGuest:makeDaily(guest,idx+1)};
+  });
+}
+function normalizeApiRow(row,idx){
+  const membership = safeNumber(row.membership);
+  const ptSales = safeNumber(row.ptSales);
+  const ptss = safeNumber(row.ptss);
+  const guestMkt = safeNumber(row.guestMkt);
+  const guestClub = safeNumber(row.guestClub);
+  const guest = safeNumber(row.guest) || guestMkt + guestClub;
+  const nmu = safeNumber(row.nmu);
+  return {
+    month: normalizeMonth(row.month || row.period || row.date || row.Date),
+    club: String(row.club || row.Club || row.Location || '').trim(),
+    region: row.region || row.Region || 'Unassigned',
+    membership, ptSales, ptss, guestMkt, guestClub, guest, nmu,
+    target: safeNumber(row.target) || (membership + ptSales) * 1.05 || 1,
+    dailyMembership: Array.isArray(row.dailyMembership) ? row.dailyMembership : makeDaily(membership,idx),
+    dailyPt: Array.isArray(row.dailyPt) ? row.dailyPt : makeDaily(ptSales,idx+2),
+    dailyPtss: Array.isArray(row.dailyPtss) ? row.dailyPtss : makeDaily(ptss,idx+4),
+    dailyGuest: Array.isArray(row.dailyGuest) ? row.dailyGuest : makeDaily(guest,idx+1)
+  };
+}
+async function loadData(){
+  allData = mapFallbackData();
+  try{
+    const res = await fetch(CONFIG.API_URL + '?mode=monthly', {method:'GET', cache:'no-store'});
+    const json = await res.json();
+    if(!json.success) throw new Error(json.message || 'API success=false');
+    allData = json.data.map(normalizeApiRow).filter(x=>x.club);
+  }catch(err){
+    console.error('Cannot load API. Using fallback data.', err);
   }
 }
 
-function updateFilters(){
-  if (!rawData.length) return;
-  const regions = [...new Set(rawData.map(d=>d.region))].sort();
-  const clubs = [...new Set(rawData.map(d=>d.club))].sort();
-  
-  const regionEl = document.getElementById('regionFilter');
-  const clubEl = document.getElementById('clubFilter');
-  
-  if (regionEl) regionEl.innerHTML = '<option value="ALL">Tất cả Regions</option>' + regions.map(r=>`<option value="${r}">${r}</option>`).join('');
-  if (clubEl) clubEl.innerHTML = '<option value="ALL">Tất cả Clubs</option>' + clubs.map(c=>`<option value="${c}">${c}</option>`).join('');
+function getPeriod(){ return byId('periodFilter').value; }
+function getPeriodRows(){ const p = getPeriod(); return p === 'ALL' ? allData : allData.filter(r=>r.month === p); }
+function aggregateByClub(rows){
+  const map = new Map();
+  rows.forEach(r=>{
+    if(!map.has(r.club)) map.set(r.club,{club:r.club,region:r.region,membership:0,ptSales:0,ptss:0,guestMkt:0,guestClub:0,guest:0,nmu:0,target:0,dailyMembership:Array(31).fill(0),dailyPt:Array(31).fill(0),dailyPtss:Array(31).fill(0),dailyGuest:Array(31).fill(0)});
+    const x = map.get(r.club);
+    ['membership','ptSales','ptss','guestMkt','guestClub','guest','nmu','target'].forEach(k=>x[k]+=safeNumber(r[k]));
+    ['dailyMembership','dailyPt','dailyPtss','dailyGuest'].forEach(k=>{ for(let i=0;i<31;i++) x[k][i] += safeNumber((r[k] || [])[i]); });
+  });
+  return Array.from(map.values());
+}
+function refreshPeriodData(){
+  data = aggregateByClub(getPeriodRows());
+  const regions = Array.from(new Set(data.map(d=>d.region))).sort();
+  const clubs = Array.from(new Set(data.map(d=>d.club))).sort();
+  const oldRegion = byId('regionFilter').value || 'ALL';
+  const oldClub = byId('clubFilter').value || 'ALL';
+  byId('regionFilter').innerHTML = '<option value="ALL">All Regions</option>' + regions.map(r=>'<option value="'+r+'">'+r+'</option>').join('');
+  byId('clubFilter').innerHTML = '<option value="ALL">All Clubs</option>' + clubs.map(c=>'<option value="'+c+'">'+c+'</option>').join('');
+  byId('regionFilter').value = regions.includes(oldRegion) ? oldRegion : 'ALL';
+  byId('clubFilter').value = clubs.includes(oldClub) ? oldClub : 'ALL';
+}
+function getFiltered(){
+  const region = byId('regionFilter').value;
+  const club = byId('clubFilter').value;
+  return data.filter(r=>(region === 'ALL' || r.region === region) && (club === 'ALL' || r.club === club));
+}
+function destroyChart(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
+function drawChart(id,config){ const c = byId(id); if(!c || typeof Chart === 'undefined') return; destroyChart(id); charts[id] = new Chart(c,config); }
+function statusBadge(rate){ if(rate >= 1) return '<span class="badge-up px-2 py-1 rounded-full text-xs font-bold">On Track</span>'; if(rate >= 0.9) return '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">Watch</span>'; return '<span class="badge-down px-2 py-1 rounded-full text-xs font-bold">Action</span>'; }
+function trendLabels(){ return getPeriod() === 'ALL' ? Array.from(new Set(allData.map(d=>d.month))).sort() : Array.from({length:31},(_,i)=>'Day '+(i+1)); }
+function trendSeries(rows,key){
+  if(getPeriod() !== 'ALL') return sumDaily(rows,'daily' + (key==='membership'?'Membership':key==='ptSales'?'Pt':key==='ptss'?'Ptss':'Guest'));
+  const clubs = new Set(rows.map(r=>r.club));
+  return trendLabels().map(m=>sum(allData.filter(r=>r.month === m && clubs.has(r.club)), key));
 }
 
-function getFilteredData(){
-  const regionEl = document.getElementById('regionFilter');
-  const clubEl = document.getElementById('clubFilter');
-  const r = regionEl ? regionEl.value : 'ALL';
-  const c = clubEl ? clubEl.value : 'ALL';
-  return rawData.filter(d => (r==='ALL' || d.region===r) && (c==='ALL' || d.club===c));
+function setupFilters(){
+  const months = Array.from(new Set(allData.map(d=>d.month))).filter(Boolean).sort();
+  byId('periodFilter').innerHTML = '<option value="ALL">All Periods</option>' + months.map(m=>'<option value="'+m+'">'+m+'</option>').join('');
+  byId('periodFilter').value = months[months.length - 1] || 'ALL';
+  refreshPeriodData();
+  byId('applyBtn').addEventListener('click', renderDashboard);
+  byId('periodFilter').addEventListener('change',()=>{ refreshPeriodData(); renderDashboard(); });
+  byId('regionFilter').addEventListener('change', renderDashboard);
+  byId('clubFilter').addEventListener('change', renderDashboard);
+  byId('searchClub').addEventListener('input', renderClubTable);
+  document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTab = btn.dataset.tab;
+    document.querySelectorAll('.tabPanel').forEach(p=>p.classList.add('hidden'));
+    byId(activeTab).classList.remove('hidden');
+    renderDashboard();
+  }));
 }
-
-function updateChart(id, config){
-  const canvas = document.getElementById(id);
-  if (!canvas) return;
-  if (charts[id]) charts[id].destroy();
-  const ctx = canvas.getContext('2d');
-  charts[id] = new Chart(ctx, config);
-}
-
 function renderCards(rows){
-  const mkt = rows.reduce((a,b)=>a+b.membership,0), pt = rows.reduce((a,b)=>a+b.ptSales,0), total = mkt+pt;
-  const ptss = rows.reduce((a,b)=>a+b.ptss,0), guest = rows.reduce((a,b)=>a+b.guest,0), nmu = rows.reduce((a,b)=>a+b.nmu,0);
-  
-  const headerTotal = document.getElementById('headerTotal');
-  if (headerTotal) headerTotal.textContent = '$' + formatMoney(total);
-  
-  const cards = [
-    ['Total Revenue', '$'+formatMoney(total), 'Actual MTD', 'badge-up'],
-    ['Membership', '$'+formatMoney(mkt), formatPct(total?mkt/total:0) + ' mix', 'badge-neutral'],
-    ['PT Sales', '$'+formatMoney(pt), formatPct(total?pt/total:0) + ' mix', 'badge-neutral'],
-    ['PTSS', Math.round(ptss).toLocaleString(), 'Sessions', 'badge-up'],
-    ['Close Rate', formatPct(guest?nmu/guest:0), Math.round(guest).toLocaleString() + ' Guests', 'badge-neutral']
-  ];
-  
-  const kpiCards = document.getElementById('kpiCards');
-  if (kpiCards) {
-    kpiCards.innerHTML = cards.map(c=>`
-      <div class="card p-4 transition-transform hover:scale-[1.02]">
-        <div class="mini-label">${c[0]}</div>
-        <div class="metric mt-1">${c[1]}</div>
-        <span class="${c[3]} px-2 py-1 rounded-full text-xs font-bold">${c[2]}</span>
-      </div>
-    `).join('');
-  }
+  const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=membership+pt, ptss=sum(rows,'ptss'), guest=sum(rows,'guest'), nmu=sum(rows,'nmu');
+  byId('headerTotal').textContent = money(total);
+  const periodText = getPeriod() === 'ALL' ? 'All Periods' : getPeriod();
+  const cards = [['Total Cash',money(total),periodText,'badge-up'],['Membership Sales',money(membership),pct(total?membership/total:0)+' mix','badge-neutral'],['PT Sales',money(pt),pct(total?pt/total:0)+' mix',pt/total>=0.42?'badge-up':'badge-neutral'],['PTSS Served',Math.round(ptss).toLocaleString(),'sessions','badge-up'],['Guest Close Rate',pct(guest?nmu/guest:0),Math.round(guest).toLocaleString()+' guests','badge-neutral']];
+  byId('kpiCards').innerHTML = cards.map(c=>'<div class="card p-4"><div class="mini-label">'+c[0]+'</div><div class="metric mt-1">'+c[1]+'</div><span class="'+c[3]+' px-2 py-1 rounded-full text-xs font-bold">'+c[2]+'</span></div>').join('');
 }
-
 function renderCash(rows){
-  const m = rows.reduce((a,b)=>a+b.membership,0), p = rows.reduce((a,b)=>a+b.ptSales,0);
-  updateChart('cashMixChart', {
-    type:'bar',
-    data:{labels:['Membership','PT Sales'], datasets:[{data:[m,p], backgroundColor:['#111827','#d71920'], borderRadius:12}]},
-    options:{responsive:true, plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>'$'+formatMoney(v)}}}}
-  });
-  
-  const mDaily = days.map((_,i) => rows.reduce((a,b)=>a + (b.dailyMembership ? b.dailyMembership[i] : 0), 0));
-  const pDaily = days.map((_,i) => rows.reduce((a,b)=>a + (b.dailyPt ? b.dailyPt[i] : 0), 0));
-  
-  updateChart('cashTrendChart', {
-    type:'line',
-    data:{labels:days, datasets:[
-      {label:'Membership', data:mDaily, borderColor:'#111827', tension:0.3, fill:false, pointRadius:2},
-      {label:'PT Sales', data:pDaily, borderColor:'#d71920', tension:0.3, fill:false, pointRadius:2}
-    ]},
-    options:{responsive:true, plugins:{legend:{position:'bottom'}}}
-  });
-  
-  const top = [...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales))[0];
-  const cashAlerts = document.getElementById('cashAlerts');
-  if (cashAlerts) {
-    cashAlerts.innerHTML = `
-      <div class="p-4 rounded-2xl bg-gray-50 border-l-4 border-black"><b>Leader:</b> Club ${top?top.club:'N/A'} đang dẫn đầu hệ thống.</div>
-      <div class="p-4 rounded-2xl bg-red-50 text-red-800 border-l-4 border-red-600"><b>PT Strategy:</b> PT mix hiện tại ${formatPct((m+p)?p/(m+p):0)}. Mục tiêu: 42%.</div>
-    `;
-  }
+  const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=membership+pt;
+  drawChart('cashMixChart',{type:'bar',data:{labels:['Membership Sales','PT Sales'],datasets:[{label:'Cash Collection',data:[membership,pt],borderRadius:14}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>money(v)}}}}});
+  drawChart('cashTrendChart',{type:'line',data:{labels:trendLabels(),datasets:[{label:'Membership',data:trendSeries(rows,'membership'),tension:.35},{label:'PT Sales',data:trendSeries(rows,'ptSales'),tension:.35}]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{ticks:{callback:v=>money(v)}}}}});
+  const sorted=[...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
+  const top=sorted[0];
+  const lowMix=[...rows].filter(d=>d.membership+d.ptSales>0).sort((a,b)=>(a.ptSales/(a.membership+a.ptSales))-(b.ptSales/(b.membership+b.ptSales)))[0];
+  const ptMix=total?pt/total:0;
+  byId('cashAlerts').innerHTML = '<div class="p-4 rounded-2xl bg-red-50"><b>PT Mix:</b> '+pct(ptMix)+'. '+(ptMix<0.42?'Need stronger PT conversion from active members.':'Healthy PT contribution.')+'</div><div class="p-4 rounded-2xl bg-gray-50"><b>Top cash club:</b> '+(top?top.club:'-')+' · '+(top?money(top.membership+top.ptSales):'$0')+'</div><div class="p-4 rounded-2xl bg-gray-50"><b>Action:</b> Review low PT mix club '+(lowMix?lowMix.club:'-')+' and compare PT attach behavior.</div>';
 }
-
+function renderPtss(rows){
+  const sorted=[...rows].sort((a,b)=>b.ptss-a.ptss).slice(0,12);
+  drawChart('ptssClubChart',{type:'bar',data:{labels:sorted.map(d=>d.club),datasets:[{label:'PTSS',data:sorted.map(d=>d.ptss),borderRadius:12}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}}}});
+  drawChart('ptssTrendChart',{type:'line',data:{labels:trendLabels(),datasets:[{label:'PTSS Served',data:trendSeries(rows,'ptss'),tension:.35}]},options:{responsive:true,plugins:{legend:{display:false}}}});
+  const total=sum(rows,'ptss'), best=sorted[0], weak=[...rows].filter(d=>d.ptss>0).sort((a,b)=>a.ptss-b.ptss)[0];
+  byId('ptssInsights').innerHTML = '<div class="p-4 rounded-2xl bg-gray-50"><b>Total served:</b> '+Math.round(total).toLocaleString()+' sessions</div><div class="p-4 rounded-2xl bg-red-50"><b>Lowest active:</b> '+(weak?weak.club:'-')+' · '+(weak?Math.round(weak.ptss):0)+' sessions</div><div class="p-4 rounded-2xl bg-gray-50"><b>Best practice:</b> '+(best?best.club:'-')+' leads served volume. Check booking discipline and member frequency.</div>';
+}
+function renderGuest(rows){
+  const mkt=sum(rows,'guestMkt'), club=sum(rows,'guestClub'), totalGuest=mkt+club, nmu=sum(rows,'nmu');
+  const sourceData=[{source:'Guest from MKT',guest:mkt,closed:totalGuest?nmu*(mkt/totalGuest):0},{source:'Guest from Club Dept',guest:club,closed:totalGuest?nmu*(club/totalGuest):0}];
+  drawChart('guestSourceChart',{type:'doughnut',data:{labels:sourceData.map(d=>d.source),datasets:[{data:sourceData.map(d=>d.guest)}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+  drawChart('guestCloseChart',{type:'bar',data:{labels:sourceData.map(d=>d.source),datasets:[{label:'Guest',data:sourceData.map(d=>d.guest),borderRadius:10},{label:'NMU / Closed',data:sourceData.map(d=>d.closed),borderRadius:10}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+  byId('guestTable').innerHTML = sourceData.map(d=>'<tr class="table-row border-b"><td class="py-3 font-bold">'+d.source+'</td><td>'+Math.round(d.guest).toLocaleString()+'</td><td>'+d.closed.toFixed(1)+'</td><td>'+pct(d.guest?d.closed/d.guest:0)+'</td><td>'+(d.guest && d.closed/d.guest<0.18?'Improve follow-up script':'Scale this source')+'</td></tr>').join('');
+}
+function renderRanking(rows){
+  const sorted=[...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
+  const top=sorted.slice(0,10), bottom=sorted.filter(d=>d.membership+d.ptSales>0).slice(-5).reverse();
+  drawChart('rankingChart',{type:'bar',data:{labels:top.map(d=>d.club),datasets:[{label:'Cash Total',data:top.map(d=>d.membership+d.ptSales),borderRadius:12}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>money(v)}}}}});
+  byId('focusList').innerHTML = bottom.map(d=>'<div class="p-4 rounded-2xl bg-gray-50 flex justify-between gap-3"><div><b>'+d.club+'</b><div class="text-xs text-gray-500">'+d.region+' · PTSS '+Math.round(d.ptss)+'</div></div><div>'+statusBadge((d.membership+d.ptSales)/(d.target||1))+'</div></div>').join('');
+  renderClubTable();
+}
 function renderClubTable(){
-  const searchClub = document.getElementById('searchClub');
-  const query = searchClub ? searchClub.value.toLowerCase() : '';
-  const rows = getFilteredData().filter(d=>d.club.toLowerCase().includes(query));
-  const clubTable = document.getElementById('clubTable');
-  
-  if (clubTable) {
-    clubTable.innerHTML = rows.map(d=>{
-      const total = d.membership + d.ptSales;
-      const rate = total / (d.target || 1);
-      return `
-        <tr class="table-row border-b transition-colors">
-          <td class="py-4 px-2 font-black">${d.club}</td>
-          <td><span class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded">${d.region}</span></td>
-          <td>$${formatMoney(d.membership)}</td>
-          <td>$${formatMoney(d.ptSales)}</td>
-          <td class="font-bold text-red-600">$${formatMoney(total)}</td>
-          <td>${Math.round(d.ptss)}</td>
-          <td>${Math.round(d.guest)}</td>
-          <td>${d.nmu}</td>
-          <td>${formatPct(d.guest?d.nmu/d.guest:0)}</td>
-          <td>
-             <span class="${rate >= 1 ? 'badge-up' : rate >= 0.8 ? 'badge-neutral' : 'badge-down'} px-2 py-1 rounded-full text-[10px] font-bold">
-              ${formatPct(rate)}
-             </span>
-          </td>
-        </tr>
-      `;
-    }).join('');
-  }
+  const q=(byId('searchClub').value || '').toLowerCase();
+  const rows=getFiltered().filter(d=>d.club.toLowerCase().includes(q)).sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
+  byId('clubTable').innerHTML = rows.map(d=>{ const total=d.membership+d.ptSales; return '<tr class="table-row border-b"><td class="py-3 font-black">'+d.club+'</td><td>'+d.region+'</td><td>'+money(d.membership)+'</td><td>'+money(d.ptSales)+'</td><td class="font-bold">'+money(total)+'</td><td>'+Math.round(d.ptss).toLocaleString()+'</td><td>'+Math.round(d.guest).toLocaleString()+'</td><td>'+d.nmu+'</td><td>'+pct(d.guest?d.nmu/d.guest:0)+'</td><td>'+statusBadge(total/(d.target||1))+'</td></tr>'; }).join('');
 }
-
 function renderDashboard(){
-  const rows = getFilteredData();
-  if (!rows.length) return;
-  
+  const rows=getFiltered();
   renderCards(rows);
-  if(activeTab==='cash') renderCash(rows);
-  if(activeTab==='ptss'){
-     const sorted = [...rows].sort((a,b)=>b.ptss-a.ptss).slice(0,10);
-     updateChart('ptssClubChart', {
-        type:'bar',
-        data:{labels:sorted.map(d=>d.club), datasets:[{data:sorted.map(d=>d.ptss), backgroundColor:'#d71920', borderRadius:8}]},
-        options:{indexAxis:'y', responsive:true, plugins:{legend:{display:false}}}
-     });
-     
-     const ptssDaily = days.map((_,i) => rows.reduce((a,b)=>a + (b.dailyPtss ? b.dailyPtss[i] : 0), 0));
-     updateChart('ptssTrendChart', {
-        type:'line',
-        data:{labels:days, datasets:[{label:'Sessions', data:ptssDaily, borderColor:'#d71920', tension:0.3, fill:true, backgroundColor:'rgba(215,25,32,0.05)'}]},
-        options:{responsive:true}
-     });
-  }
-  if(activeTab==='guest'){
-     const mkt = rows.reduce((a,b)=>a+b.guestMkt,0), club = rows.reduce((a,b)=>a+b.guestClub,0), nmu = rows.reduce((a,b)=>a+b.nmu,0);
-     updateChart('guestSourceChart', {
-        type:'doughnut',
-        data:{labels:['Marketing','Club'], datasets:[{data:[mkt, club], backgroundColor:['#111827','#d71920']}]},
-        options:{responsive:true, cutout:'70%'}
-     });
-     updateChart('guestCloseChart', {
-        type:'bar',
-        data:{labels:['Marketing','Club'], datasets:[
-          {label:'Guest', data:[mkt, club], backgroundColor:'#e5e7eb', borderRadius:6},
-          {label:'NMU', data:[nmu*(mkt/(mkt+club||1)), nmu*(club/(mkt+club||1))], backgroundColor:'#d71920', borderRadius:6}
-        ]},
-        options:{responsive:true, scales:{y:{stacked:false}}}
-     });
-  }
-  if(activeTab==='club') renderClubTable();
+  if(activeTab === 'cash') renderCash(rows);
+  if(activeTab === 'ptss') renderPtss(rows);
+  if(activeTab === 'guest') renderGuest(rows);
+  if(activeTab === 'club') renderRanking(rows);
 }
-
-document.addEventListener('DOMContentLoaded', ()=>{
-  syncData();
-  
-  const refreshBtn = document.getElementById('refreshBtn');
-  const regionFilter = document.getElementById('regionFilter');
-  const clubFilter = document.getElementById('clubFilter');
-  const searchClub = document.getElementById('searchClub');
-  
-  if (refreshBtn) refreshBtn.onclick = syncData;
-  if (regionFilter) regionFilter.onchange = renderDashboard;
-  if (clubFilter) clubFilter.onchange = renderDashboard;
-  if (searchClub) searchClub.oninput = renderClubTable;
-  
-  document.querySelectorAll('.tab').forEach(t=>{
-    t.onclick = ()=>{
-      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-      t.classList.add('active');
-      activeTab = t.dataset.tab;
-      document.querySelectorAll('.tabPanel').forEach(p=>p.classList.add('hidden'));
-      const activePanel = document.getElementById(activeTab);
-      if (activePanel) activePanel.classList.remove('hidden');
-      renderDashboard();
-    };
-  });
+function runSelfTests(){
+  console.assert(typeof renderDashboard === 'function','renderDashboard must be defined');
+  console.assert(allData.length > 0,'Expected allData to have rows');
+  console.assert(data.length > 0,'Expected selected data to have clubs');
+  console.assert(byId('periodFilter').options.length >= 1,'Period filter must have options');
+}
+window.renderDashboard = renderDashboard;
+window.renderClubTable = renderClubTable;
+document.addEventListener('DOMContentLoaded', async ()=>{
+  await loadData();
+  setupFilters();
+  renderDashboard();
+  runSelfTests();
 });
 </script>
 </body>
