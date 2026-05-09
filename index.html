@@ -479,7 +479,6 @@ function renderCash(rows){
   }
 
   const productDatasets = [{
-    type:'bar',
     label:'Current',
     data:currentRevenueLines.map(x=>x.value),
     borderRadius:14
@@ -487,11 +486,9 @@ function renderCash(rows){
 
   if(compareRevenueLines){
     productDatasets.push({
-      type:'line',
       label:compareName,
       data:compareRevenueLines.map(x=>x.value),
-      tension:.35,
-      fill:false
+      borderRadius:14
     });
   }
 
@@ -539,7 +536,6 @@ function renderCash(rows){
   }
 
   const clubDatasets = [{
-    type:'bar',
     label:'Current',
     data:topClubChart.map(d=>getSameDayMetrics([d], cutoffDay).total),
     borderRadius:10
@@ -547,11 +543,9 @@ function renderCash(rows){
 
   if(compareRows || mode === 'TARGET'){
     clubDatasets.push({
-      type:'line',
       label:compareName,
       data:topClubChart.map(d=>compareByClub.get(d.club) || 0),
-      tension:.3,
-      fill:false
+      borderRadius:10
     });
   }
 
