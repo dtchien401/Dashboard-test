@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,13 +27,13 @@
           <div>
             <div class="text-xs uppercase tracking-[.25em] text-red-100 font-bold">California Fitness & Yoga</div>
             <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-1">Performance Command Center</h1>
-            <p class="text-red-50 mt-2 max-w-2xl">Dữ liệu từ Google Sheet: NMS, PT Sales, PTSS, Guest & NMU.</p>
+            <p class="text-red-50 mt-2 max-w-2xl">Dashboard prototype reading Google Sheet: NMS, PT Sales, PTSS, Guest Sources, and NMU.</p>
           </div>
           <div class="bg-white/10 border border-white/15 rounded-2xl p-4 min-w-[240px]">
             <div class="text-xs text-red-100 uppercase tracking-widest font-bold">Selected Period Total</div>
             <div class="text-3xl font-black mt-1" id="headerTotal">$0</div>
             <div class="text-sm text-red-50">Total Cash (NMS + PT)</div>
-            <div id="dataStatus" class="text-xs text-red-100 mt-2">Đang kết nối Google Sheet...</div>
+            <div id="dataStatus" class="text-xs text-red-100 mt-2">Connecting to Google Sheet...</div>
           </div>
         </div>
       </div>
@@ -46,23 +46,23 @@
           <div><label class="mini-label">Region</label><select id="regionFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
           <div><label class="mini-label">Club</label><select id="clubFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
           <div><label class="mini-label">Compare Mode</label><select id="compareFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"><option value="TARGET">vs Target</option></select></div>
-          <button id="applyBtn" class="bg-[#d71920] hover:bg-[#b9141a] text-white rounded-xl px-4 py-3 font-bold">Làm mới dữ liệu</button>
+          <button id="applyBtn" class="bg-[#d71920] hover:bg-[#b9141a] text-white rounded-xl px-4 py-3 font-bold uppercase tracking-wider">Apply Filter</button>
         </div>
       </section>
 
       <section class="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4 mb-5" id="kpiCards"></section>
 
       <nav class="flex flex-wrap gap-2 mb-5">
-        <button class="tab active px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="cash">Doanh thu Cash</button>
-        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="ptss">Dịch vụ PTSS</button>
-        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="guest">Nguồn Khách</button>
-        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="club">Xếp hạng Club</button>
+        <button class="tab active px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="cash">Cash Collection</button>
+        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="ptss">PT Sessions</button>
+        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="guest">Guest Sources</button>
+        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="club">Club Ranking</button>
       </nav>
 
       <section id="cash" class="tabPanel grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div class="card p-5 lg:col-span-2"><div class="mini-label">Revenue Mix</div><h2 class="text-xl font-black mb-4">Membership vs PT Sales</h2><canvas id="cashMixChart" height="115"></canvas></div>
-        <div class="card p-5"><div class="mini-label">Smart Alert</div><h2 class="text-xl font-black mb-4">Signals</h2><div id="cashAlerts" class="space-y-3"></div></div>
-        <div class="card p-5 lg:col-span-3"><div class="mini-label">Trend</div><h2 class="text-xl font-black mb-4">Biểu đồ xu hướng</h2><canvas id="cashTrendChart" height="90"></canvas></div>
+        <div class="card p-5"><div class="mini-label">Smart Alert</div><h2 class="text-xl font-black mb-4">Performance Signals</h2><div id="cashAlerts" class="space-y-3"></div></div>
+        <div class="card p-5 lg:col-span-3"><div class="mini-label">Trend View</div><h2 class="text-xl font-black mb-4">Cash Trend (Mocked Daily)</h2><canvas id="cashTrendChart" height="90"></canvas></div>
       </section>
 
       <section id="ptss" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
@@ -72,11 +72,11 @@
 
       <section id="guest" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div class="card p-5"><div class="mini-label">Source Mix</div><canvas id="guestSourceChart"></canvas></div>
-        <div class="card p-5 lg:col-span-2"><div class="mini-label">Close Rate Table</div><div class="overflow-x-auto"><table class="w-full text-sm mt-4"><thead class="text-left border-b"><tr><th class="pb-2">Nguồn</th><th>Guest</th><th>NMU</th><th>Rate</th></tr></thead><tbody id="guestTable"></tbody></table></div></div>
+        <div class="card p-5 lg:col-span-2"><div class="mini-label">Conversion Table</div><div class="overflow-x-auto"><table class="w-full text-sm mt-4"><thead class="text-left border-b"><tr><th class="pb-2">Source</th><th>Guest</th><th>NMU</th><th>Rate</th></tr></thead><tbody id="guestTable"></tbody></table></div></div>
       </section>
 
       <section id="club" class="tabPanel hidden grid grid-cols-1 gap-5">
-        <div class="card p-5"><div class="flex justify-between mb-4"><h2 class="text-xl font-black">Bảng chi tiết toàn chuỗi</h2><input id="searchClub" placeholder="Tìm tên club..." class="border rounded-xl px-4 py-1" /></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-gray-50 text-left"><tr><th class="p-3">Club</th><th>Vùng</th><th>NMS</th><th>PT Sales</th><th>Cash</th><th>PTSS</th><th>Guest</th><th>NMU</th><th>Status</th></tr></thead><tbody id="clubTable"></tbody></table></div></div>
+        <div class="card p-5"><div class="flex justify-between items-center mb-4"><h2 class="text-xl font-black">Club Detail List</h2><input id="searchClub" placeholder="Search club..." class="border rounded-xl px-4 py-2" /></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-gray-50 text-left"><tr><th class="p-3">Club</th><th>Region</th><th>NMS</th><th>PT Sales</th><th>Cash</th><th>PTSS</th><th>Guest</th><th>NMU</th><th>Status</th></tr></thead><tbody id="clubTable"></tbody></table></div></div>
       </section>
     </main>
   </div>
@@ -84,30 +84,25 @@
 <script>
 'use strict';
 
-// CẬP NHẬT URL CỦA BẠN TẠI ĐÂY
-const CONFIG = { API_URL: 'URL_WEB_APP_CUA_BAN' };
+// 1. SET YOUR API URL HERE
+const CONFIG = { API_URL: 'https://script.google.com/macros/s/AKfycbztoKT8PrGAsWL-0sYdKq_2WSyyEpMANGs2LB2dNXhzjbGz_aztt59_bsSfiStXtsPUAg/exec' };
 
 const charts = {};
 let activeTab = 'cash';
 let allData = [];
-let filteredData = [];
 
-// Helpers
 function byId(id){ return document.getElementById(id); }
 function safeNumber(v){ const n = parseFloat(v); return isNaN(n) ? 0 : n; }
-function money(v){ return '$' + safeNumber(v).toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:1}); }
+function money(v){ return '$' + safeNumber(v).toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:0}); }
 function pct(v){ return (safeNumber(v)*100).toFixed(1) + '%'; }
 
-// Giả lập dữ liệu ngày từ tổng tháng để vẽ biểu đồ Trend mượt hơn
+// Mock daily data for smooth trend lines
 function makeDaily(total, seed){
-  const days = 30;
-  const base = total / days;
-  return Array.from({length: days}, (_, i) => +(base * (0.8 + Math.random() * 0.4)).toFixed(2));
+  return Array.from({length: 30}, (_, i) => +(total/30 * (0.7 + Math.random() * 0.6)).toFixed(2));
 }
 
-// Load dữ liệu
 async function loadData() {
-  setStatus('Đang tải dữ liệu...');
+  setStatus('Syncing data...');
   try {
     const url = CONFIG.API_URL + (CONFIG.API_URL.includes('?') ? '&' : '?') + 'callback=jsonpCallback';
     const script = document.createElement('script');
@@ -118,7 +113,7 @@ async function loadData() {
         else reject('API Error');
         script.remove();
       };
-      setTimeout(() => reject('Timeout'), 10000);
+      setTimeout(() => reject('Sync Timeout - Check App Script Deployment'), 15000);
     });
 
     script.src = url;
@@ -137,9 +132,9 @@ async function loadData() {
 
     initFilters();
     renderDashboard();
-    setStatus('Cập nhật lúc: ' + new Date().toLocaleTimeString());
+    setStatus('Last Sync: ' + new Date().toLocaleTimeString());
   } catch (err) {
-    setStatus('Lỗi: Kiểm tra link Web App hoặc quyền truy cập!');
+    setStatus('Connection Error: Access Denied or Invalid URL');
     console.error(err);
   }
 }
@@ -158,7 +153,8 @@ function initFilters(){
 
 function updateClubFilter(){
   const reg = byId('regionFilter').value;
-  const clubs = [...new Set(allData.filter(d => reg === 'ALL' || d.region === reg).map(d => d.club))].sort();
+  const filteredClubs = allData.filter(d => reg === 'ALL' || d.region === reg);
+  const clubs = [...new Set(filteredClubs.map(d => d.club))].sort();
   byId('clubFilter').innerHTML = '<option value="ALL">All Clubs</option>' + clubs.map(c => `<option value="${c}">${c}</option>`).join('');
 }
 
@@ -167,70 +163,67 @@ function renderDashboard(){
   const reg = byId('regionFilter').value;
   const club = byId('clubFilter').value;
 
-  filteredData = allData.filter(d => 
+  const filtered = allData.filter(d => 
     d.month === month && 
     (reg === 'ALL' || d.region === reg) && 
     (club === 'ALL' || d.club === club)
   );
 
-  renderCards();
-  renderActiveTab();
+  updateKPIs(filtered);
+  updateCharts(filtered);
 }
 
-function renderCards(){
-  const nms = filteredData.reduce((a,b) => a + b.membership, 0);
-  const pt = filteredData.reduce((a,b) => a + b.ptSales, 0);
+function updateKPIs(data){
+  const nms = data.reduce((a,b) => a + b.membership, 0);
+  const pt = data.reduce((a,b) => a + b.ptSales, 0);
   const total = nms + pt;
-  const ptss = filteredData.reduce((a,b) => a + b.ptss, 0);
-  const gst = filteredData.reduce((a,b) => a + b.guest, 0);
-  const nmu = filteredData.reduce((a,b) => a + b.nmu, 0);
+  const ptss = data.reduce((a,b) => a + b.ptss, 0);
+  const gst = data.reduce((a,b) => a + b.guest, 0);
+  const nmu = data.reduce((a,b) => a + b.nmu, 0);
 
   byId('headerTotal').textContent = money(total);
   
-  const cards = [
-    {label: 'Cash Collection', val: money(total), sub: 'NMS + PT'},
-    {label: 'NMS', val: money(nms), sub: pct(total ? nms/total : 0) + ' mix'},
+  const config = [
+    {label: 'Total Cash', val: money(total), sub: 'Period Performance'},
+    {label: 'NMS Revenue', val: money(nms), sub: pct(total ? nms/total : 0) + ' mix'},
     {label: 'PT Sales', val: money(pt), sub: pct(total ? pt/total : 0) + ' mix'},
-    {label: 'PTSS', val: ptss.toLocaleString(), sub: 'Sessions'},
-    {label: 'Close Rate', val: pct(gst ? nmu/gst : 0), sub: nmu + '/' + gst}
+    {label: 'PTSS Served', val: ptss.toLocaleString(), sub: 'Sessions'},
+    {label: 'Close Rate', val: pct(gst ? nmu/gst : 0), sub: nmu + ' closed'}
   ];
 
-  byId('kpiCards').innerHTML = cards.map(c => `
+  byId('kpiCards').innerHTML = config.map(c => `
     <div class="card p-4">
       <div class="mini-label">${c.label}</div>
       <div class="metric mt-1">${c.val}</div>
-      <div class="text-xs font-bold text-gray-400 mt-1">${c.sub}</div>
+      <div class="text-xs font-bold text-gray-400 mt-1 uppercase">${c.sub}</div>
     </div>
   `).join('');
 }
 
-function renderActiveTab(){
+function updateCharts(data){
   if(activeTab === 'cash') {
-    const nms = filteredData.reduce((a,b) => a + b.membership, 0);
-    const pt = filteredData.reduce((a,b) => a + b.ptSales, 0);
-    
-    // Mix Chart
+    const nms = data.reduce((a,b) => a + b.membership, 0);
+    const pt = data.reduce((a,b) => a + b.ptSales, 0);
     drawChart('cashMixChart', 'doughnut', {
       labels: ['NMS', 'PT Sales'],
       datasets: [{ data: [nms, pt], backgroundColor: ['#d71920', '#111827'] }]
     });
 
-    // Trend Chart (Dùng dữ liệu giả lập từ tháng)
-    const trendData = Array(30).fill(0);
-    filteredData.forEach(d => d.dailyCash.forEach((v, i) => trendData[i] += v));
+    const trend = Array(30).fill(0);
+    data.forEach(d => d.dailyCash.forEach((v, i) => trend[i] += v));
     drawChart('cashTrendChart', 'line', {
       labels: Array.from({length:30}, (_,i) => i+1),
-      datasets: [{ label: 'Daily Cash', data: trendData, borderColor: '#d71920', tension: 0.4 }]
+      datasets: [{ label: 'Cash Trend', data: trend, borderColor: '#d71920', fill: true, backgroundColor: 'rgba(215,25,32,0.05)', tension: 0.4 }]
     });
 
     byId('cashAlerts').innerHTML = `<div class="p-4 rounded-xl bg-gray-50 border-l-4 border-red-500">
-      <b>Phân tích:</b> PT Mix hiện tại đạt ${pct(pt/(nms+pt))}. 
-      ${pt/(nms+pt) < 0.4 ? 'Cần đẩy mạnh PT Sales.' : 'Tỷ lệ PT tốt.'}
+      <div class="font-bold">Strategic Insight</div>
+      <p class="text-sm mt-1">PT Mix is at ${pct(pt/(nms+pt))}. ${pt/(nms+pt) < 0.42 ? 'Action required: Increase PT attach rate.' : 'Health contribution from PT.'}</p>
     </div>`;
   }
 
   if(activeTab === 'ptss'){
-    const sorted = [...filteredData].sort((a,b) => b.ptss - a.ptss).slice(0,10);
+    const sorted = [...data].sort((a,b) => b.ptss - a.ptss).slice(0,10);
     drawChart('ptssClubChart', 'bar', {
       labels: sorted.map(d => d.club),
       datasets: [{ label: 'PTSS', data: sorted.map(d => d.ptss), backgroundColor: '#d71920' }]
@@ -238,53 +231,51 @@ function renderActiveTab(){
   }
 
   if(activeTab === 'guest'){
-    const mkt = filteredData.reduce((a,b) => a + b.guestMkt, 0);
-    const clb = filteredData.reduce((a,b) => a + b.guestClub, 0);
+    const mkt = data.reduce((a,b) => a + b.guestMkt, 0);
+    const clb = data.reduce((a,b) => a + b.guestClub, 0);
+    const nmu = data.reduce((a,b) => a + b.nmu, 0);
     drawChart('guestSourceChart', 'pie', {
-      labels: ['MKT', 'Club'],
+      labels: ['Marketing', 'Club'],
       datasets: [{ data: [mkt, clb], backgroundColor: ['#d71920', '#6b7280'] }]
     });
-    
-    const nmu = filteredData.reduce((a,b) => a + b.nmu, 0);
     byId('guestTable').innerHTML = `
-      <tr><td class="py-2">MKT</td><td>${mkt}</td><td>-</td><td>-</td></tr>
-      <tr><td class="py-2">Club</td><td>${clb}</td><td>-</td><td>-</td></tr>
-      <tr class="font-bold border-t"><td>Total</td><td>${mkt+clb}</td><td>${nmu}</td><td>${pct(nmu/(mkt+clb))}</td></tr>
+      <tr class="border-b"><td class="py-3">Marketing</td><td>${mkt}</td><td>-</td><td>-</td></tr>
+      <tr class="border-b"><td class="py-3">Club Dept</td><td>${clb}</td><td>-</td><td>-</td></tr>
+      <tr class="font-bold"><td>TOTAL</td><td>${mkt+clb}</td><td>${nmu}</td><td>${pct(nmu/(mkt+clb))}</td></tr>
     `;
   }
 
-  if(activeTab === 'club') renderClubTable();
+  if(activeTab === 'club') renderRankingTable(data);
 }
 
-function renderClubTable(){
+function renderRankingTable(data){
   const search = byId('searchClub').value.toLowerCase();
-  const rows = filteredData.filter(d => d.club.toLowerCase().includes(search));
+  const rows = data.filter(d => d.club.toLowerCase().includes(search)).sort((a,b) => (b.membership+b.ptSales) - (a.membership+a.ptSales));
   byId('clubTable').innerHTML = rows.map(d => `
     <tr class="table-row border-b">
-      <td class="p-3 font-bold">${d.club}</td>
+      <td class="p-3 font-bold uppercase">${d.club}</td>
       <td>${d.region}</td>
       <td>${money(d.membership)}</td>
       <td>${money(d.ptSales)}</td>
-      <td class="font-bold">${money(d.membership+d.ptSales)}</td>
+      <td class="font-black">${money(d.membership+d.ptSales)}</td>
       <td>${d.ptss}</td>
       <td>${d.guest}</td>
       <td>${d.nmu}</td>
-      <td><span class="px-2 py-1 rounded-full text-[10px] font-bold ${d.membership+d.ptSales >= d.target ? 'badge-up' : 'badge-down'}">
+      <td><span class="px-3 py-1 rounded-full text-[10px] font-black ${d.membership+d.ptSales >= d.target ? 'badge-up' : 'badge-down'}">
         ${d.membership+d.ptSales >= d.target ? 'ACHIEVED' : 'BELOW'}
       </span></td>
     </tr>
   `).join('');
 }
 
-function drawChart(canvasId, type, data, isHorizontal = false){
-  if(charts[canvasId]) charts[canvasId].destroy();
-  const ctx = byId(canvasId).getContext('2d');
-  charts[canvasId] = new Chart(ctx, {
+function drawChart(id, type, data, isHorizontal = false){
+  if(charts[id]) charts[id].destroy();
+  charts[id] = new Chart(byId(id), {
     type, data,
     options: {
       indexAxis: isHorizontal ? 'y' : 'x',
       responsive: true,
-      plugins: { legend: { display: type !== 'bar' } }
+      plugins: { legend: { position: 'bottom' } }
     }
   });
 }
@@ -295,7 +286,7 @@ byId('applyBtn').onclick = renderDashboard;
 byId('regionFilter').onchange = () => { updateClubFilter(); renderDashboard(); };
 byId('periodFilter').onchange = renderDashboard;
 byId('clubFilter').onchange = renderDashboard;
-byId('searchClub').oninput = renderClubTable;
+byId('searchClub').oninput = () => renderRankingTable(allData.filter(d => d.month === byId('periodFilter').value));
 
 document.querySelectorAll('.tab').forEach(btn => {
   btn.onclick = () => {
@@ -307,7 +298,6 @@ document.querySelectorAll('.tab').forEach(btn => {
     renderDashboard();
   };
 });
-
 </script>
 </body>
 </html>
