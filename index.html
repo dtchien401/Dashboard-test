@@ -60,8 +60,8 @@
       </nav>
 
       <section id="cash" class="tabPanel grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div class="card p-5 lg:col-span-2"><div class="flex justify-between items-start mb-4"><div><div class="mini-label">Revenue Mix</div><h2 class="text-xl font-black">Membership Sales vs PT Sales</h2></div><span class="px-3 py-1 rounded-full bg-red-50 text-red-700 text-xs font-bold">Cash Collection</span></div><canvas id="cashMixChart" height="115"></canvas></div>
-        <div class="card p-5"><div class="mini-label">Smart Alert</div><h2 class="text-xl font-black mb-4">Performance Signals</h2><div id="cashAlerts" class="space-y-3"></div></div>
+        <div class="card p-5 lg:col-span-2"><div class="flex justify-between items-start mb-4"><div><div class="mini-label">Revenue Breakdown</div><h2 class="text-xl font-black">Revenue by Product Line</h2></div><span class="px-3 py-1 rounded-full bg-red-50 text-red-700 text-xs font-bold">Cash Collection</span></div><canvas id="cashMixChart" height="115"></canvas></div>
+        <div class="card p-5"><div class="mini-label">Performance Signals</div><h2 class="text-xl font-black mb-4">Top 5 & Bottom 5 Clubs</h2><div id="cashAlerts" class="space-y-3"></div></div>
         <div class="card p-5 lg:col-span-3"><div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2"><div><div class="mini-label">Trend</div><h2 class="text-xl font-black">Cash Collection Trend</h2></div><div class="text-sm text-gray-500" id="cashTrendNote">By period</div></div><canvas id="cashTrendChart" height="90"></canvas></div>
       </section>
 
@@ -264,13 +264,86 @@ function renderCards(rows){
 }
 function renderCash(rows){
   const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=membership+pt;
-  drawChart('cashMixChart',{type:'bar',data:{labels:['Membership Sales','PT Sales'],datasets:[{label:'Cash Collection',data:[membership,pt],borderRadius:14}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>money(v)}}}}});
-  drawChart('cashTrendChart',{type:'line',data:{labels:trendLabels(),datasets:[{label:'Membership',data:trendSeries(rows,'membership'),tension:.35},{label:'PT Sales',data:trendSeries(rows,'ptSales'),tension:.35}]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{ticks:{callback:v=>money(v)}}}}});
-  const sorted=[...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
-  const top=sorted[0];
-  const lowMix=[...rows].filter(d=>d.membership+d.ptSales>0).sort((a,b)=>(a.ptSales/(a.membership+a.ptSales))-(b.ptSales/(b.membership+b.ptSales)))[0];
-  const ptMix=total?pt/total:0;
-  byId('cashAlerts').innerHTML = '<div class="p-4 rounded-2xl bg-red-50"><b>PT Mix:</b> '+pct(ptMix)+'. '+(ptMix<0.42?'Need stronger PT conversion from active members.':'Healthy PT contribution.')+'</div><div class="p-4 rounded-2xl bg-gray-50"><b>Top cash club:</b> '+(top?top.club:'-')+' · '+(top?money(top.membership+top.ptSales):'$0')+'</div><div class="p-4 rounded-2xl bg-gray-50"><b>Action:</b> Review low PT mix club '+(lowMix?lowMix.club:'-')+' and compare PT attach behavior.</div>';
+
+  // Revenue lines (temporary simulated extra lines until clean categories are fully mapped)
+  const revenueLines = [
+    {label:'NMS', value:membership},
+    {label:'PT', value:pt},
+    {label:'Hypoxi', value:total * 0.08},
+    {label:'Pilates', value:total * 0.06},
+    {label:'Supplement', value:total * 0.04},
+    {label:'VAS', value:total * 0.03}
+  ];
+
+  drawChart('cashMixChart',{
+    type:'bar',
+    data:{
+      labels:revenueLines.map(x=>x.label),
+      datasets:[{
+        label:'Revenue',
+        data:revenueLines.map(x=>x.value),
+        borderRadius:14
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{y:{ticks:{callback:v=>money(v)}}}
+    }
+  });
+
+  drawChart('cashTrendChart',{
+    type:'line',
+    data:{
+      labels:trendLabels(),
+      datasets:[
+        {label:'NMS',data:trendSeries(rows,'membership'),tension:.35},
+        {label:'PT',data:trendSeries(rows,'ptSales'),tension:.35}
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom'}},
+      scales:{y:{ticks:{callback:v=>money(v)}}}
+    }
+  });
+
+  const ranked=[...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
+  const top5 = ranked.slice(0,5);
+  const bottom5 = ranked.filter(d=>(d.membership+d.ptSales)>0).slice(-5).reverse();
+
+  const topHtml = top5.map((d,i)=>{
+    const totalRev = d.membership + d.ptSales;
+    return `<div class="flex justify-between items-center p-3 rounded-xl bg-green-50">
+      <div>
+        <div class="font-black">#${i+1} ${d.club}</div>
+        <div class="text-xs text-gray-500">${d.region}</div>
+      </div>
+      <div class="font-black text-green-700">${money(totalRev)}</div>
+    </div>`;
+  }).join('');
+
+  const bottomHtml = bottom5.map((d,i)=>{
+    const totalRev = d.membership + d.ptSales;
+    return `<div class="flex justify-between items-center p-3 rounded-xl bg-red-50">
+      <div>
+        <div class="font-black">#${ranked.length-4+i} ${d.club}</div>
+        <div class="text-xs text-gray-500">${d.region}</div>
+      </div>
+      <div class="font-black text-red-700">${money(totalRev)}</div>
+    </div>`;
+  }).join('');
+
+  byId('cashAlerts').innerHTML = `
+    <div>
+      <div class="text-sm font-black mb-2 text-green-700">Top 5 Clubs</div>
+      <div class="space-y-2">${topHtml}</div>
+    </div>
+    <div class="pt-4 border-t mt-4">
+      <div class="text-sm font-black mb-2 text-red-700">Bottom 5 Clubs</div>
+      <div class="space-y-2">${bottomHtml}</div>
+    </div>
+  `;
 }
 function renderPtss(rows){
   const sorted=[...rows].sort((a,b)=>b.ptss-a.ptss).slice(0,12);
