@@ -69,15 +69,18 @@
             <span class="px-3 py-1 rounded-full bg-red-50 text-red-700 text-xs font-bold">Cash Collection</span>
           </div>
 
-          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <div class="space-y-8">
             <div>
               <div class="text-sm font-bold text-gray-500 mb-2">Revenue by Product</div>
-              <canvas id="cashMixChart" height="180"></canvas>
+              <canvas id="cashMixChart" height="90"></canvas>
             </div>
 
             <div>
-              <div class="text-sm font-bold text-gray-500 mb-2">Revenue by Club</div>
-              <canvas id="revClubChart" height="180"></canvas>
+              <div class="flex items-center justify-between mb-2">
+                <div class="text-sm font-bold text-gray-500">Revenue by Club</div>
+                <div class="text-xs text-gray-400">All active clubs, excluding VMC / LTC / JCQ</div>
+              </div>
+              <canvas id="revClubChart" height="130"></canvas>
             </div>
           </div>
         </div>
@@ -354,7 +357,8 @@ function renderCash(rows){
     </div>`;
   }).join('');
 
-  const topClubChart = ranked.slice(0,10);
+  const excludedClubCodes = new Set(['VMC','LTC','JCQ']);
+  const topClubChart = ranked.filter(d=>!excludedClubCodes.has(String(d.club).toUpperCase()) && (d.membership+d.ptSales)>0);
 
   drawChart('revClubChart',{
     type:'bar',
