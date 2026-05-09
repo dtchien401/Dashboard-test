@@ -331,7 +331,9 @@ function renderCash(rows){
     }
   });
 
-  const ranked=[...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
+  const ranked=[...rows]
+    .filter(d=>!excludedClubCodes.has(String(d.club).toUpperCase()))
+    .sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
   const top5 = ranked.slice(0,5);
   const bottom5 = ranked.filter(d=>(d.membership+d.ptSales)>0).slice(-5).reverse();
 
@@ -357,7 +359,7 @@ function renderCash(rows){
     </div>`;
   }).join('');
 
-  const excludedClubCodes = new Set(['VMC','LTC','JCQ']);
+  const excludedClubCodes = new Set(['VMC','LTC','JCQ','TDY']);
   const topClubChart = ranked.filter(d=>!excludedClubCodes.has(String(d.club).toUpperCase()) && (d.membership+d.ptSales)>0);
 
   drawChart('revClubChart',{
