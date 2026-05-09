@@ -291,6 +291,30 @@ function shiftMonth(month, offset){
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2,'0');
 }
 
+function getSelectedCutoffDay(rows){
+  if(getPeriod() === 'ALL') return 31;
+
+  let lastDay = 0;
+  rows.forEach(r => {
+    ['dailyMembership','dailyPt','dailyPtss','dailyGuest'].forEach(k => {
+      const arr = r[k] || [];
+      for(let i = 0; i < arr.length; i++) {
+        if(safeNumber(arr[i]) !== 0) lastDay = Math.max(lastDay, i + 1);
+      }
+    });
+  });
+
+  return lastDay || 31;
+}
+
+function sumDailyToDate(rows, dailyKey, cutoffDay){
+  return rows.reduce((total,row)=>{
+    const arr = row[dailyKey] || [];
+    for(let i = 0; i < Math.min(cutoffDay, 31); i++) total += safeNumber(arr[i]);
+    return total;
+  },0);
+}
+
 function getRowsForComparePeriod(){
   const mode = getCompareMode();
   const period = getPeriod();
@@ -331,31 +355,67 @@ function compareLabel(currentValue, compareValue, targetModeText){
 }
 
 function renderCards(rows){
-  const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=membership+pt, ptss=sum(rows,'ptss'), guest=sum(rows,'guest'), nmu=sum(rows,'nmu');
-  const targetTotal = sum(rows,'target');
+  const cutoffDay = getSelectedCutoffDay(rows);
+  const mode = getCompareMode();
+
+  // Current values: for selected month use same-day MTD from daily arrays.
+  // For All Periods use full aggregated values.
+  const useDailyMTD = getPeriod() !== 'ALL';
+
+  const membership = useDailyMTD ? sumDailyToDate(rows,'dailyMembership',cutoffDay) : sum(rows,'membership');
+  const pt = useDailyMTD ? sumDailyToDate(rows,'dailyPt',cutoffDay) : sum(rows,'ptSales');
+  const total = membership + pt;
+  const ptss = useDailyMTD ? sumDailyToDate(rows,'dailyPtss',cutoffDay) : sum(rows,'ptss');
+  const guest = useDailyMTD ? sumDailyToDate(rows,'dailyGuest',cutoffDay) : sum(rows,'guest');
+
+  // NMU currently does not have daily array in dashboard model, so use full MTD.
+  const nmu = sum(rows,'nmu');
+
+  const targetTotalFullMonth = sum(rows,'target');
+  const pacingRatio = useDailyMTD ? cutoffDay / 31 : 1;
+  const targetTotal = targetTotalFullMonth * pacingRatio;
   const targetMembership = targetTotal ? targetTotal * (membership / (total || 1)) : 0;
   const targetPt = targetTotal ? targetTotal * (pt / (total || 1)) : 0;
   const targetPtss = ptss * 1.05;
-  const targetClose = guest * 0.22;
+  const targetCloseRate = 0.22;
 
   const compareRows = getRowsForComparePeriod();
-  const compareMembership = compareRows ? sum(compareRows,'membership') : targetMembership;
-  const comparePt = compareRows ? sum(compareRows,'ptSales') : targetPt;
-  const compareTotal = compareRows ? compareMembership + comparePt : targetTotal;
-  const comparePtss = compareRows ? sum(compareRows,'ptss') : targetPtss;
-  const compareGuest = compareRows ? sum(compareRows,'guest') : guest;
-  const compareNmu = compareRows ? sum(compareRows,'nmu') : targetClose;
+
+  const compareMembership = compareRows
+    ? sumDailyToDate(compareRows,'dailyMembership',cutoffDay)
+    : targetMembership;
+
+  const comparePt = compareRows
+    ? sumDailyToDate(compareRows,'dailyPt',cutoffDay)
+    : targetPt;
+
+  const compareTotal = compareRows
+    ? compareMembership + comparePt
+    : targetTotal;
+
+  const comparePtss = compareRows
+    ? sumDailyToDate(compareRows,'dailyPtss',cutoffDay)
+    : targetPtss;
+
+  const compareGuest = compareRows
+    ? sumDailyToDate(compareRows,'dailyGuest',cutoffDay)
+    : guest;
+
+  // NMU compare still uses MTD due missing daily NMU array; close rate is approximate until daily NMU is mapped.
+  const compareNmu = compareRows ? sum(compareRows,'nmu') : compareGuest * targetCloseRate;
+
   const currentCloseRate = guest ? nmu / guest : 0;
-  const compareCloseRate = compareRows ? (compareGuest ? compareNmu / compareGuest : 0) : 0.22;
+  const compareCloseRate = compareRows ? (compareGuest ? compareNmu / compareGuest : 0) : targetCloseRate;
 
   byId('headerTotal').textContent = money(total);
-  const periodText = getPeriod() === 'ALL' ? 'All Periods' : getPeriod();
 
-  const totalCmp = compareLabel(total, compareTotal, 'Target');
-  const membershipCmp = compareLabel(membership, compareMembership, 'Target');
-  const ptCmp = compareLabel(pt, comparePt, 'Target');
-  const ptssCmp = compareLabel(ptss, comparePtss, 'Target');
+  const totalCmp = compareLabel(total, compareTotal, 'Pacing Target');
+  const membershipCmp = compareLabel(membership, compareMembership, 'Pacing Target');
+  const ptCmp = compareLabel(pt, comparePt, 'Pacing Target');
+  const ptssCmp = compareLabel(ptss, comparePtss, 'Pacing Target');
   const closeCmp = compareLabel(currentCloseRate, compareCloseRate, 'Target');
+
+  const compareSuffix = mode === 'LM' ? 'Same-day vs LM' : mode === 'LY' ? 'Same-day vs LY' : 'vs Pacing Target';
 
   const cards = [
     ['Total Cash',money(total),totalCmp.text,totalCmp.badge],
@@ -365,7 +425,7 @@ function renderCards(rows){
     ['Guest Close Rate',pct(currentCloseRate),closeCmp.text,closeCmp.badge]
   ];
 
-  byId('kpiCards').innerHTML = cards.map(c=>'<div class="card p-4"><div class="mini-label">'+c[0]+'</div><div class="metric mt-1">'+c[1]+'</div><span class="'+c[3]+' px-2 py-1 rounded-full text-xs font-bold">'+c[2]+'</span></div>').join('');
+  byId('kpiCards').innerHTML = cards.map(c=>'<div class="card p-4"><div class="mini-label">'+c[0]+'</div><div class="metric mt-1">'+c[1]+'</div><span class="'+c[3]+' px-2 py-1 rounded-full text-xs font-bold">'+c[2]+'</span><div class="text-[11px] text-gray-400 mt-2">'+compareSuffix+' · Day '+cutoffDay+'</div></div>').join('');
 }
 function renderCash(rows){
   const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=membership+pt;
