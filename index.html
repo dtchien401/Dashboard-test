@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cali Performance Dashboard</title>
+  <title>Cali Matrix Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -15,44 +15,40 @@
     .metric{font-size:28px;font-weight:950;letter-spacing:-.04em}
     .tab{transition:.18s ease}.tab.active{background:var(--red);color:white;box-shadow:0 10px 24px rgba(215,25,32,.22)}
     .badge-up{background:#ecfdf5;color:#047857}.badge-down{background:#fef2f2;color:#b91c1c}
-    .table-row:hover{background:#fff7f7}
   </style>
 </head>
 <body>
   <div class="min-h-screen relative">
-    <header class="hero text-white px-6 py-10 md:px-10">
-      <div class="max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div>
-            <div class="text-xs uppercase tracking-[.25em] text-red-100 font-bold">California Fitness & Yoga</div>
-            <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-1 uppercase italic">Performance Command Center</h1>
-            <p class="text-red-50 mt-2 max-w-2xl opacity-80">Select filters and click confirm to fetch real-time data from your Google Sheet.</p>
-          </div>
-          <div class="bg-white/10 border border-white/15 rounded-2xl p-5 min-w-[260px]">
-            <div class="text-xs text-red-100 uppercase tracking-widest font-bold">System Status</div>
-            <div class="text-2xl font-black mt-1" id="dataStatus">Initializing...</div>
-            <div id="lastUpdate" class="text-xs text-red-200 mt-2 font-medium">Connecting to API...</div>
-          </div>
+    <header class="hero text-white px-6 py-10">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div>
+          <div class="text-xs uppercase tracking-[.25em] text-red-100 font-bold">California Fitness & Yoga</div>
+          <h1 class="text-3xl md:text-5xl font-black mt-1 uppercase italic">Performance Command Center</h1>
+        </div>
+        <div class="bg-white/10 border border-white/15 rounded-2xl p-5 min-w-[260px]">
+          <div class="text-xs text-red-100 uppercase tracking-widest font-bold">System Status</div>
+          <div class="text-2xl font-black mt-1" id="dataStatus">Loading...</div>
+          <div id="lastUpdate" class="text-xs text-red-200 mt-2">Checking Connection...</div>
         </div>
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 md:px-8 -mt-8 pb-12">
+    <main class="max-w-7xl mx-auto px-4 -mt-8 pb-12">
       <section class="card p-6 mb-8 border-t-4 border-red-600 shadow-xl relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-5 items-end">
           <div>
-            <label class="mini-label">1. Period</label>
-            <select id="periodFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3.5 bg-white font-bold text-gray-700"></select>
+            <label class="mini-label">1. Period (Row 4)</label>
+            <select id="periodFilter" class="mt-1 w-full border rounded-xl px-4 py-3.5 bg-white font-bold text-gray-700 focus:ring-2 focus:ring-red-500"></select>
           </div>
           <div>
-            <label class="mini-label">2. Region</label>
-            <select id="regionFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3.5 bg-white font-bold text-gray-700"></select>
+            <label class="mini-label">2. Region (Col H)</label>
+            <select id="regionFilter" class="mt-1 w-full border rounded-xl px-4 py-3.5 bg-white font-bold text-gray-700"></select>
           </div>
           <div>
-            <label class="mini-label">3. Club</label>
-            <select id="clubFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3.5 bg-white font-bold text-gray-700"></select>
+            <label class="mini-label">3. Club (Col G)</label>
+            <select id="clubFilter" class="mt-1 w-full border rounded-xl px-4 py-3.5 bg-white font-bold text-gray-700"></select>
           </div>
-          <button id="applyBtn" class="bg-[#d71920] hover:bg-[#b9141a] transition-all text-white rounded-xl px-4 py-4 font-black uppercase tracking-widest shadow-lg shadow-red-500/30">
+          <button id="applyBtn" class="bg-[#d71920] hover:bg-[#b9141a] text-white rounded-xl px-4 py-4 font-black uppercase tracking-widest shadow-lg transition-all active:scale-95">
             Confirm & Fetch
           </button>
         </div>
@@ -73,22 +69,18 @@
               <div class="mini-label mb-2">Revenue Mix</div>
               <canvas id="cashMixChart" height="120"></canvas>
             </div>
-            <div class="card p-6">
-              <div class="mini-label mb-4">Performance Alert</div>
+            <div class="card p-6 flex flex-col justify-center bg-gray-50">
+              <div class="mini-label mb-4">Strategic Insight</div>
               <div id="cashAlerts" class="space-y-4"></div>
             </div>
           </section>
 
           <section id="ptss" class="tabPanel hidden card p-6">
-            <div class="mini-label mb-4">PT Sessions Served</div>
+            <div class="mini-label mb-4">PT Sessions Served (PTSS Burn)</div>
             <canvas id="ptssChart" height="100"></canvas>
           </section>
 
           <section id="club" class="tabPanel hidden card p-6">
-            <div class="flex justify-between items-center mb-6">
-              <h2 class="text-xl font-black uppercase italic">Club Leaderboard</h2>
-              <input id="searchClub" placeholder="Search..." class="border rounded-xl px-4 py-2 text-sm" />
-            </div>
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-left text-[10px] font-bold text-gray-400 uppercase">
@@ -97,7 +89,7 @@
                     <th>Region</th>
                     <th>Total Cash</th>
                     <th>PTSS</th>
-                    <th>Guest</th>
+                    <th>NMU</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -113,35 +105,31 @@
 <script>
 'use strict';
 
-// URL CỦA BẠN ĐÃ ĐƯỢC CẬP NHẬT TẠI ĐÂY
 const CONFIG = { API_URL: 'https://script.google.com/macros/s/AKfycbyhPXqJkkx4dJGalS7_tX_3fEys9RYDQDI_sg-toh3n8sXqpS3lOdE4SrYDlQF0C41TuA/exec' };
-
 let charts = {};
 let activeTab = 'cash';
 let currentData = [];
 
 function byId(id){ return document.getElementById(id); }
 function setStatus(t){ byId('dataStatus').innerText = t; }
-function money(v){ return '$' + Number(v || 0).toLocaleString(undefined, {maximumFractionDigits:0}); }
+function money(v){ return '$' + Math.round(v || 0).toLocaleString(); }
 function pct(v){ return (Number(v || 0) * 100).toFixed(1) + '%'; }
 
-// 1. Tải danh sách Filter khi mở trang
 async function init() {
-  setStatus('Syncing...');
+  setStatus('Connecting...');
   try {
     const res = await callAPI('getFilters');
     populateSelect('periodFilter', res.months);
     populateSelect('regionFilter', ['ALL', ...res.regions]);
     populateSelect('clubFilter', ['ALL', ...res.clubs]);
     setStatus('Ready');
-    byId('lastUpdate').innerText = 'Filters loaded. Please select and confirm.';
+    byId('lastUpdate').innerText = 'Filters synced from Matrix.';
   } catch (e) {
     setStatus('Error');
-    byId('lastUpdate').innerText = 'Connection failed. Check API permissions.';
+    byId('lastUpdate').innerText = 'Access Denied. Check Deployment settings.';
   }
 }
 
-// 2. Tải dữ liệu khi nhấn Confirm
 byId('applyBtn').onclick = async () => {
   const period = byId('periodFilter').value;
   const region = byId('regionFilter').value;
@@ -149,7 +137,6 @@ byId('applyBtn').onclick = async () => {
 
   setStatus('Fetching...');
   byId('applyBtn').disabled = true;
-  byId('applyBtn').innerText = 'Loading...';
   
   try {
     const data = await callAPI('fetchData', { period, region, club });
@@ -157,35 +144,32 @@ byId('applyBtn').onclick = async () => {
     byId('dashboardContent').classList.remove('opacity-20', 'pointer-events-none');
     renderDashboard();
     setStatus('Active');
-    byId('lastUpdate').innerText = `Last update: ${new Date().toLocaleTimeString()}`;
   } catch (e) {
     setStatus('Failed');
   } finally {
     byId('applyBtn').disabled = false;
-    byId('applyBtn').innerText = 'Confirm & Fetch';
   }
 };
 
 function renderDashboard() {
-  const nms = currentData.reduce((a,b) => a + (b.membership || 0), 0);
-  const pt = currentData.reduce((a,b) => a + (b.ptSales || 0), 0);
-  const ptss = currentData.reduce((a,b) => a + (b.ptss || 0), 0);
-  const gst = currentData.reduce((a,b) => a + (b.guest || 0), 0);
-  const nmu = currentData.reduce((a,b) => a + (b.nmu || 0), 0);
+  const nms = currentData.reduce((a,b) => a + b.membership, 0);
+  const pt = currentData.reduce((a,b) => a + b.ptSales, 0);
+  const ptss = currentData.reduce((a,b) => a + b.ptss, 0);
+  const nmu = currentData.reduce((a,b) => a + b.nmu, 0);
 
   const kpis = [
-    { label: 'Total Cash', val: money(nms + pt), sub: 'Overall Revenue' },
-    { label: 'NMS', val: money(nms), sub: 'New Membership' },
-    { label: 'PT Sales', val: money(pt), sub: 'Personal Training' },
-    { label: 'PTSS', val: ptss.toLocaleString(), sub: 'Sessions' },
-    { label: 'Close Rate', val: pct(gst ? nmu/gst : 0), sub: nmu + ' closed' }
+    { label: 'Total Cash', val: money(nms + pt), sub: 'Period Collection' },
+    { label: 'NMS', val: money(nms), sub: 'New Sales' },
+    { label: 'PT Sales', val: money(pt), sub: 'PT Collection' },
+    { label: 'PTSS Burn', val: ptss.toLocaleString(), sub: 'Service Delivery' },
+    { label: 'NMU Total', val: nmu.toLocaleString(), sub: 'New Members' }
   ];
 
   byId('kpiCards').innerHTML = kpis.map(k => `
     <div class="card p-5">
       <div class="mini-label">${k.label}</div>
       <div class="metric mt-1">${k.val}</div>
-      <div class="text-[10px] font-bold text-gray-400 mt-2 uppercase tracking-widest">${k.sub}</div>
+      <div class="text-[10px] font-bold text-gray-400 mt-2 uppercase">${k.sub}</div>
     </div>
   `).join('');
 
@@ -195,53 +179,36 @@ function renderDashboard() {
 function updateTabContent(nms, pt, ptss) {
   if (activeTab === 'cash') {
     drawChart('cashMixChart', 'doughnut', {
-      labels: ['Membership', 'PT Sales'],
+      labels: ['NMS', 'PT Sales'],
       datasets: [{ data: [nms, pt], backgroundColor: ['#d71920', '#111827'] }]
     });
-    
     const ptMix = pt / (nms + pt || 1);
-    byId('cashAlerts').innerHTML = `
-      <div class="p-5 rounded-2xl ${ptMix < 0.42 ? 'bg-red-50 border-l-4 border-red-500' : 'bg-green-50 border-l-4 border-green-500'}">
-        <div class="font-black text-sm uppercase">PT Mix: ${pct(ptMix)}</div>
-        <p class="text-xs mt-2 leading-relaxed">${ptMix < 0.42 ? 'Action required: Boost PT Sales conversion.' : 'Good: PT contribution is meeting targets.'}</p>
-      </div>
-    `;
+    byId('cashAlerts').innerHTML = `<div class="p-4 rounded-xl ${ptMix < 0.4 ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'} font-bold">PT Mix: ${pct(ptMix)}</div>`;
   }
-
   if (activeTab === 'ptss') {
     const sorted = [...currentData].sort((a,b) => b.ptss - a.ptss).slice(0, 10);
     drawChart('ptssChart', 'bar', {
       labels: sorted.map(d => d.club),
-      datasets: [{ label: 'PTSS', data: sorted.map(d => d.ptss), backgroundColor: '#d71920' }]
+      datasets: [{ label: 'PTSS Burned', data: sorted.map(d => d.ptss), backgroundColor: '#d71920' }]
     }, true);
   }
-
-  if (activeTab === 'club') renderClubTable();
-}
-
-function renderClubTable() {
-  const search = byId('searchClub').value.toLowerCase();
-  const rows = currentData
-    .filter(d => d.club.toLowerCase().includes(search))
-    .sort((a,b) => (b.membership + b.ptSales) - (a.membership + a.ptSales));
-
-  byId('clubTable').innerHTML = rows.map(d => `
-    <tr class="table-row border-b">
-      <td class="p-4 font-black uppercase text-xs">${d.club}</td>
-      <td class="text-gray-500 text-xs">${d.region}</td>
-      <td class="font-bold">${money(d.membership + d.ptSales)}</td>
-      <td>${d.ptss.toLocaleString()}</td>
-      <td>${d.guest.toLocaleString()}</td>
-      <td><span class="px-3 py-1 rounded-full text-[10px] font-black ${(d.membership+d.ptSales) >= (d.target || 0) ? 'badge-up' : 'badge-down'}">
-        ${(d.membership+d.ptSales) >= (d.target || 0) ? 'ACHIEVED' : 'WATCH'}
-      </span></td>
-    </tr>
-  `).join('');
+  if (activeTab === 'club') {
+    byId('clubTable').innerHTML = currentData.map(d => `
+      <tr class="border-b text-xs">
+        <td class="p-4 font-black uppercase">${d.club}</td>
+        <td class="text-gray-400">${d.region}</td>
+        <td class="font-bold">${money(d.membership + d.ptSales)}</td>
+        <td>${d.ptss.toLocaleString()}</td>
+        <td>${d.nmu.toLocaleString()}</td>
+        <td><span class="px-2 py-1 rounded-full text-[9px] font-black bg-green-100 text-green-700">OK</span></td>
+      </tr>
+    `).join('');
+  }
 }
 
 async function callAPI(mode, params = {}) {
   return new Promise((resolve, reject) => {
-    const cb = 'cb_' + Math.round(Math.random() * 1000000);
+    const cb = 'cb_' + Math.floor(Math.random() * 1000000);
     const script = document.createElement('script');
     let url = `${CONFIG.API_URL}?mode=${mode}&callback=${cb}`;
     for (let k in params) url += `&${k}=${encodeURIComponent(params[k])}`;
@@ -251,7 +218,6 @@ async function callAPI(mode, params = {}) {
       script.remove();
       delete window[cb];
     };
-    script.onerror = () => reject('Network Error');
     script.src = url;
     document.body.appendChild(script);
   });
@@ -279,8 +245,6 @@ document.querySelectorAll('.tab').forEach(t => {
     if (currentData.length > 0) renderDashboard();
   };
 });
-
-byId('searchClub').oninput = renderClubTable;
 
 init();
 </script>
