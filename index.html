@@ -108,11 +108,8 @@
 <script>
 'use strict';
 
-// ==========================================
-// CONFIGURATION
-// Đã nhúng link Google Apps Script của bạn
-// ==========================================
 const CONFIG = {
+  // Đảm bảo Script đã được Deploy là "Anyone"
   API_URL: 'https://script.google.com/macros/s/AKfycbztoKT8PrGAsWL-0sYdKq_2WSyyEpMANGs2LB2dNXhzjbGz_aztt59_bsSfiStXtsPUAg/exec'
 };
 
@@ -121,9 +118,9 @@ let activeTab = 'cash';
 const days = Array.from({length:31}, (_,i)=>'D' + (i+1));
 const charts = {};
 
-// UI Helpers
 const toggleLoader = (show) => {
-  document.getElementById('loader').classList.toggle('active', show);
+  const loader = document.getElementById('loader');
+  if (loader) loader.classList.toggle('active', show);
 };
 
 const formatMoney = (v) => {
@@ -135,39 +132,53 @@ const formatMoney = (v) => {
 
 const formatPct = (v) => (Number(v || 0) * 100).toFixed(1) + '%';
 
-// Logic mô phỏng xu hướng hàng ngày từ dữ liệu tổng
 function generateDailyDistribution(totalValue){
   const weights = [0.03, 0.04, 0.03, 0.05, 0.02, 0.04, 0.06, 0.03, 0.04, 0.03, 0.05, 0.02, 0.04, 0.06, 0.03, 0.04, 0.03, 0.05, 0.02, 0.04, 0.06, 0.03, 0.04, 0.03, 0.05, 0.02, 0.04, 0.06, 0.02, 0.01, 0.01];
   return weights.map(w => +(totalValue * w * (0.8 + Math.random() * 0.4)).toFixed(2));
 }
 
-// FETCH DATA
+// FETCH DATA - FIXED FOR GOOGLE APPS SCRIPT REDIRECTS
 async function syncData(){
   toggleLoader(true);
+  const tag = document.getElementById('statusTag');
+  
   try {
-    const response = await fetch(CONFIG.API_URL);
+    // Sử dụng fetch cơ bản nhất để xử lý CORS/Redirect của Google Apps Script
+    // Bỏ qua các Headers tùy chỉnh để tránh pre-flight chặn bởi Google
+    const response = await fetch(`${CONFIG.API_URL}?t=${Date.now()}`);
+    
+    if (!response.ok) throw new Error('Không thể kết nối đến Google Script');
+    
     const result = await response.json();
     
-    if (result.success) {
+    if (result && result.success && Array.isArray(result.data)) {
       rawData = result.data.map(item => ({
         ...item,
-        dailyMembership: generateDailyDistribution(item.membership),
-        dailyPt: generateDailyDistribution(item.ptSales),
-        dailyPtss: generateDailyDistribution(item.ptss),
-        dailyGuest: generateDailyDistribution(item.guest)
+        membership: Number(item.membership || 0),
+        ptSales: Number(item.ptSales || 0),
+        ptss: Number(item.ptss || 0),
+        guest: Number(item.guest || 0),
+        guestMkt: Number(item.guestMkt || 0),
+        guestClub: Number(item.guestClub || 0),
+        nmu: Number(item.nmu || 0),
+        target: Number(item.target || 1),
+        dailyMembership: generateDailyDistribution(Number(item.membership || 0)),
+        dailyPt: generateDailyDistribution(Number(item.ptSales || 0)),
+        dailyPtss: generateDailyDistribution(Number(item.ptss || 0)),
+        dailyGuest: generateDailyDistribution(Number(item.guest || 0))
       }));
       
       updateFilters();
       renderDashboard();
       
-      const tag = document.getElementById('statusTag');
       tag.textContent = '● Cập nhật: ' + new Date().toLocaleTimeString();
       tag.className = 'text-xs mt-1 text-green-300 font-medium';
+    } else {
+      throw new Error('Dữ liệu trả về không hợp lệ');
     }
   } catch (error) {
     console.error('API Error:', error);
-    const tag = document.getElementById('statusTag');
-    tag.textContent = '● Lỗi kết nối dữ liệu';
+    tag.textContent = '● Lỗi: ' + error.message;
     tag.className = 'text-xs mt-1 text-red-400 font-medium';
   } finally {
     toggleLoader(false);
@@ -175,23 +186,30 @@ async function syncData(){
 }
 
 function updateFilters(){
+  if (!rawData.length) return;
   const regions = [...new Set(rawData.map(d=>d.region))].sort();
   const clubs = [...new Set(rawData.map(d=>d.club))].sort();
   
-  document.getElementById('regionFilter').innerHTML = '<option value="ALL">Tất cả Regions</option>' + regions.map(r=>`<option value="${r}">${r}</option>`).join('');
-  document.getElementById('clubFilter').innerHTML = '<option value="ALL">Tất cả Clubs</option>' + clubs.map(c=>`<option value="${c}">${c}</option>`).join('');
+  const regionEl = document.getElementById('regionFilter');
+  const clubEl = document.getElementById('clubFilter');
+  
+  if (regionEl) regionEl.innerHTML = '<option value="ALL">Tất cả Regions</option>' + regions.map(r=>`<option value="${r}">${r}</option>`).join('');
+  if (clubEl) clubEl.innerHTML = '<option value="ALL">Tất cả Clubs</option>' + clubs.map(c=>`<option value="${c}">${c}</option>`).join('');
 }
 
 function getFilteredData(){
-  const r = document.getElementById('regionFilter').value;
-  const c = document.getElementById('clubFilter').value;
+  const regionEl = document.getElementById('regionFilter');
+  const clubEl = document.getElementById('clubFilter');
+  const r = regionEl ? regionEl.value : 'ALL';
+  const c = clubEl ? clubEl.value : 'ALL';
   return rawData.filter(d => (r==='ALL' || d.region===r) && (c==='ALL' || d.club===c));
 }
 
-// RENDER ENGINE
 function updateChart(id, config){
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
   if (charts[id]) charts[id].destroy();
-  const ctx = document.getElementById(id).getContext('2d');
+  const ctx = canvas.getContext('2d');
   charts[id] = new Chart(ctx, config);
 }
 
@@ -199,7 +217,8 @@ function renderCards(rows){
   const mkt = rows.reduce((a,b)=>a+b.membership,0), pt = rows.reduce((a,b)=>a+b.ptSales,0), total = mkt+pt;
   const ptss = rows.reduce((a,b)=>a+b.ptss,0), guest = rows.reduce((a,b)=>a+b.guest,0), nmu = rows.reduce((a,b)=>a+b.nmu,0);
   
-  document.getElementById('headerTotal').textContent = '$' + formatMoney(total);
+  const headerTotal = document.getElementById('headerTotal');
+  if (headerTotal) headerTotal.textContent = '$' + formatMoney(total);
   
   const cards = [
     ['Total Revenue', '$'+formatMoney(total), 'Actual MTD', 'badge-up'],
@@ -209,13 +228,16 @@ function renderCards(rows){
     ['Close Rate', formatPct(guest?nmu/guest:0), Math.round(guest).toLocaleString() + ' Guests', 'badge-neutral']
   ];
   
-  document.getElementById('kpiCards').innerHTML = cards.map(c=>`
-    <div class="card p-4 transition-transform hover:scale-[1.02]">
-      <div class="mini-label">${c[0]}</div>
-      <div class="metric mt-1">${c[1]}</div>
-      <span class="${c[3]} px-2 py-1 rounded-full text-xs font-bold">${c[2]}</span>
-    </div>
-  `).join('');
+  const kpiCards = document.getElementById('kpiCards');
+  if (kpiCards) {
+    kpiCards.innerHTML = cards.map(c=>`
+      <div class="card p-4 transition-transform hover:scale-[1.02]">
+        <div class="mini-label">${c[0]}</div>
+        <div class="metric mt-1">${c[1]}</div>
+        <span class="${c[3]} px-2 py-1 rounded-full text-xs font-bold">${c[2]}</span>
+      </div>
+    `).join('');
+  }
 }
 
 function renderCash(rows){
@@ -226,8 +248,8 @@ function renderCash(rows){
     options:{responsive:true, plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>'$'+formatMoney(v)}}}}
   });
   
-  const mDaily = days.map((_,i) => rows.reduce((a,b)=>a + b.dailyMembership[i], 0));
-  const pDaily = days.map((_,i) => rows.reduce((a,b)=>a + b.dailyPt[i], 0));
+  const mDaily = days.map((_,i) => rows.reduce((a,b)=>a + (b.dailyMembership ? b.dailyMembership[i] : 0), 0));
+  const pDaily = days.map((_,i) => rows.reduce((a,b)=>a + (b.dailyPt ? b.dailyPt[i] : 0), 0));
   
   updateChart('cashTrendChart', {
     type:'line',
@@ -239,37 +261,45 @@ function renderCash(rows){
   });
   
   const top = [...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales))[0];
-  document.getElementById('cashAlerts').innerHTML = `
-    <div class="p-4 rounded-2xl bg-gray-50 border-l-4 border-black"><b>Leader:</b> Club ${top?top.club:'N/A'} đang dẫn đầu hệ thống.</div>
-    <div class="p-4 rounded-2xl bg-red-50 text-red-800 border-l-4 border-red-600"><b>PT Strategy:</b> PT mix hiện tại ${formatPct((m+p)?p/(m+p):0)}. Mục tiêu: 42%.</div>
-  `;
+  const cashAlerts = document.getElementById('cashAlerts');
+  if (cashAlerts) {
+    cashAlerts.innerHTML = `
+      <div class="p-4 rounded-2xl bg-gray-50 border-l-4 border-black"><b>Leader:</b> Club ${top?top.club:'N/A'} đang dẫn đầu hệ thống.</div>
+      <div class="p-4 rounded-2xl bg-red-50 text-red-800 border-l-4 border-red-600"><b>PT Strategy:</b> PT mix hiện tại ${formatPct((m+p)?p/(m+p):0)}. Mục tiêu: 42%.</div>
+    `;
+  }
 }
 
 function renderClubTable(){
-  const query = document.getElementById('searchClub').value.toLowerCase();
+  const searchClub = document.getElementById('searchClub');
+  const query = searchClub ? searchClub.value.toLowerCase() : '';
   const rows = getFilteredData().filter(d=>d.club.toLowerCase().includes(query));
-  document.getElementById('clubTable').innerHTML = rows.map(d=>{
-    const total = d.membership + d.ptSales;
-    const rate = total / d.target;
-    return `
-      <tr class="table-row border-b transition-colors">
-        <td class="py-4 px-2 font-black">${d.club}</td>
-        <td><span class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded">${d.region}</span></td>
-        <td>$${formatMoney(d.membership)}</td>
-        <td>$${formatMoney(d.ptSales)}</td>
-        <td class="font-bold text-red-600">$${formatMoney(total)}</td>
-        <td>${Math.round(d.ptss)}</td>
-        <td>${Math.round(d.guest)}</td>
-        <td>${d.nmu}</td>
-        <td>${formatPct(d.guest?d.nmu/d.guest:0)}</td>
-        <td>
-           <span class="${rate >= 1 ? 'badge-up' : rate >= 0.8 ? 'badge-neutral' : 'badge-down'} px-2 py-1 rounded-full text-[10px] font-bold">
-            ${formatPct(rate)}
-           </span>
-        </td>
-      </tr>
-    `;
-  }).join('');
+  const clubTable = document.getElementById('clubTable');
+  
+  if (clubTable) {
+    clubTable.innerHTML = rows.map(d=>{
+      const total = d.membership + d.ptSales;
+      const rate = total / (d.target || 1);
+      return `
+        <tr class="table-row border-b transition-colors">
+          <td class="py-4 px-2 font-black">${d.club}</td>
+          <td><span class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded">${d.region}</span></td>
+          <td>$${formatMoney(d.membership)}</td>
+          <td>$${formatMoney(d.ptSales)}</td>
+          <td class="font-bold text-red-600">$${formatMoney(total)}</td>
+          <td>${Math.round(d.ptss)}</td>
+          <td>${Math.round(d.guest)}</td>
+          <td>${d.nmu}</td>
+          <td>${formatPct(d.guest?d.nmu/d.guest:0)}</td>
+          <td>
+             <span class="${rate >= 1 ? 'badge-up' : rate >= 0.8 ? 'badge-neutral' : 'badge-down'} px-2 py-1 rounded-full text-[10px] font-bold">
+              ${formatPct(rate)}
+             </span>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
 }
 
 function renderDashboard(){
@@ -286,7 +316,7 @@ function renderDashboard(){
         options:{indexAxis:'y', responsive:true, plugins:{legend:{display:false}}}
      });
      
-     const ptssDaily = days.map((_,i) => rows.reduce((a,b)=>a + b.dailyPtss[i], 0));
+     const ptssDaily = days.map((_,i) => rows.reduce((a,b)=>a + (b.dailyPtss ? b.dailyPtss[i] : 0), 0));
      updateChart('ptssTrendChart', {
         type:'line',
         data:{labels:days, datasets:[{label:'Sessions', data:ptssDaily, borderColor:'#d71920', tension:0.3, fill:true, backgroundColor:'rgba(215,25,32,0.05)'}]},
@@ -312,14 +342,18 @@ function renderDashboard(){
   if(activeTab==='club') renderClubTable();
 }
 
-// Lifecycle
 document.addEventListener('DOMContentLoaded', ()=>{
   syncData();
   
-  document.getElementById('refreshBtn').onclick = syncData;
-  document.getElementById('regionFilter').onchange = renderDashboard;
-  document.getElementById('clubFilter').onchange = renderDashboard;
-  document.getElementById('searchClub').oninput = renderClubTable;
+  const refreshBtn = document.getElementById('refreshBtn');
+  const regionFilter = document.getElementById('regionFilter');
+  const clubFilter = document.getElementById('clubFilter');
+  const searchClub = document.getElementById('searchClub');
+  
+  if (refreshBtn) refreshBtn.onclick = syncData;
+  if (regionFilter) regionFilter.onchange = renderDashboard;
+  if (clubFilter) clubFilter.onchange = renderDashboard;
+  if (searchClub) searchClub.oninput = renderClubTable;
   
   document.querySelectorAll('.tab').forEach(t=>{
     t.onclick = ()=>{
@@ -327,7 +361,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
       t.classList.add('active');
       activeTab = t.dataset.tab;
       document.querySelectorAll('.tabPanel').forEach(p=>p.classList.add('hidden'));
-      document.getElementById(activeTab).classList.remove('hidden');
+      const activePanel = document.getElementById(activeTab);
+      if (activePanel) activePanel.classList.remove('hidden');
       renderDashboard();
     };
   });
