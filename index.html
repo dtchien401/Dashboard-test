@@ -286,14 +286,9 @@ function renderCards(rows){
   byId('kpiCards').innerHTML = cards.map(c=>'<div class="card p-4"><div class="mini-label">'+c[0]+'</div><div class="metric mt-1">'+c[1]+'</div><span class="'+c[3]+' px-2 py-1 rounded-full text-xs font-bold">'+c[2]+'</span></div>').join('');
 }
 function renderCash(rows){
-  const excludedClubCodes = new Set(['VMC','LTC','JCQ','TDY']);
-  const activeRows = rows.filter(d => !excludedClubCodes.has(String(d.club).toUpperCase()));
+  const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=membership+pt;
 
-  const membership = sum(activeRows,'membership');
-  const pt = sum(activeRows,'ptSales');
-  const total = membership + pt;
-
-  // Revenue lines. NMS/PT are real data. Other lines are placeholder until clean API categories are mapped.
+  // Revenue lines (temporary simulated extra lines until clean categories are fully mapped)
   const revenueLines = [
     {label:'NMS', value:membership},
     {label:'PT', value:pt},
@@ -315,7 +310,6 @@ function renderCash(rows){
     },
     options:{
       responsive:true,
-      maintainAspectRatio:false,
       plugins:{legend:{display:false}},
       scales:{y:{ticks:{callback:v=>money(v)}}}
     }
@@ -326,36 +320,36 @@ function renderCash(rows){
     data:{
       labels:trendLabels(),
       datasets:[
-        {label:'NMS',data:trendSeries(activeRows,'membership'),tension:.35},
-        {label:'PT',data:trendSeries(activeRows,'ptSales'),tension:.35}
+        {label:'NMS',data:trendSeries(rows,'membership'),tension:.35},
+        {label:'PT',data:trendSeries(rows,'ptSales'),tension:.35}
       ]
     },
     options:{
       responsive:true,
-      maintainAspectRatio:false,
       plugins:{legend:{position:'bottom'}},
       scales:{y:{ticks:{callback:v=>money(v)}}}
     }
   });
 
-  const ranked = [...activeRows]
-    .filter(d => (d.membership + d.ptSales) > 0)
+  const excludedClubCodes = new Set(['VMC','LTC','JCQ','TDY']);
+  const ranked=[...rows]
+    .filter(d=>!excludedClubCodes.has(String(d.club).toUpperCase()))
     .sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
 
-  const allClubChart = ranked;
+  const topClubChart = ranked.filter(d=>(d.membership+d.ptSales)>0);
+
   drawChart('revClubChart',{
     type:'bar',
     data:{
-      labels:allClubChart.map(d=>d.club),
+      labels:topClubChart.map(d=>d.club),
       datasets:[{
         label:'Revenue',
-        data:allClubChart.map(d=>d.membership + d.ptSales),
-        borderRadius:8
+        data:topClubChart.map(d=>d.membership + d.ptSales),
+        borderRadius:10
       }]
     },
     options:{
       responsive:true,
-      maintainAspectRatio:false,
       plugins:{legend:{display:false}},
       scales:{
         x:{ticks:{autoSkip:false,maxRotation:60,minRotation:45}},
@@ -365,7 +359,7 @@ function renderCash(rows){
   });
 
   const top5 = ranked.slice(0,5);
-  const bottom5 = ranked.slice(-5).reverse();
+  const bottom5 = ranked.filter(d=>(d.membership+d.ptSales)>0).slice(-5).reverse();
 
   const topHtml = top5.map((d,i)=>{
     const totalRev = d.membership + d.ptSales;
@@ -392,11 +386,11 @@ function renderCash(rows){
   byId('cashAlerts').innerHTML = `
     <div>
       <div class="text-sm font-black mb-2 text-green-700">Top 5 Clubs</div>
-      <div class="space-y-2">${topHtml || '<div class="text-sm text-gray-400">No data</div>'}</div>
+      <div class="space-y-2">${topHtml}</div>
     </div>
     <div class="pt-4 border-t mt-4">
       <div class="text-sm font-black mb-2 text-red-700">Bottom 5 Clubs</div>
-      <div class="space-y-2">${bottomHtml || '<div class="text-sm text-gray-400">No data</div>'}</div>
+      <div class="space-y-2">${bottomHtml}</div>
     </div>
   `;
 }
