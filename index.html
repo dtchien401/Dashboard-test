@@ -332,6 +332,22 @@ function getRowsForComparePeriod(){
   ));
 }
 
+function getCompareDisplayName(){
+  const mode = getCompareMode();
+  if(mode === 'LM') return 'Last Month Same-day';
+  if(mode === 'LY') return 'Last Year Same-day';
+  return 'Pacing Target';
+}
+
+function getSameDayMetrics(rows, cutoffDay){
+  const useDailyMTD = getPeriod() !== 'ALL';
+  const membership = useDailyMTD ? sumDailyToDate(rows,'dailyMembership',cutoffDay) : sum(rows,'membership');
+  const ptSales = useDailyMTD ? sumDailyToDate(rows,'dailyPt',cutoffDay) : sum(rows,'ptSales');
+  const ptss = useDailyMTD ? sumDailyToDate(rows,'dailyPtss',cutoffDay) : sum(rows,'ptss');
+  const guest = useDailyMTD ? sumDailyToDate(rows,'dailyGuest',cutoffDay) : sum(rows,'guest');
+  return {membership, ptSales, total:membership + ptSales, ptss, guest, nmu:sum(rows,'nmu')};
+}
+
 function compareLabel(currentValue, compareValue, targetModeText){
   const mode = getCompareMode();
 
@@ -428,10 +444,17 @@ function renderCards(rows){
   byId('kpiCards').innerHTML = cards.map(c=>'<div class="card p-4"><div class="mini-label">'+c[0]+'</div><div class="metric mt-1">'+c[1]+'</div><span class="'+c[3]+' px-2 py-1 rounded-full text-xs font-bold">'+c[2]+'</span><div class="text-[11px] text-gray-400 mt-2">'+compareSuffix+' · Day '+cutoffDay+'</div></div>').join('');
 }
 function renderCash(rows){
-  const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=membership+pt;
+  const cutoffDay = getSelectedCutoffDay(rows);
+  const current = getSameDayMetrics(rows, cutoffDay);
+  const membership = current.membership;
+  const pt = current.ptSales;
+  const total = current.total;
 
-  // Revenue lines (temporary simulated extra lines until clean categories are fully mapped)
-  const revenueLines = [
+  const compareRows = getRowsForComparePeriod();
+  const compare = compareRows ? getSameDayMetrics(compareRows, cutoffDay) : null;
+  const compareName = getCompareDisplayName();
+
+  const currentRevenueLines = [
     {label:'NMS', value:membership},
     {label:'PT', value:pt},
     {label:'Hypoxi', value:total * 0.08},
@@ -440,32 +463,50 @@ function renderCash(rows){
     {label:'VAS', value:total * 0.03}
   ];
 
+  const compareRevenueLines = compare ? [
+    {label:'NMS', value:compare.membership},
+    {label:'PT', value:compare.ptSales},
+    {label:'Hypoxi', value:compare.total * 0.08},
+    {label:'Pilates', value:compare.total * 0.06},
+    {label:'Supplement', value:compare.total * 0.04},
+    {label:'VAS', value:compare.total * 0.03}
+  ] : null;
+
+  const productDatasets = [{
+    label:'Current',
+    data:currentRevenueLines.map(x=>x.value),
+    borderRadius:14
+  }];
+
+  if(compareRevenueLines){
+    productDatasets.push({
+      label:compareName,
+      data:compareRevenueLines.map(x=>x.value),
+      borderRadius:14
+    });
+  }
+
   drawChart('cashMixChart',{
     type:'bar',
     data:{
-      labels:revenueLines.map(x=>x.label),
-      datasets:[{
-        label:'Revenue',
-        data:revenueLines.map(x=>x.value),
-        borderRadius:14
-      }]
+      labels:currentRevenueLines.map(x=>x.label),
+      datasets:productDatasets
     },
     options:{
       responsive:true,
-      plugins:{legend:{display:false}},
+      plugins:{legend:{display:!!compareRevenueLines, position:'bottom'}},
       scales:{y:{ticks:{callback:v=>money(v)}}}
     }
   });
 
+  const trendDatasets = [
+    {label:'NMS',data:trendSeries(rows,'membership'),tension:.35},
+    {label:'PT',data:trendSeries(rows,'ptSales'),tension:.35}
+  ];
+
   drawChart('cashTrendChart',{
     type:'line',
-    data:{
-      labels:trendLabels(),
-      datasets:[
-        {label:'NMS',data:trendSeries(rows,'membership'),tension:.35},
-        {label:'PT',data:trendSeries(rows,'ptSales'),tension:.35}
-      ]
-    },
+    data:{labels:trendLabels(),datasets:trendDatasets},
     options:{
       responsive:true,
       plugins:{legend:{position:'bottom'}},
@@ -474,22 +515,39 @@ function renderCash(rows){
   });
 
   const ranked=[...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
-
   const topClubChart = ranked.filter(d=>(d.membership+d.ptSales)>0);
+
+  let compareByClub = new Map();
+  if(compareRows){
+    compareRows.forEach(d=>{
+      const m = getSameDayMetrics([d], cutoffDay);
+      compareByClub.set(d.club, m.total);
+    });
+  }
+
+  const clubDatasets = [{
+    label:'Current',
+    data:topClubChart.map(d=>getSameDayMetrics([d], cutoffDay).total),
+    borderRadius:10
+  }];
+
+  if(compareRows){
+    clubDatasets.push({
+      label:compareName,
+      data:topClubChart.map(d=>compareByClub.get(d.club) || 0),
+      borderRadius:10
+    });
+  }
 
   drawChart('revClubChart',{
     type:'bar',
     data:{
       labels:topClubChart.map(d=>d.club),
-      datasets:[{
-        label:'Revenue',
-        data:topClubChart.map(d=>d.membership + d.ptSales),
-        borderRadius:10
-      }]
+      datasets:clubDatasets
     },
     options:{
       responsive:true,
-      plugins:{legend:{display:false}},
+      plugins:{legend:{display:!!compareRows, position:'bottom'}},
       scales:{
         x:{ticks:{autoSkip:false,maxRotation:60,minRotation:45}},
         y:{ticks:{callback:v=>money(v)}}
@@ -501,22 +559,28 @@ function renderCash(rows){
   const bottom5 = ranked.filter(d=>(d.membership+d.ptSales)>0).slice(-5).reverse();
 
   const topHtml = top5.map((d,i)=>{
-    const totalRev = d.membership + d.ptSales;
+    const totalRev = getSameDayMetrics([d], cutoffDay).total;
+    const compareRev = compareByClub.get(d.club);
+    const compareText = compareRev ? `<div class="text-[11px] text-gray-400">${compareName}: ${money(compareRev)}</div>` : '';
     return `<div class="flex justify-between items-center p-3 rounded-xl bg-green-50">
       <div>
         <div class="font-black">#${i+1} ${d.club}</div>
         <div class="text-xs text-gray-500">${d.region}</div>
+        ${compareText}
       </div>
       <div class="font-black text-green-700">${money(totalRev)}</div>
     </div>`;
   }).join('');
 
   const bottomHtml = bottom5.map((d,i)=>{
-    const totalRev = d.membership + d.ptSales;
+    const totalRev = getSameDayMetrics([d], cutoffDay).total;
+    const compareRev = compareByClub.get(d.club);
+    const compareText = compareRev ? `<div class="text-[11px] text-gray-400">${compareName}: ${money(compareRev)}</div>` : '';
     return `<div class="flex justify-between items-center p-3 rounded-xl bg-red-50">
       <div>
         <div class="font-black">#${ranked.length-4+i} ${d.club}</div>
         <div class="text-xs text-gray-500">${d.region}</div>
+        ${compareText}
       </div>
       <div class="font-black text-red-700">${money(totalRev)}</div>
     </div>`;
