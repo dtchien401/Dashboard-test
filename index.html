@@ -115,6 +115,10 @@ const CONFIG = {
   GOOGLE_SHEET_URL: 'https://docs.google.com/spreadsheets/d/1IKTt4zGcDAXBSaHCGyrLZxoe_Kykqi01wM-wp8svQOU/edit?usp=sharing',
   API_URL: 'https://script.google.com/macros/s/AKfycbx3cJfy8KY3SIJZ2Fz7o7je37vKr8A6lF8KYeG4JxlBxTHiqXtTWg8NJPVMe1FDrXxxTw/exec'
 };
+const CLOSED_CLUBS = ['VMC','LTC','TDY','JCQ'];
+function isClosedClub(club){ return CLOSED_CLUBS.includes(String(club || '').trim().toUpperCase()); }
+function activeClubRows(rows){ return rows.filter(d=>!isClosedClub(d.club)); }
+
 const charts = {};
 let activeTab = 'cash';
 let allData = [];
@@ -145,6 +149,157 @@ function makeDaily(total, seed){
   return arr;
 }
 function sumDaily(rows,key){ return Array.from({length:31},(_,i)=>rows.reduce((a,b)=>a + safeNumber((b[key] || [])[i]),0)); }
+
+// TARGET TO-DATE LOGIC
+// Purpose: when comparing vs Target, compare actual MTD against target prorated by the real day of the selected month.
+function daysInMonth(month){
+  if(!month || month === 'ALL') return 31;
+  const parts = String(month).split('-').map(Number);
+  const y = parts[0], m = parts[1];
+  if(!y || !m) return 31;
+  return new Date(y, m, 0).getDate();
+}
+
+function getLocalMonthString(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2,'0');
+  return y + '-' + m;
+}
+
+function actualDayOfPeriod(month){
+  if(!month || month === 'ALL') return 31;
+
+  const today = new Date();
+  const currentMonth = getLocalMonthString(today);
+
+  // If selected period is current month, use today's actual day.
+  if(month === currentMonth){
+    return today.getDate();
+  }
+
+  // If selected period is a past month, use full month.
+  return daysInMonth(month);
+}
+
+function targetToDate(fullTarget){
+  const month = getPeriod();
+  if(month === 'ALL') return safeNumber(fullTarget);
+
+  const day = actualDayOfPeriod(month);
+  const totalDays = daysInMonth(month);
+  return safeNumber(fullTarget) * day / (totalDays || 31);
+}
+
+function targetAchievement(actual, fullTarget){
+  return safeNumber(actual) / (targetToDate(fullTarget) || 1);
+}
+
+function targetToDateLabel(){
+  const month = getPeriod();
+  if(month === 'ALL') return 'Full target';
+  return 'Target to day ' + actualDayOfPeriod(month) + '/' + daysInMonth(month);
+}
+
+
+// LAST MONTH SAME-DAY LOGIC
+// Purpose: when comparing vs Last Month, compare selected actual against last month using the same number of real calendar days.
+function previousMonthString(month){
+  if(!month || month === 'ALL') return null;
+  const parts = String(month).split('-').map(Number);
+  const y = parts[0], m = parts[1];
+  if(!y || !m) return null;
+  const d = new Date(y, m - 2, 1);
+  return getLocalMonthString(d);
+}
+
+function comparisonDayForSelectedPeriod(){
+  const month = getPeriod();
+  if(month === 'ALL') return 31;
+  return actualDayOfPeriod(month);
+}
+
+function sameDayCutoffForMonth(month){
+  return Math.min(comparisonDayForSelectedPeriod(), daysInMonth(month));
+}
+
+function sumDailyToDay(rows, dailyKey, day){
+  return rows.reduce((total,row)=>{
+    const arr = Array.isArray(row[dailyKey]) ? row[dailyKey] : [];
+    for(let i=0;i<day;i++) total += safeNumber(arr[i]);
+    return total;
+  },0);
+}
+
+function rowsForMonthWithCurrentFilters(month){
+  if(!month) return [];
+  const region = byId('regionFilter').value;
+  const club = byId('clubFilter').value;
+  return allData.filter(r =>
+    r.month === month &&
+    (region === 'ALL' || r.region === region) &&
+    (club === 'ALL' || r.club === club)
+  );
+}
+
+function aggregateMetricRows(rows, monthForCutoff){
+  const cutoff = monthForCutoff && monthForCutoff !== 'ALL' ? sameDayCutoffForMonth(monthForCutoff) : 31;
+  const cash = sum(rows,'membership') + sum(rows,'ptSales');
+  const guest = sum(rows,'guest');
+  const nmu = sum(rows,'nmu');
+
+  return {
+    membership: sum(rows,'membership'),
+    ptSales: sum(rows,'ptSales'),
+    cash,
+    ptss: sum(rows,'ptss'),
+    guest,
+    nmu,
+    closeRate: guest ? nmu / guest : 0,
+    // Daily-based same-period values. Used for previous month comparison.
+    membershipToDate: sumDailyToDay(rows,'dailyMembership',cutoff),
+    ptSalesToDate: sumDailyToDay(rows,'dailyPt',cutoff),
+    ptssToDate: sumDailyToDay(rows,'dailyPtss',cutoff),
+    guestToDate: sumDailyToDay(rows,'dailyGuest',cutoff),
+    cutoff
+  };
+}
+
+function getLastMonthMetrics(){
+  const currentMonth = getPeriod();
+  const lm = previousMonthString(currentMonth);
+  if(!lm) return null;
+
+  const lmRows = rowsForMonthWithCurrentFilters(lm);
+  if(!lmRows.length) return null;
+
+  const cutoff = sameDayCutoffForMonth(lm);
+  const membership = sumDailyToDay(lmRows,'dailyMembership',cutoff);
+  const ptSales = sumDailyToDay(lmRows,'dailyPt',cutoff);
+  const ptss = sumDailyToDay(lmRows,'dailyPtss',cutoff);
+  const guest = sumDailyToDay(lmRows,'dailyGuest',cutoff);
+
+  // NMU does not have daily array in the current data model, so estimate same-period NMU by applying full-month close rate to same-period guest.
+  const fullGuest = sum(lmRows,'guest');
+  const fullNmu = sum(lmRows,'nmu');
+  const closeRate = fullGuest ? fullNmu / fullGuest : 0;
+  const nmu = guest * closeRate;
+
+  return {month:lm, membership, ptSales, cash:membership + ptSales, ptss, guest, nmu, closeRate, cutoff};
+}
+
+function comparePct(current, base){
+  if(!safeNumber(base)) return null;
+  return (safeNumber(current) - safeNumber(base)) / Math.abs(safeNumber(base));
+}
+
+function compareBadge(change, label){
+  if(change === null || !Number.isFinite(change)){
+    return '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">No comparison</span>';
+  }
+  const cls = change >= 0 ? 'badge-up' : 'badge-down';
+  const sign = change >= 0 ? '▲ ' : '▼ ';
+  return '<span class="'+cls+' px-2 py-1 rounded-full text-xs font-bold">'+sign+pct(Math.abs(change))+' '+label+'</span>';
+}
 
 function mapFallbackData(){
   return fallbackRawData.map((r,idx)=>{
@@ -268,6 +423,7 @@ function setupFilters(){
   byId('periodFilter').addEventListener('change',()=>{ refreshPeriodData(); renderDashboard(); });
   byId('regionFilter').addEventListener('change', renderDashboard);
   byId('clubFilter').addEventListener('change', renderDashboard);
+  byId('compareFilter').addEventListener('change', renderDashboard);
   byId('searchClub').addEventListener('input', renderClubTable);
   document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{
     document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
@@ -280,10 +436,44 @@ function setupFilters(){
 }
 function renderCards(rows){
   const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=membership+pt, ptss=sum(rows,'ptss'), guest=sum(rows,'guest'), nmu=sum(rows,'nmu');
+  const closeRate = guest ? nmu / guest : 0;
   byId('headerTotal').textContent = money(total);
-  const periodText = getPeriod() === 'ALL' ? 'All Periods' : getPeriod();
-  const cards = [['Total Cash',money(total),periodText,'badge-up'],['Membership Sales',money(membership),pct(total?membership/total:0)+' mix','badge-neutral'],['PT Sales',money(pt),pct(total?pt/total:0)+' mix',pt/total>=0.42?'badge-up':'badge-neutral'],['PTSS Served',Math.round(ptss).toLocaleString(),'sessions','badge-up'],['Guest Close Rate',pct(guest?nmu/guest:0),Math.round(guest).toLocaleString()+' guests','badge-neutral']];
-  byId('kpiCards').innerHTML = cards.map(c=>'<div class="card p-4"><div class="mini-label">'+c[0]+'</div><div class="metric mt-1">'+c[1]+'</div><span class="'+c[3]+' px-2 py-1 rounded-full text-xs font-bold">'+c[2]+'</span></div>').join('');
+
+  const compareMode = byId('compareFilter').value;
+  let cards;
+
+  if(compareMode === 'LM'){
+    const lm = getLastMonthMetrics();
+    const label = lm ? 'vs LM D'+lm.cutoff : 'vs LM';
+    cards = [
+      ['Total Cash', money(total), compareBadge(lm ? comparePct(total,lm.cash) : null, label)],
+      ['Membership Sales', money(membership), compareBadge(lm ? comparePct(membership,lm.membership) : null, label)],
+      ['PT Sales', money(pt), compareBadge(lm ? comparePct(pt,lm.ptSales) : null, label)],
+      ['PTSS Served', Math.round(ptss).toLocaleString(), compareBadge(lm ? comparePct(ptss,lm.ptss) : null, label)],
+      ['Guest Close Rate', pct(closeRate), compareBadge(lm ? comparePct(closeRate,lm.closeRate) : null, label)]
+    ];
+  }else if(compareMode === 'TARGET'){
+    const target = sum(rows,'target');
+    const ach = targetAchievement(total,target);
+    cards = [
+      ['Total Cash', money(total), compareBadge(ach - 1, 'vs Target') + '<div class="text-[11px] text-gray-400 mt-1">'+targetToDateLabel()+'</div>'],
+      ['Membership Sales', money(membership), '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">'+pct(total?membership/total:0)+' mix</span>'],
+      ['PT Sales', money(pt), '<span class="'+(total && pt/total>=0.42?'badge-up':'badge-neutral')+' px-2 py-1 rounded-full text-xs font-bold">'+pct(total?pt/total:0)+' mix</span>'],
+      ['PTSS Served', Math.round(ptss).toLocaleString(), '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">sessions</span>'],
+      ['Guest Close Rate', pct(closeRate), '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">'+Math.round(guest).toLocaleString()+' guests</span>']
+    ];
+  }else{
+    const periodText = getPeriod() === 'ALL' ? 'All Periods' : getPeriod();
+    cards = [
+      ['Total Cash',money(total),'<span class="badge-up px-2 py-1 rounded-full text-xs font-bold">'+periodText+'</span>'],
+      ['Membership Sales',money(membership),'<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">'+pct(total?membership/total:0)+' mix</span>'],
+      ['PT Sales',money(pt),'<span class="'+(total && pt/total>=0.42?'badge-up':'badge-neutral')+' px-2 py-1 rounded-full text-xs font-bold">'+pct(total?pt/total:0)+' mix</span>'],
+      ['PTSS Served',Math.round(ptss).toLocaleString(),'<span class="badge-up px-2 py-1 rounded-full text-xs font-bold">sessions</span>'],
+      ['Guest Close Rate',pct(closeRate),'<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">'+Math.round(guest).toLocaleString()+' guests</span>']
+    ];
+  }
+
+  byId('kpiCards').innerHTML = cards.map(c=>'<div class="card p-4"><div class="mini-label">'+c[0]+'</div><div class="metric mt-1">'+c[1]+'</div><div class="mt-2">'+c[2]+'</div></div>').join('');
 }
 function renderCash(rows){
   const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=membership+pt;
@@ -356,7 +546,8 @@ function renderCash(rows){
   });
 
   const top5 = ranked.slice(0,5);
-  const bottom5 = ranked.filter(d=>(d.membership+d.ptSales)>0).slice(-5).reverse();
+  const bottomRanked = activeClubRows(ranked).filter(d=>(d.membership+d.ptSales)>0);
+  const bottom5 = bottomRanked.slice(-5).reverse();
 
   const topHtml = top5.map((d,i)=>{
     const totalRev = d.membership + d.ptSales;
@@ -373,7 +564,7 @@ function renderCash(rows){
     const totalRev = d.membership + d.ptSales;
     return `<div class="flex justify-between items-center p-3 rounded-xl bg-red-50">
       <div>
-        <div class="font-black">#${ranked.length-4+i} ${d.club}</div>
+        <div class="font-black">#${i+1} ${d.club}</div>
         <div class="text-xs text-gray-500">${d.region}</div>
       </div>
       <div class="font-black text-red-700">${money(totalRev)}</div>
@@ -386,7 +577,7 @@ function renderCash(rows){
       <div class="space-y-2">${topHtml}</div>
     </div>
     <div class="pt-4 border-t mt-4">
-      <div class="text-sm font-black mb-2 text-red-700">Bottom 5 Clubs</div>
+      <div class="text-sm font-black mb-2 text-red-700">Bottom 5 Active Clubs</div>
       <div class="space-y-2">${bottomHtml}</div>
     </div>
   `;
@@ -407,15 +598,38 @@ function renderGuest(rows){
 }
 function renderRanking(rows){
   const sorted=[...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
-  const top=sorted.slice(0,10), bottom=sorted.filter(d=>d.membership+d.ptSales>0).slice(-5).reverse();
+  const top=sorted.slice(0,10), bottom=activeClubRows(sorted).filter(d=>d.membership+d.ptSales>0).slice(-5).reverse();
   drawChart('rankingChart',{type:'bar',data:{labels:top.map(d=>d.club),datasets:[{label:'Cash Total',data:top.map(d=>d.membership+d.ptSales),borderRadius:12}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>money(v)}}}}});
-  byId('focusList').innerHTML = bottom.map(d=>'<div class="p-4 rounded-2xl bg-gray-50 flex justify-between gap-3"><div><b>'+d.club+'</b><div class="text-xs text-gray-500">'+d.region+' · PTSS '+Math.round(d.ptss)+'</div></div><div>'+statusBadge((d.membership+d.ptSales)/(d.target||1))+'</div></div>').join('');
+  byId('focusList').innerHTML = bottom.map(d=>'<div class="p-4 rounded-2xl bg-gray-50 flex justify-between gap-3"><div><b>'+d.club+'</b><div class="text-xs text-gray-500">'+d.region+' · PTSS '+Math.round(d.ptss)+'</div></div><div>'+statusBadge(targetAchievement(d.membership + d.ptSales, d.target))+'</div></div>').join('');
   renderClubTable();
 }
 function renderClubTable(){
   const q=(byId('searchClub').value || '').toLowerCase();
   const rows=getFiltered().filter(d=>d.club.toLowerCase().includes(q)).sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
-  byId('clubTable').innerHTML = rows.map(d=>{ const total=d.membership+d.ptSales; return '<tr class="table-row border-b"><td class="py-3 font-black">'+d.club+'</td><td>'+d.region+'</td><td>'+money(d.membership)+'</td><td>'+money(d.ptSales)+'</td><td class="font-bold">'+money(total)+'</td><td>'+Math.round(d.ptss).toLocaleString()+'</td><td>'+Math.round(d.guest).toLocaleString()+'</td><td>'+d.nmu+'</td><td>'+pct(d.guest?d.nmu/d.guest:0)+'</td><td>'+statusBadge(total/(d.target||1))+'</td></tr>'; }).join('');
+  byId('clubTable').innerHTML = rows.map(d=>{
+    const total=d.membership+d.ptSales;
+    const compareMode = byId('compareFilter').value;
+    let ach = compareMode === 'TARGET' ? targetAchievement(total, d.target) : total/(d.target||1);
+    let statusNote = compareMode === 'TARGET'
+      ? '<div class="text-[11px] text-gray-400">'+targetToDateLabel()+'</div>'
+      : '';
+
+    if(compareMode === 'LM'){
+      const lm = previousMonthString(getPeriod());
+      const lmRows = rowsForMonthWithCurrentFilters(lm).filter(x=>x.club === d.club);
+      if(lmRows.length){
+        const cutoff = sameDayCutoffForMonth(lm);
+        const lmTotal = sumDailyToDay(lmRows,'dailyMembership',cutoff) + sumDailyToDay(lmRows,'dailyPt',cutoff);
+        const change = comparePct(total,lmTotal);
+        ach = change === null ? 0 : change + 1;
+        statusNote = '<div class="text-[11px] text-gray-400">vs '+lm+' D'+cutoff+'</div>';
+      }else{
+        statusNote = '<div class="text-[11px] text-gray-400">No last month data</div>';
+      }
+    }
+
+    return '<tr class="table-row border-b"><td class="py-3 font-black">'+d.club+'</td><td>'+d.region+'</td><td>'+money(d.membership)+'</td><td>'+money(d.ptSales)+'</td><td class="font-bold">'+money(total)+'</td><td>'+Math.round(d.ptss).toLocaleString()+'</td><td>'+Math.round(d.guest).toLocaleString()+'</td><td>'+d.nmu+'</td><td>'+pct(d.guest?d.nmu/d.guest:0)+'</td><td>'+statusBadge(ach)+' <span class="text-xs text-gray-500">'+pct(ach)+'</span>'+statusNote+'</td></tr>';
+  }).join('');
 }
 function renderDashboard(){
   const rows=getFiltered();
