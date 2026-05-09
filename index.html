@@ -1,322 +1,4 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cali Performance Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    :root{--red:#d71920;--ink:#111827;--muted:#6b7280;}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,Arial,sans-serif;background:#f3f4f6;color:var(--ink)}
-    .hero{background:linear-gradient(135deg,#111 0%,#2b0d0f 54%,#d71920 140%)}
-    .card{background:white;border:1px solid #ececec;border-radius:22px;box-shadow:0 10px 30px rgba(15,23,42,.06)}
-    .mini-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800}
-    .metric{font-size:28px;font-weight:950;letter-spacing:-.04em}
-    .tab{transition:.18s ease}.tab.active{background:var(--red);color:white;box-shadow:0 10px 24px rgba(215,25,32,.22)}
-    .badge-up{background:#ecfdf5;color:#047857}.badge-down{background:#fef2f2;color:#b91c1c}.badge-neutral{background:#f3f4f6;color:#374151}
-    .table-row:hover{background:#fff7f7} select,input{outline:none}
-  </style>
-</head>
-<body>
-  <div class="min-h-screen">
-    <header class="hero text-white px-6 py-7 md:px-10">
-      <div class="max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <div class="text-xs uppercase tracking-[.25em] text-red-100 font-bold">California Fitness & Yoga</div>
-            <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-1">Performance Command Center</h1>
-            <p class="text-red-50 mt-2 max-w-2xl">Dashboard prototype đọc toàn bộ dữ liệu từ Google Sheet: NMS, PT Sales, PTSS Served, Guest from MKT, Guest from Club Dept và NMU theo tháng / club.</p>
-          </div>
-          <div class="bg-white/10 border border-white/15 rounded-2xl p-4 min-w-[240px]">
-            <div class="text-xs text-red-100 uppercase tracking-widest font-bold">Selected Period</div>
-            <div class="text-3xl font-black mt-1" id="headerTotal">$0</div>
-            <div class="text-sm text-red-50">Total NMS + PT Sales | USD</div>
-            <div id="dataStatus" class="text-xs text-red-100 mt-2">Loading Google Sheet data...</div>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 md:px-8 -mt-5 pb-12">
-      <section class="card p-4 md:p-5 mb-5">
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
-          <div><label class="mini-label">Period</label><select id="periodFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
-          <div><label class="mini-label">Region</label><select id="regionFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
-          <div><label class="mini-label">Club</label><select id="clubFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
-          <div><label class="mini-label">Compare</label><select id="compareFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"><option value="TARGET">vs Target</option><option value="LM">vs Last Month</option><option value="LY">vs Last Year</option></select></div>
-          <button id="applyBtn" class="bg-[#d71920] hover:bg-[#b9141a] text-white rounded-xl px-4 py-3 font-bold">Apply Filter</button>
-        </div>
-      </section>
-
-      <section class="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4 mb-5" id="kpiCards"></section>
-
-      <nav class="flex flex-wrap gap-2 mb-5">
-        <button class="tab active px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="cash">Cash Collection</button>
-        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="ptss">PT Sessions Served</button>
-        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="guest">Guest Sources</button>
-        <button class="tab px-5 py-3 rounded-2xl bg-white border border-gray-200 font-extrabold" data-tab="club">Club Ranking</button>
-      </nav>
-
-      <section id="cash" class="tabPanel grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div class="card p-5 lg:col-span-2">
-          <div class="flex justify-between items-start mb-4">
-            <div>
-              <div class="mini-label">Revenue Breakdown</div>
-              <h2 class="text-xl font-black">Revenue by Product Line</h2>
-            </div>
-            <span class="px-3 py-1 rounded-full bg-red-50 text-red-700 text-xs font-bold">Cash Collection</span>
-          </div>
-
-          <div class="space-y-8">
-            <div>
-              <div class="text-sm font-bold text-gray-500 mb-2">Revenue by Product</div>
-              <canvas id="cashMixChart" height="90"></canvas>
-            </div>
-
-            <div>
-              <div class="flex items-center justify-between mb-2">
-                <div class="text-sm font-bold text-gray-500">Revenue by Club</div>
-                <div class="text-xs text-gray-400">All clubs</div>
-              </div>
-              <canvas id="revClubChart" height="130"></canvas>
-            </div>
-          </div>
-        </div>
-        <div class="card p-5"><div class="mini-label">Performance Signals</div><h2 class="text-xl font-black mb-4">Top 5 & Bottom 5 Clubs</h2><div id="cashAlerts" class="space-y-3"></div></div>
-        <div class="card p-5 lg:col-span-3"><div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2"><div><div class="mini-label">Trend</div><h2 class="text-xl font-black">Cash Collection Trend</h2></div><div class="text-sm text-gray-500" id="cashTrendNote">By period</div></div><canvas id="cashTrendChart" height="90"></canvas></div>
-      </section>
-
-      <section id="ptss" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div class="card p-5 lg:col-span-2"><div class="mini-label">PT Productivity</div><h2 class="text-xl font-black mb-4">PT Sessions Served by Club</h2><canvas id="ptssClubChart" height="120"></canvas></div>
-        <div class="card p-5"><div class="mini-label">Quality View</div><h2 class="text-xl font-black mb-4">Service Health</h2><div id="ptssInsights" class="space-y-3"></div></div>
-        <div class="card p-5 lg:col-span-3"><div class="mini-label">Trend</div><h2 class="text-xl font-black mb-4">Sessions Served Trend</h2><canvas id="ptssTrendChart" height="90"></canvas></div>
-      </section>
-
-      <section id="guest" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div class="card p-5"><div class="mini-label">Source Mix</div><h2 class="text-xl font-black mb-4">Guest by Source</h2><canvas id="guestSourceChart" height="210"></canvas></div>
-        <div class="card p-5 lg:col-span-2"><div class="mini-label">Funnel Quality</div><h2 class="text-xl font-black mb-4">Guest → Close by Source</h2><canvas id="guestCloseChart" height="120"></canvas></div>
-        <div class="card p-5 lg:col-span-3"><div class="mini-label">Guest Table</div><h2 class="text-xl font-black mb-4">Source Performance Detail</h2><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-left text-gray-500 border-b"><tr><th class="py-3">Source</th><th>Guest</th><th>NMU / Closed</th><th>Close Rate</th><th>Action Signal</th></tr></thead><tbody id="guestTable"></tbody></table></div></div>
-      </section>
-
-      <section id="club" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div class="card p-5 lg:col-span-2"><div class="mini-label">Ranking</div><h2 class="text-xl font-black mb-4">Top Club Performance</h2><canvas id="rankingChart" height="135"></canvas></div>
-        <div class="card p-5"><div class="mini-label">Management Focus</div><h2 class="text-xl font-black mb-4">Clubs Need Attention</h2><div id="focusList" class="space-y-3"></div></div>
-        <div class="card p-5 lg:col-span-3"><div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-4"><div><div class="mini-label">Club Detail</div><h2 class="text-xl font-black">Club Performance Table</h2></div><input id="searchClub" placeholder="Search club..." class="border border-gray-200 rounded-xl px-4 py-2" /></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-left text-gray-500 border-b"><tr><th class="py-3">Club</th><th>Region</th><th>Membership</th><th>PT Sales</th><th>Cash Total</th><th>PTSS</th><th>Guest</th><th>NMU</th><th>Close Rate</th><th>Status</th></tr></thead><tbody id="clubTable"></tbody></table></div></div>
-      </section>
-    </main>
-  </div>
-
-<script>
-'use strict';
-
-const CONFIG = {
-  GOOGLE_SHEET_URL: 'https://docs.google.com/spreadsheets/d/1IKTt4zGcDAXBSaHCGyrLZxoe_Kykqi01wM-wp8svQOU/edit?usp=sharing',
-  API_URL: 'https://script.google.com/macros/s/AKfycbx3cJfy8KY3SIJZ2Fz7o7je37vKr8A6lF8KYeG4JxlBxTHiqXtTWg8NJPVMe1FDrXxxTw/exec'
-};
-const charts = {};
-let activeTab = 'cash';
-let allData = [];
-let data = [];
-
-const fallbackRawData = [
-  ['2026-05','AMU','South',1640.03,1895.54,220,52,51,3.17],['2026-05','AMY','South',7049.63,5826.98,321,27,18,3],['2026-05','BDS','South',4755.48,2485.92,480,22,25,8],['2026-05','CPT','North',4530.20,3183.03,569,27,37,12],['2026-05','CTC','South',7095.68,6032.68,751,37,29,16.5],['2026-05','DNG','Central',4724.15,3556.86,480,72,33,9],['2026-05','FDC','South',5996.55,5032.09,392,5,48,13],['2026-05','GDC','South',6969.29,5230.65,711,18,24,6],['2026-05','GMC','South',2333.23,4829.98,214,19,16,4.5],['2026-05','GVC','South',2662.71,1177.35,220,26,10,5],['2026-05','HDC','South',943.56,545.97,388,13,19,8],['2026-05','HDY','North',824.49,934.50,277,28,37,2],['2026-05','HVP','South',25311.63,1026.78,723,20,29,8],['2026-05','LMC','South',8785.87,8590.84,653,18,67,31],['2026-05','LTC','South',145.62,648.49,0,0,0,0],['2026-05','MAC','North',4547.31,2781.71,179,55,44,6],['2026-05','MPC','North',9611.33,6573.36,398,16,66,11],['2026-05','NTC','Central',3261.98,2772.44,449,52,32,4],['2026-05','PBH','South',2069.92,1706.65,202,25,28,5.5],['2026-05','PCH','North',3360.37,1567.57,172,77,60,7],['2026-05','PCO','South',6322.08,3131.59,572,21,41,14.61],['2026-05','PPC','South',224.35,0,0,0,0,0],['2026-05','RCC','North',7803.62,2020.59,383,41,31,10],['2026-05','SCT','North',13644.88,5278.84,371,44,55,4.5],['2026-05','TCM','North',6528.27,7813.39,544,54,61,17],['2026-05','TDC','South',5198.72,4822.21,642,31,43,5],['2026-05','TDU','South',26833.04,23940.44,779,65,75,42],['2026-05','TTC','South',0,19194.95,885,19,16,0],['2026-05','VSC','North',4626.40,4213.61,316,35,54,8.5],['2026-05','VTC','South',2657.04,2004.98,139,27,14,9.23],['2026-05','VVO','South',7881.86,5638.88,529,36,42,12],['2026-05','WPC','North',6940.77,5949.76,576,19,28,8.5]
-];
-
-function byId(id){ return document.getElementById(id); }
-function safeNumber(v){ const n = Number(v || 0); return Number.isFinite(n) ? n : 0; }
-function money(v){ const n = safeNumber(v); if(Math.abs(n) >= 1000000) return '$' + (n/1000000).toFixed(1) + 'M'; if(Math.abs(n) >= 1000) return '$' + (n/1000).toFixed(1) + 'K'; return '$' + n.toFixed(0); }
-function pct(v){ return Number.isFinite(v) ? (v*100).toFixed(1) + '%' : '0.0%'; }
-function sum(rows,key){ return rows.reduce((a,b)=>a + safeNumber(b[key]), 0); }
-function normalizeMonth(v){
-  if(!v) return 'Unknown';
-  const s = String(v).trim();
-  if(s.length >= 7 && s.charAt(4) === '-') return s.slice(0,7);
-  const d = new Date(s);
-  if(!isNaN(d.getTime())) return d.toISOString().slice(0,7);
-  return s;
-}
-function makeDaily(total, seed){
-  const arr = Array(31).fill(0);
-  const weights = [0,0.10,0.12,0.18,0.15,0.17,0.13,0.15];
-  weights.forEach((w,i)=>{ arr[i] = +(safeNumber(total) * w * (0.94 + ((seed+i)%5)*0.03)).toFixed(2); });
-  arr[7] = +(arr[7] + safeNumber(total) - arr.reduce((a,b)=>a+b,0)).toFixed(2);
-  return arr;
-}
-function sumDaily(rows,key){ return Array.from({length:31},(_,i)=>rows.reduce((a,b)=>a + safeNumber((b[key] || [])[i]),0)); }
-
-function mapFallbackData(){
-  return fallbackRawData.map((r,idx)=>{
-    const month = r[0], club = r[1], region = r[2], membership = r[3], ptSales = r[4], ptss = r[5], guestMkt = r[6], guestClub = r[7], nmu = r[8];
-    const guest = guestMkt + guestClub;
-    const total = membership + ptSales;
-    return {month,club,region,membership,ptSales,ptss,guestMkt,guestClub,guest,nmu,target:total*1.05 || 1,dailyMembership:makeDaily(membership,idx),dailyPt:makeDaily(ptSales,idx+2),dailyPtss:makeDaily(ptss,idx+4),dailyGuest:makeDaily(guest,idx+1)};
-  });
-}
-function normalizeApiRow(row,idx){
-  const membership = safeNumber(row.membership);
-  const ptSales = safeNumber(row.ptSales);
-  const ptss = safeNumber(row.ptss);
-  const guestMkt = safeNumber(row.guestMkt);
-  const guestClub = safeNumber(row.guestClub);
-  const guest = safeNumber(row.guest) || guestMkt + guestClub;
-  const nmu = safeNumber(row.nmu);
-  return {
-    month: normalizeMonth(row.month || row.period || row.date || row.Date),
-    club: String(row.club || row.Club || row.Location || '').trim(),
-    region: row.region || row.Region || 'Unassigned',
-    membership, ptSales, ptss, guestMkt, guestClub, guest, nmu,
-    target: safeNumber(row.target) || (membership + ptSales) * 1.05 || 1,
-    dailyMembership: Array.isArray(row.dailyMembership) ? row.dailyMembership : makeDaily(membership,idx),
-    dailyPt: Array.isArray(row.dailyPt) ? row.dailyPt : makeDaily(ptSales,idx+2),
-    dailyPtss: Array.isArray(row.dailyPtss) ? row.dailyPtss : makeDaily(ptss,idx+4),
-    dailyGuest: Array.isArray(row.dailyGuest) ? row.dailyGuest : makeDaily(guest,idx+1)
-  };
-}
-function loadJsonp(url){
-  return new Promise((resolve,reject)=>{
-    const cbName = 'jsonpDashboardCallback_' + Date.now();
-    const script = document.createElement('script');
-    window[cbName] = data => { cleanup(); resolve(data); };
-    function cleanup(){ delete window[cbName]; script.remove(); }
-    script.onerror = () => { cleanup(); reject(new Error('JSONP load failed')); };
-    script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cbName + '&mode=monthly&_=' + Date.now();
-    document.body.appendChild(script);
-  });
-}
-
-function setStatus(text){
-  const el = byId('dataStatus');
-  if(el) el.textContent = text;
-}
-
-async function loadData(){
-  allData = mapFallbackData();
-  setStatus('Loading Google Sheet data...');
-  try{
-    let json;
-    try{
-      const res = await fetch(CONFIG.API_URL + '?mode=monthly&_=' + Date.now(), {method:'GET', cache:'no-store'});
-      json = await res.json();
-    }catch(fetchErr){
-      console.warn('Fetch failed, trying JSONP fallback...', fetchErr);
-      json = await loadJsonp(CONFIG.API_URL);
-    }
-    if(!json || !json.success) throw new Error((json && json.message) || 'API success=false');
-
-    const sourceRows = Array.isArray(json.data) ? json.data : [];
-    allData = sourceRows.map(normalizeApiRow).filter(x=>x.club && x.month);
-
-    if(!allData.length){
-      throw new Error('API returned 0 usable rows. Check Code.gs mapping fields: month, club, membership, ptSales, ptss, guestMkt, guestClub, nmu.');
-    }
-
-    const months = Array.from(new Set(allData.map(d=>d.month))).sort();
-    const clubs = Array.from(new Set(allData.map(d=>d.club))).sort();
-    setStatus('Loaded from Google Sheet: ' + allData.length + ' rows | ' + months.length + ' periods | ' + clubs.length + ' clubs');
-  }catch(err){
-    console.error('Cannot load API. Using fallback data.', err);
-    setStatus('API failed, using fallback demo data. Open Console to see error.');
-  }
-}
-
-function getPeriod(){ return byId('periodFilter').value; }
-function getPeriodRows(){ const p = getPeriod(); return p === 'ALL' ? allData : allData.filter(r=>r.month === p); }
-function aggregateByClub(rows){
-  const map = new Map();
-  rows.forEach(r=>{
-    if(!map.has(r.club)) map.set(r.club,{club:r.club,region:r.region,membership:0,ptSales:0,ptss:0,guestMkt:0,guestClub:0,guest:0,nmu:0,target:0,dailyMembership:Array(31).fill(0),dailyPt:Array(31).fill(0),dailyPtss:Array(31).fill(0),dailyGuest:Array(31).fill(0)});
-    const x = map.get(r.club);
-    ['membership','ptSales','ptss','guestMkt','guestClub','guest','nmu','target'].forEach(k=>x[k]+=safeNumber(r[k]));
-    ['dailyMembership','dailyPt','dailyPtss','dailyGuest'].forEach(k=>{ for(let i=0;i<31;i++) x[k][i] += safeNumber((r[k] || [])[i]); });
-  });
-  return Array.from(map.values());
-}
-function refreshPeriodData(){
-  data = aggregateByClub(getPeriodRows());
-  const regions = Array.from(new Set(data.map(d=>d.region))).sort();
-  const clubs = Array.from(new Set(data.map(d=>d.club))).sort();
-  const oldRegion = byId('regionFilter').value || 'ALL';
-  const oldClub = byId('clubFilter').value || 'ALL';
-  byId('regionFilter').innerHTML = '<option value="ALL">All Regions</option>' + regions.map(r=>'<option value="'+r+'">'+r+'</option>').join('');
-  byId('clubFilter').innerHTML = '<option value="ALL">All Clubs</option>' + clubs.map(c=>'<option value="'+c+'">'+c+'</option>').join('');
-  byId('regionFilter').value = regions.includes(oldRegion) ? oldRegion : 'ALL';
-  byId('clubFilter').value = clubs.includes(oldClub) ? oldClub : 'ALL';
-}
-function getFiltered(){
-  const region = byId('regionFilter').value;
-  const club = byId('clubFilter').value;
-  return data.filter(r=>(region === 'ALL' || r.region === region) && (club === 'ALL' || r.club === club));
-}
-function destroyChart(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
-function drawChart(id,config){ const c = byId(id); if(!c || typeof Chart === 'undefined') return; destroyChart(id); charts[id] = new Chart(c,config); }
-function statusBadge(rate){ if(rate >= 1) return '<span class="badge-up px-2 py-1 rounded-full text-xs font-bold">On Track</span>'; if(rate >= 0.9) return '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">Watch</span>'; return '<span class="badge-down px-2 py-1 rounded-full text-xs font-bold">Action</span>'; }
-function trendLabels(){ return getPeriod() === 'ALL' ? Array.from(new Set(allData.map(d=>d.month))).sort() : Array.from({length:31},(_,i)=>'Day '+(i+1)); }
-function trendSeries(rows,key){
-  if(getPeriod() !== 'ALL') return sumDaily(rows,'daily' + (key==='membership'?'Membership':key==='ptSales'?'Pt':key==='ptss'?'Ptss':'Guest'));
-  const clubs = new Set(rows.map(r=>r.club));
-  return trendLabels().map(m=>sum(allData.filter(r=>r.month === m && clubs.has(r.club)), key));
-}
-
-function setupFilters(){
-  const months = Array.from(new Set(allData.map(d=>d.month))).filter(Boolean).sort();
-  byId('periodFilter').innerHTML = '<option value="ALL">All Periods</option>' + months.map(m=>'<option value="'+m+'">'+m+'</option>').join('');
-  byId('periodFilter').value = months[months.length - 1] || 'ALL';
-  refreshPeriodData();
-  byId('applyBtn').addEventListener('click', renderDashboard);
-  byId('periodFilter').addEventListener('change',()=>{ refreshPeriodData(); renderDashboard(); });
-  byId('compareFilter').addEventListener('change', renderDashboard);
-  byId('regionFilter').addEventListener('change', renderDashboard);
-  byId('clubFilter').addEventListener('change', renderDashboard);
-  byId('searchClub').addEventListener('input', renderClubTable);
-  document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    activeTab = btn.dataset.tab;
-    document.querySelectorAll('.tabPanel').forEach(p=>p.classList.add('hidden'));
-    byId(activeTab).classList.remove('hidden');
-    renderDashboard();
-  }));
-}
-function getCompareMode(){
-  return byId('compareFilter').value || 'TARGET';
-}
-
-function shiftMonth(month, offset){
-  if(!month || month === 'ALL' || month === 'Unknown') return '';
-  const parts = month.split('-');
-  if(parts.length < 2) return '';
-  const d = new Date(Number(parts[0]), Number(parts[1]) - 1 + offset, 1);
-  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2,'0');
-}
-
-function daysInMonth(month){
-  if(!month || month === 'ALL' || month === 'Unknown') return 31;
-  const parts = month.split('-');
-  if(parts.length < 2) return 31;
-  return new Date(Number(parts[0]), Number(parts[1]), 0).getDate();
-}
-
-function pacingRatioForSelectedMonth(cutoffDay){
-  return Math.min(cutoffDay, daysInMonth(getPeriod())) / daysInMonth(getPeriod());
-}
-
-function getRowsForComparePeriod(){
-  const mode = getCompareMode();
-  const period = getPeriod();
-  if(mode === 'TARGET' || period === 'ALL') return null;
-
-  const compareMonth = mode === 'LM' ? shiftMonth(period, -1) : shiftMonth(period, -12);
-  if(!compareMonth) return null;
-
-  const region = byId('regionFilter').value;
-  const club = byId('clubFilter').value;
-  return aggregateByClub(allData.filter(r =>
-    r.month === compareMonth &&
-    (region === 'ALL' || r.region === region) &&
-    (club === 'ALL' || r.club === club)
-  ));
+));
 }
 
 function getCompareDisplayName(){
@@ -336,147 +18,41 @@ function getSameDayMetrics(rows, cutoffDay){
 }
 
 function compareLabel(currentValue, compareValue, targetModeText){
-  const mode = getCompareMode();
+const mode = getCompareMode();
 
-  if(mode === 'TARGET'){
-    const rate = compareValue ? currentValue / compareValue : 0;
-    return {
-      text: targetModeText + ' ' + pct(rate),
-      badge: rate >= 1 ? 'badge-up' : rate >= 0.9 ? 'badge-neutral' : 'badge-down'
-    };
-  }
-
-  if(compareValue === null || compareValue === undefined || compareValue === 0){
-    return {text: mode === 'LM' ? 'No LM data' : 'No LY data', badge:'badge-neutral'};
-  }
-
-  const change = (currentValue - compareValue) / Math.abs(compareValue);
-  return {
-    text: (change >= 0 ? '+' : '') + pct(change) + (mode === 'LM' ? ' vs LM' : ' vs LY'),
-    badge: change >= 0 ? 'badge-up' : 'badge-down'
-  };
-}
-
-function renderCards(rows){
-  const cutoffDay = getSelectedCutoffDay(rows);
-  const mode = getCompareMode();
-
-  // Current values: for selected month use same-day MTD from daily arrays.
-  // For All Periods use full aggregated values.
-  const useDailyMTD = getPeriod() !== 'ALL';
-
-  const membership = useDailyMTD ? sumDailyToDate(rows,'dailyMembership',cutoffDay) : sum(rows,'membership');
-  const pt = useDailyMTD ? sumDailyToDate(rows,'dailyPt',cutoffDay) : sum(rows,'ptSales');
-  const total = membership + pt;
-  const ptss = useDailyMTD ? sumDailyToDate(rows,'dailyPtss',cutoffDay) : sum(rows,'ptss');
-  const guest = useDailyMTD ? sumDailyToDate(rows,'dailyGuest',cutoffDay) : sum(rows,'guest');
-
-  // NMU currently does not have daily array in dashboard model, so use full MTD.
-  const nmu = sum(rows,'nmu');
-
-  const targetTotalFullMonth = sum(rows,'target');
-  const pacingRatio = useDailyMTD ? pacingRatioForSelectedMonth(cutoffDay) : 1;
-  const targetTotal = targetTotalFullMonth * pacingRatio;
-  const targetMembership = targetTotal ? targetTotal * (membership / (total || 1)) : 0;
-  const targetPt = targetTotal ? targetTotal * (pt / (total || 1)) : 0;
-  const targetPtss = ptss * 1.05;
-  const targetCloseRate = 0.22;
-
-  const compareRows = getRowsForComparePeriod();
-
-  const compareMembership = compareRows
-    ? sumDailyToDate(compareRows,'dailyMembership',cutoffDay)
-    : targetMembership;
-
-  const comparePt = compareRows
-    ? sumDailyToDate(compareRows,'dailyPt',cutoffDay)
-    : targetPt;
-
-  const compareTotal = compareRows
-    ? compareMembership + comparePt
-    : targetTotal;
-
-  const comparePtss = compareRows
-    ? sumDailyToDate(compareRows,'dailyPtss',cutoffDay)
-    : targetPtss;
-
-  const compareGuest = compareRows
-    ? sumDailyToDate(compareRows,'dailyGuest',cutoffDay)
-    : guest;
-
-  // NMU compare still uses MTD due missing daily NMU array; close rate is approximate until daily NMU is mapped.
-  const compareNmu = compareRows ? sum(compareRows,'nmu') : compareGuest * targetCloseRate;
-
-  const currentCloseRate = guest ? nmu / guest : 0;
-  const compareCloseRate = compareRows ? (compareGuest ? compareNmu / compareGuest : 0) : targetCloseRate;
-
-  byId('headerTotal').textContent = money(total);
-
-  const totalCmp = compareLabel(total, compareTotal, 'Pacing Target');
-  const membershipCmp = compareLabel(membership, compareMembership, 'Pacing Target');
-  const ptCmp = compareLabel(pt, comparePt, 'Pacing Target');
-  const ptssCmp = compareLabel(ptss, comparePtss, 'Pacing Target');
-  const closeCmp = compareLabel(currentCloseRate, compareCloseRate, 'Target');
-
-  const compareSuffix = mode === 'LM' ? 'Same-day vs LM' : mode === 'LY' ? 'Same-day vs LY' : 'vs Pacing Target';
-
-  const cards = [
-    ['Total Cash',money(total),totalCmp.text,totalCmp.badge],
-    ['Membership Sales',money(membership),membershipCmp.text,membershipCmp.badge],
-    ['PT Sales',money(pt),ptCmp.text,ptCmp.badge],
-    ['PTSS Served',Math.round(ptss).toLocaleString(),ptssCmp.text,ptssCmp.badge],
-    ['Guest Close Rate',pct(currentCloseRate),closeCmp.text,closeCmp.badge]
-  ];
-
-  byId('kpiCards').innerHTML = cards.map(c=>'<div class="card p-4"><div class="mini-label">'+c[0]+'</div><div class="metric mt-1">'+c[1]+'</div><span class="'+c[3]+' px-2 py-1 rounded-full text-xs font-bold">'+c[2]+'</span><div class="text-[11px] text-gray-400 mt-2">'+compareSuffix+' · Day '+cutoffDay+'</div></div>').join('');
+@@ -428,10 +444,17 @@ <h2 class="text-xl font-black">Revenue by Product Line</h2>
+byId('kpiCards').innerHTML = cards.map(c=>'<div class="card p-4"><div class="mini-label">'+c[0]+'</div><div class="metric mt-1">'+c[1]+'</div><span class="'+c[3]+' px-2 py-1 rounded-full text-xs font-bold">'+c[2]+'</span><div class="text-[11px] text-gray-400 mt-2">'+compareSuffix+' · Day '+cutoffDay+'</div></div>').join('');
 }
 function renderCash(rows){
+  const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=membership+pt;
   const cutoffDay = getSelectedCutoffDay(rows);
-  const mode = getCompareMode();
   const current = getSameDayMetrics(rows, cutoffDay);
   const membership = current.membership;
   const pt = current.ptSales;
   const total = current.total;
-  const pacingRatio = getPeriod() !== 'ALL' ? pacingRatioForSelectedMonth(cutoffDay) : 1;
 
+  // Revenue lines (temporary simulated extra lines until clean categories are fully mapped)
+  const revenueLines = [
   const compareRows = getRowsForComparePeriod();
   const compare = compareRows ? getSameDayMetrics(compareRows, cutoffDay) : null;
   const compareName = getCompareDisplayName();
 
   const currentRevenueLines = [
-    {label:'NMS', value:membership},
-    {label:'PT', value:pt},
-    {label:'Hypoxi', value:total * 0.08},
-    {label:'Pilates', value:total * 0.06},
-    {label:'Supplement', value:total * 0.04},
-    {label:'VAS', value:total * 0.03}
-  ];
+{label:'NMS', value:membership},
+{label:'PT', value:pt},
+{label:'Hypoxi', value:total * 0.08},
+@@ -440,32 +463,50 @@ <h2 class="text-xl font-black">Revenue by Product Line</h2>
+{label:'VAS', value:total * 0.03}
+];
 
-  let compareRevenueLines = null;
-  if(compare){
-    compareRevenueLines = [
-      {label:'NMS', value:compare.membership},
-      {label:'PT', value:compare.ptSales},
-      {label:'Hypoxi', value:compare.total * 0.08},
-      {label:'Pilates', value:compare.total * 0.06},
-      {label:'Supplement', value:compare.total * 0.04},
-      {label:'VAS', value:compare.total * 0.03}
-    ];
-  }
-
-  if(mode === 'TARGET'){
-    const targetTotal = sum(rows,'target') * pacingRatio;
-    const targetNms = total ? targetTotal * (membership / total) : targetTotal * 0.55;
-    const targetPt = total ? targetTotal * (pt / total) : targetTotal * 0.45;
-    compareRevenueLines = [
-      {label:'NMS', value:targetNms},
-      {label:'PT', value:targetPt},
-      {label:'Hypoxi', value:targetTotal * 0.08},
-      {label:'Pilates', value:targetTotal * 0.06},
-      {label:'Supplement', value:targetTotal * 0.04},
-      {label:'VAS', value:targetTotal * 0.03}
-    ];
-  }
+  const compareRevenueLines = compare ? [
+    {label:'NMS', value:compare.membership},
+    {label:'PT', value:compare.ptSales},
+    {label:'Hypoxi', value:compare.total * 0.08},
+    {label:'Pilates', value:compare.total * 0.06},
+    {label:'Supplement', value:compare.total * 0.04},
+    {label:'VAS', value:compare.total * 0.03}
+  ] : null;
 
   const productDatasets = [{
     label:'Current',
@@ -492,18 +68,33 @@ function renderCash(rows){
     });
   }
 
-  drawChart('cashMixChart',{
-    type:'bar',
-    data:{labels:currentRevenueLines.map(x=>x.label),datasets:productDatasets},
-    options:{
-      responsive:true,
+drawChart('cashMixChart',{
+type:'bar',
+data:{
+      labels:revenueLines.map(x=>x.label),
+      datasets:[{
+        label:'Revenue',
+        data:revenueLines.map(x=>x.value),
+        borderRadius:14
+      }]
+      labels:currentRevenueLines.map(x=>x.label),
+      datasets:productDatasets
+},
+options:{
+responsive:true,
+      plugins:{legend:{display:false}},
       plugins:{legend:{display:!!compareRevenueLines, position:'bottom'}},
-      scales:{y:{ticks:{callback:v=>money(v)}}}
-    }
-  });
+scales:{y:{ticks:{callback:v=>money(v)}}}
+}
+});
 
-  drawChart('cashTrendChart',{
-    type:'line',
+  const trendDatasets = [
+    {label:'NMS',data:trendSeries(rows,'membership'),tension:.35},
+    {label:'PT',data:trendSeries(rows,'ptSales'),tension:.35}
+  ];
+
+drawChart('cashTrendChart',{
+type:'line',
     data:{
       labels:trendLabels(),
       datasets:[
@@ -511,15 +102,16 @@ function renderCash(rows){
         {label:'PT',data:trendSeries(rows,'ptSales'),tension:.35}
       ]
     },
-    options:{
-      responsive:true,
-      plugins:{legend:{position:'bottom'}},
-      scales:{y:{ticks:{callback:v=>money(v)}}}
-    }
-  });
+    data:{labels:trendLabels(),datasets:trendDatasets},
+options:{
+responsive:true,
+plugins:{legend:{position:'bottom'}},
+@@ -474,22 +515,39 @@ <h2 class="text-xl font-black">Revenue by Product Line</h2>
+});
 
-  const ranked=[...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
-  const topClubChart = ranked.filter(d=>(d.membership+d.ptSales)>0);
+const ranked=[...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
+
+const topClubChart = ranked.filter(d=>(d.membership+d.ptSales)>0);
 
   let compareByClub = new Map();
   if(compareRows){
@@ -529,19 +121,13 @@ function renderCash(rows){
     });
   }
 
-  if(mode === 'TARGET'){
-    rows.forEach(d=>{
-      compareByClub.set(d.club, safeNumber(d.target) * pacingRatio);
-    });
-  }
-
   const clubDatasets = [{
     label:'Current',
     data:topClubChart.map(d=>getSameDayMetrics([d], cutoffDay).total),
     borderRadius:10
   }];
 
-  if(compareRows || mode === 'TARGET'){
+  if(compareRows){
     clubDatasets.push({
       label:compareName,
       data:topClubChart.map(d=>compareByClub.get(d.club) || 0),
@@ -549,109 +135,52 @@ function renderCash(rows){
     });
   }
 
-  drawChart('revClubChart',{
-    type:'bar',
-    data:{labels:topClubChart.map(d=>d.club),datasets:clubDatasets},
-    options:{
-      responsive:true,
-      plugins:{legend:{display:(compareRows || mode === 'TARGET'), position:'bottom'}},
-      scales:{
-        x:{ticks:{autoSkip:false,maxRotation:60,minRotation:45}},
-        y:{ticks:{callback:v=>money(v)}}
-      }
-    }
-  });
+drawChart('revClubChart',{
+type:'bar',
+data:{
+labels:topClubChart.map(d=>d.club),
+      datasets:[{
+        label:'Revenue',
+        data:topClubChart.map(d=>d.membership + d.ptSales),
+        borderRadius:10
+      }]
+      datasets:clubDatasets
+},
+options:{
+responsive:true,
+      plugins:{legend:{display:false}},
+      plugins:{legend:{display:!!compareRows, position:'bottom'}},
+scales:{
+x:{ticks:{autoSkip:false,maxRotation:60,minRotation:45}},
+y:{ticks:{callback:v=>money(v)}}
+@@ -501,22 +559,28 @@ <h2 class="text-xl font-black">Revenue by Product Line</h2>
+const bottom5 = ranked.filter(d=>(d.membership+d.ptSales)>0).slice(-5).reverse();
 
-  const top5 = ranked.slice(0,5);
-  const bottom5 = ranked.filter(d=>(d.membership+d.ptSales)>0).slice(-5).reverse();
-
-  const topHtml = top5.map((d,i)=>{
+const topHtml = top5.map((d,i)=>{
+    const totalRev = d.membership + d.ptSales;
     const totalRev = getSameDayMetrics([d], cutoffDay).total;
     const compareRev = compareByClub.get(d.club);
     const compareText = compareRev ? `<div class="text-[11px] text-gray-400">${compareName}: ${money(compareRev)}</div>` : '';
-    return `<div class="flex justify-between items-center p-3 rounded-xl bg-green-50">
-      <div>
-        <div class="font-black">#${i+1} ${d.club}</div>
-        <div class="text-xs text-gray-500">${d.region}</div>
+return `<div class="flex justify-between items-center p-3 rounded-xl bg-green-50">
+     <div>
+       <div class="font-black">#${i+1} ${d.club}</div>
+       <div class="text-xs text-gray-500">${d.region}</div>
         ${compareText}
-      </div>
-      <div class="font-black text-green-700">${money(totalRev)}</div>
-    </div>`;
-  }).join('');
+     </div>
+     <div class="font-black text-green-700">${money(totalRev)}</div>
+   </div>`;
+}).join('');
 
-  const bottomHtml = bottom5.map((d,i)=>{
+const bottomHtml = bottom5.map((d,i)=>{
+    const totalRev = d.membership + d.ptSales;
     const totalRev = getSameDayMetrics([d], cutoffDay).total;
     const compareRev = compareByClub.get(d.club);
     const compareText = compareRev ? `<div class="text-[11px] text-gray-400">${compareName}: ${money(compareRev)}</div>` : '';
-    return `<div class="flex justify-between items-center p-3 rounded-xl bg-red-50">
-      <div>
-        <div class="font-black">#${ranked.length-4+i} ${d.club}</div>
-        <div class="text-xs text-gray-500">${d.region}</div>
+return `<div class="flex justify-between items-center p-3 rounded-xl bg-red-50">
+     <div>
+       <div class="font-black">#${ranked.length-4+i} ${d.club}</div>
+       <div class="text-xs text-gray-500">${d.region}</div>
         ${compareText}
-      </div>
-      <div class="font-black text-red-700">${money(totalRev)}</div>
-    </div>`;
-  }).join('');
-
-  byId('cashAlerts').innerHTML = `
-    <div>
-      <div class="text-sm font-black mb-2 text-green-700">Top 5 Clubs</div>
-      <div class="space-y-2">${topHtml}</div>
-    </div>
-    <div class="pt-4 border-t mt-4">
-      <div class="text-sm font-black mb-2 text-red-700">Bottom 5 Clubs</div>
-      <div class="space-y-2">${bottomHtml}</div>
-    </div>
-  `;
-}
-function renderPtss(rows){
-  const sorted=[...rows].sort((a,b)=>b.ptss-a.ptss).slice(0,12);
-  drawChart('ptssClubChart',{type:'bar',data:{labels:sorted.map(d=>d.club),datasets:[{label:'PTSS',data:sorted.map(d=>d.ptss),borderRadius:12}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}}}});
-  drawChart('ptssTrendChart',{type:'line',data:{labels:trendLabels(),datasets:[{label:'PTSS Served',data:trendSeries(rows,'ptss'),tension:.35}]},options:{responsive:true,plugins:{legend:{display:false}}}});
-  const total=sum(rows,'ptss'), best=sorted[0], weak=[...rows].filter(d=>d.ptss>0).sort((a,b)=>a.ptss-b.ptss)[0];
-  byId('ptssInsights').innerHTML = '<div class="p-4 rounded-2xl bg-gray-50"><b>Total served:</b> '+Math.round(total).toLocaleString()+' sessions</div><div class="p-4 rounded-2xl bg-red-50"><b>Lowest active:</b> '+(weak?weak.club:'-')+' · '+(weak?Math.round(weak.ptss):0)+' sessions</div><div class="p-4 rounded-2xl bg-gray-50"><b>Best practice:</b> '+(best?best.club:'-')+' leads served volume. Check booking discipline and member frequency.</div>';
-}
-function renderGuest(rows){
-  const mkt=sum(rows,'guestMkt'), club=sum(rows,'guestClub'), totalGuest=mkt+club, nmu=sum(rows,'nmu');
-  const sourceData=[{source:'Guest from MKT',guest:mkt,closed:totalGuest?nmu*(mkt/totalGuest):0},{source:'Guest from Club Dept',guest:club,closed:totalGuest?nmu*(club/totalGuest):0}];
-  drawChart('guestSourceChart',{type:'doughnut',data:{labels:sourceData.map(d=>d.source),datasets:[{data:sourceData.map(d=>d.guest)}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
-  drawChart('guestCloseChart',{type:'bar',data:{labels:sourceData.map(d=>d.source),datasets:[{label:'Guest',data:sourceData.map(d=>d.guest),borderRadius:10},{label:'NMU / Closed',data:sourceData.map(d=>d.closed),borderRadius:10}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
-  byId('guestTable').innerHTML = sourceData.map(d=>'<tr class="table-row border-b"><td class="py-3 font-bold">'+d.source+'</td><td>'+Math.round(d.guest).toLocaleString()+'</td><td>'+d.closed.toFixed(1)+'</td><td>'+pct(d.guest?d.closed/d.guest:0)+'</td><td>'+(d.guest && d.closed/d.guest<0.18?'Improve follow-up script':'Scale this source')+'</td></tr>').join('');
-}
-function renderRanking(rows){
-  const sorted=[...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
-  const top=sorted.slice(0,10), bottom=sorted.filter(d=>d.membership+d.ptSales>0).slice(-5).reverse();
-  drawChart('rankingChart',{type:'bar',data:{labels:top.map(d=>d.club),datasets:[{label:'Cash Total',data:top.map(d=>d.membership+d.ptSales),borderRadius:12}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>money(v)}}}}});
-  byId('focusList').innerHTML = bottom.map(d=>'<div class="p-4 rounded-2xl bg-gray-50 flex justify-between gap-3"><div><b>'+d.club+'</b><div class="text-xs text-gray-500">'+d.region+' · PTSS '+Math.round(d.ptss)+'</div></div><div>'+statusBadge((d.membership+d.ptSales)/(d.target||1))+'</div></div>').join('');
-  renderClubTable();
-}
-function renderClubTable(){
-  const q=(byId('searchClub').value || '').toLowerCase();
-  const rows=getFiltered().filter(d=>d.club.toLowerCase().includes(q)).sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
-  byId('clubTable').innerHTML = rows.map(d=>{ const total=d.membership+d.ptSales; return '<tr class="table-row border-b"><td class="py-3 font-black">'+d.club+'</td><td>'+d.region+'</td><td>'+money(d.membership)+'</td><td>'+money(d.ptSales)+'</td><td class="font-bold">'+money(total)+'</td><td>'+Math.round(d.ptss).toLocaleString()+'</td><td>'+Math.round(d.guest).toLocaleString()+'</td><td>'+d.nmu+'</td><td>'+pct(d.guest?d.nmu/d.guest:0)+'</td><td>'+statusBadge(total/(d.target||1))+'</td></tr>'; }).join('');
-}
-function renderDashboard(){
-  const rows=getFiltered();
-  renderCards(rows);
-  if(activeTab === 'cash') renderCash(rows);
-  if(activeTab === 'ptss') renderPtss(rows);
-  if(activeTab === 'guest') renderGuest(rows);
-  if(activeTab === 'club') renderRanking(rows);
-}
-function runSelfTests(){
-  console.assert(typeof renderDashboard === 'function','renderDashboard must be defined');
-  console.assert(allData.length > 0,'Expected allData to have rows');
-  console.assert(data.length > 0,'Expected selected data to have clubs');
-  console.assert(byId('periodFilter').options.length >= 1,'Period filter must have options');
-}
-window.renderDashboard = renderDashboard;
-window.renderClubTable = renderClubTable;
-document.addEventListener('DOMContentLoaded', async ()=>{
-  await loadData();
-  setupFilters();
-  renderDashboard();
-  runSelfTests();
-});
-</script>
-</body>
-</html>
+     </div>
+     <div class="font-black text-red-700">${money(totalRev)}</div>
+   </div>`;
