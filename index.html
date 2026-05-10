@@ -103,7 +103,7 @@
       <section id="club" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div class="card p-5 lg:col-span-2"><div class="mini-label">Ranking</div><h2 class="text-xl font-black mb-4">Top Club Performance</h2><canvas id="rankingChart" height="135"></canvas></div>
         <div class="card p-5"><div class="mini-label">Management Focus</div><h2 class="text-xl font-black mb-4">Clubs Need Attention</h2><div id="focusList" class="space-y-3"></div></div>
-        <div class="card p-5 lg:col-span-3"><div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-4"><div><div class="mini-label">Club Detail</div><h2 class="text-xl font-black">Club Performance Table</h2></div><input id="searchClub" placeholder="Search club..." class="border border-gray-200 rounded-xl px-4 py-2" /></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-left text-gray-500 border-b"><tr><th class="py-3">Club</th><th>Region</th><th>Membership</th><th>PT Sales</th><th>Cash Total</th><th>PTSS</th><th>Guest</th><th>NMU</th><th>Close Rate</th><th>Status</th></tr></thead><tbody id="clubTable"></tbody></table></div></div>
+        <div class="card p-5 lg:col-span-3"><div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-4"><div><div class="mini-label">Club Detail</div><h2 class="text-xl font-black">Club Performance Table</h2></div><input id="searchClub" placeholder="Search club..." class="border border-gray-200 rounded-xl px-4 py-2" /></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-left text-gray-500 border-b"><tr><th class="py-3">Club</th><th>Region</th><th>Membership</th><th>PT Sales</th><th>Cash Total</th><th>vs LM</th><th>PTSS</th><th>Guest</th><th>NMU</th><th>Close Rate</th><th>Status</th></tr></thead><tbody id="clubTable"></tbody></table></div></div>
       </section>
     </main>
   </div>
@@ -315,6 +315,54 @@ function compareBadge(change, label){
   return '<span class="'+cls+' px-2 py-1 rounded-full text-xs font-bold">'+sign+pct(Math.abs(change))+' '+label+'</span>';
 }
 
+
+function signedMoney(v){
+  const n = safeNumber(v);
+  return (n >= 0 ? '+' : '-') + money(Math.abs(n));
+}
+function signedNumber(v){
+  const n = safeNumber(v);
+  return (n >= 0 ? '+' : '-') + Math.round(Math.abs(n)).toLocaleString();
+}
+function signedPctPoint(v){
+  const n = safeNumber(v) * 100;
+  return (n >= 0 ? '+' : '-') + Math.abs(n).toFixed(1) + ' pts';
+}
+function compareBadgeDetailed(change, label, deltaText){
+  if(change === null || !Number.isFinite(change)){
+    return '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">No comparison</span>';
+  }
+  const cls = change >= 0 ? 'badge-up' : 'badge-down';
+  const sign = change >= 0 ? '▲ ' : '▼ ';
+  const delta = deltaText ? '<div class="text-[11px] text-gray-500 mt-1">'+deltaText+'</div>' : '';
+  return '<span class="'+cls+' px-2 py-1 rounded-full text-xs font-bold">'+sign+pct(Math.abs(change))+' '+label+'</span>' + delta;
+}
+function cashTotal(row){
+  return safeNumber(row.membership) + safeNumber(row.ptSales);
+}
+function lastMonthRowsForClub(club){
+  const lm = previousMonthString(getPeriod());
+  if(!lm) return [];
+  return rowsForMonthWithCurrentFilters(lm).filter(x=>String(x.club).toUpperCase() === String(club).toUpperCase());
+}
+function lastMonthCashForClub(club){
+  const lm = previousMonthString(getPeriod());
+  const lmRows = lastMonthRowsForClub(club);
+  if(!lm || !lmRows.length) return null;
+  const cutoff = sameDayCutoffForMonth(lm);
+  const value = sumDailyToDay(lmRows,'dailyMembership',cutoff) + sumDailyToDay(lmRows,'dailyPt',cutoff);
+  return {month:lm, cutoff, value};
+}
+function sumDailyCashArray(rows, cutoff){
+  return Array.from({length:cutoff},(_,i)=>rows.reduce((total,row)=>{
+    return total + safeNumber((row.dailyMembership || [])[i]) + safeNumber((row.dailyPt || [])[i]);
+  },0));
+}
+function cumulative(arr){
+  let running = 0;
+  return arr.map(v=>{ running += safeNumber(v); return running; });
+}
+
 function mapFallbackData(){
   return fallbackRawData.map((r,idx)=>{
     const month = r[0], club = r[1], region = r[2], membership = r[3], ptSales = r[4], ptss = r[5], guestMkt = r[6], guestClub = r[7], nmu = r[8];
@@ -461,17 +509,17 @@ function renderCards(rows){
     const lm = getLastMonthMetrics();
     const label = lm ? 'vs LM D'+lm.cutoff : 'vs LM';
     cards = [
-      ['Total Cash', money(total), compareBadge(lm ? comparePct(total,lm.cash) : null, label)],
-      ['Membership Sales', money(membership), compareBadge(lm ? comparePct(membership,lm.membership) : null, label)],
-      ['PT Sales', money(pt), compareBadge(lm ? comparePct(pt,lm.ptSales) : null, label)],
-      ['PTSS Served', Math.round(ptss).toLocaleString(), compareBadge(lm ? comparePct(ptss,lm.ptss) : null, label)],
-      ['Guest Close Rate', pct(closeRate), compareBadge(lm ? comparePct(closeRate,lm.closeRate) : null, label)]
+      ['Total Cash', money(total), compareBadgeDetailed(lm ? comparePct(total,lm.cash) : null, label, lm ? signedMoney(total-lm.cash)+' vs '+lm.month : '')],
+      ['Membership Sales', money(membership), compareBadgeDetailed(lm ? comparePct(membership,lm.membership) : null, label, lm ? signedMoney(membership-lm.membership)+' vs '+lm.month : '')],
+      ['PT Sales', money(pt), compareBadgeDetailed(lm ? comparePct(pt,lm.ptSales) : null, label, lm ? signedMoney(pt-lm.ptSales)+' vs '+lm.month : '')],
+      ['PTSS Served', Math.round(ptss).toLocaleString(), compareBadgeDetailed(lm ? comparePct(ptss,lm.ptss) : null, label, lm ? signedNumber(ptss-lm.ptss)+' sessions' : '')],
+      ['Guest Close Rate', pct(closeRate), compareBadgeDetailed(lm ? comparePct(closeRate,lm.closeRate) : null, label, lm ? signedPctPoint(closeRate-lm.closeRate)+' vs '+lm.month : '')]
     ];
   }else if(compareMode === 'TARGET'){
     const target = targetToDate(rows);
     const ach = targetAchievement(total,rows);
     cards = [
-      ['Total Cash', money(total), compareBadge(ach - 1, 'vs Target') + '<div class="text-[11px] text-gray-400 mt-1">'+targetToDateLabel()+'</div>'],
+      ['Total Cash', money(total), compareBadgeDetailed(ach - 1, 'vs Target', signedMoney(total-target)+' vs target') + '<div class="text-[11px] text-gray-400 mt-1">'+targetToDateLabel()+'</div>'],
       ['Membership Sales', money(membership), '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">'+pct(total?membership/total:0)+' mix</span>'],
       ['PT Sales', money(pt), '<span class="'+(total && pt/total>=0.42?'badge-up':'badge-neutral')+' px-2 py-1 rounded-full text-xs font-bold">'+pct(total?pt/total:0)+' mix</span>'],
       ['PTSS Served', Math.round(ptss).toLocaleString(), '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">sessions</span>'],
@@ -492,6 +540,7 @@ function renderCards(rows){
 }
 function renderCash(rows){
   const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=membership+pt;
+  const compareMode = byId('compareFilter').value;
 
   // Revenue lines (temporary simulated extra lines until clean categories are fully mapped)
   const revenueLines = [
@@ -520,39 +569,74 @@ function renderCash(rows){
     }
   });
 
-  drawChart('cashTrendChart',{
-    type:'line',
-    data:{
-      labels:trendLabels(),
-      datasets:[
-        {label:'NMS',data:trendSeries(rows,'membership'),tension:.35},
-        {label:'PT',data:trendSeries(rows,'ptSales'),tension:.35}
-      ]
-    },
-    options:{
-      responsive:true,
-      plugins:{legend:{position:'bottom'}},
-      scales:{y:{ticks:{callback:v=>money(v)}}}
-    }
-  });
+  if(compareMode === 'LM' && getPeriod() !== 'ALL'){
+    const lm = previousMonthString(getPeriod());
+    const lmRows = rowsForMonthWithCurrentFilters(lm);
+    const cutoff = lm ? sameDayCutoffForMonth(lm) : comparisonDayForSelectedPeriod();
+    const labels = Array.from({length:cutoff},(_,i)=>'Day '+(i+1));
+    const currentDaily = cumulative(sumDailyCashArray(rows, cutoff));
+    const lmDaily = cumulative(sumDailyCashArray(lmRows, cutoff));
+    byId('cashTrendNote').textContent = lm ? 'Cumulative cash: current vs '+lm+' D'+cutoff : 'Cumulative cash by day';
+    drawChart('cashTrendChart',{
+      type:'line',
+      data:{
+        labels,
+        datasets:[
+          {label:'Current Month MTD',data:currentDaily,tension:.35,borderWidth:3},
+          {label:'Last Month Same-Day',data:lmDaily,tension:.35,borderWidth:2,borderDash:[6,4]}
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{position:'bottom'}},
+        scales:{y:{ticks:{callback:v=>money(v)}}}
+      }
+    });
+  }else{
+    byId('cashTrendNote').textContent = 'By period';
+    drawChart('cashTrendChart',{
+      type:'line',
+      data:{
+        labels:trendLabels(),
+        datasets:[
+          {label:'NMS',data:trendSeries(rows,'membership'),tension:.35},
+          {label:'PT',data:trendSeries(rows,'ptSales'),tension:.35}
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{position:'bottom'}},
+        scales:{y:{ticks:{callback:v=>money(v)}}}
+      }
+    });
+  }
 
   const ranked=[...rows].sort((a,b)=>(b.membership+b.ptSales)-(a.membership+a.ptSales));
 
   const topClubChart = ranked.filter(d=>(d.membership+d.ptSales)>0);
+  const labels = topClubChart.map(d=>d.club);
+  const currentClubData = topClubChart.map(d=>d.membership + d.ptSales);
+  const lmClubData = topClubChart.map(d=>{
+    const lm = lastMonthCashForClub(d.club);
+    return lm ? lm.value : null;
+  });
 
   drawChart('revClubChart',{
     type:'bar',
     data:{
-      labels:topClubChart.map(d=>d.club),
-      datasets:[{
+      labels,
+      datasets: compareMode === 'LM' ? [
+        {type:'bar',label:'Current Month MTD',data:currentClubData,borderRadius:10},
+        {type:'line',label:'Last Month Same-Day',data:lmClubData,tension:.25,borderWidth:2,pointRadius:3,spanGaps:true}
+      ] : [{
         label:'Revenue',
-        data:topClubChart.map(d=>d.membership + d.ptSales),
+        data:currentClubData,
         borderRadius:10
       }]
     },
     options:{
       responsive:true,
-      plugins:{legend:{display:false}},
+      plugins:{legend:{display:compareMode === 'LM', position:'bottom'}},
       scales:{
         x:{ticks:{autoSkip:false,maxRotation:60,minRotation:45}},
         y:{ticks:{callback:v=>money(v)}}
@@ -633,22 +717,23 @@ function renderClubTable(){
     let statusNote = compareMode === 'TARGET'
       ? '<div class="text-[11px] text-gray-400">'+targetToDateLabel()+'</div>'
       : '';
+    let lmCell = '<span class="text-xs text-gray-400">—</span>';
 
     if(compareMode === 'LM'){
-      const lm = previousMonthString(getPeriod());
-      const lmRows = rowsForMonthWithCurrentFilters(lm).filter(x=>x.club === d.club);
-      if(lmRows.length){
-        const cutoff = sameDayCutoffForMonth(lm);
-        const lmTotal = sumDailyToDay(lmRows,'dailyMembership',cutoff) + sumDailyToDay(lmRows,'dailyPt',cutoff);
-        const change = comparePct(total,lmTotal);
+      const lm = lastMonthCashForClub(d.club);
+      if(lm){
+        const change = comparePct(total,lm.value);
+        const delta = total - lm.value;
         ach = change === null ? 0 : change + 1;
-        statusNote = '<div class="text-[11px] text-gray-400">vs '+lm+' D'+cutoff+'</div>';
+        lmCell = compareBadgeDetailed(change, 'vs '+lm.month+' D'+lm.cutoff, signedMoney(delta));
+        statusNote = '<div class="text-[11px] text-gray-400">LM base '+money(lm.value)+'</div>';
       }else{
+        lmCell = '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">No LM data</span>';
         statusNote = '<div class="text-[11px] text-gray-400">No last month data</div>';
       }
     }
 
-    return '<tr class="table-row border-b"><td class="py-3 font-black">'+d.club+'</td><td>'+d.region+'</td><td>'+money(d.membership)+'</td><td>'+money(d.ptSales)+'</td><td class="font-bold">'+money(total)+'</td><td>'+Math.round(d.ptss).toLocaleString()+'</td><td>'+Math.round(d.guest).toLocaleString()+'</td><td>'+d.nmu+'</td><td>'+pct(d.guest?d.nmu/d.guest:0)+'</td><td>'+statusBadge(ach)+' <span class="text-xs text-gray-500">'+pct(ach)+'</span>'+statusNote+'</td></tr>';
+    return '<tr class="table-row border-b"><td class="py-3 font-black">'+d.club+'</td><td>'+d.region+'</td><td>'+money(d.membership)+'</td><td>'+money(d.ptSales)+'</td><td class="font-bold">'+money(total)+'</td><td>'+lmCell+'</td><td>'+Math.round(d.ptss).toLocaleString()+'</td><td>'+Math.round(d.guest).toLocaleString()+'</td><td>'+d.nmu+'</td><td>'+pct(d.guest?d.nmu/d.guest:0)+'</td><td>'+statusBadge(ach)+' <span class="text-xs text-gray-500">'+pct(ach)+'</span>'+statusNote+'</td></tr>';
   }).join('');
 }
 function renderDashboard(){
