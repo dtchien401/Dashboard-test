@@ -518,7 +518,26 @@ function getFiltered(){
 function destroyChart(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
 function drawChart(id,config){ const c = byId(id); if(!c || typeof Chart === 'undefined') return; destroyChart(id); charts[id] = new Chart(c,config); }
 function statusBadge(rate){ if(rate >= 1) return '<span class="badge-up px-2 py-1 rounded-full text-xs font-bold">On Track</span>'; if(rate >= 0.9) return '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">Watch</span>'; return '<span class="badge-down px-2 py-1 rounded-full text-xs font-bold">Action</span>'; }
-function trendLabels(){ return getPeriod() === 'ALL' ? Array.from(new Set(allData.map(d=>d.month))).sort() : Array.from({length:31},(_,i)=>'Day '+(i+1)); }
+
+function weekdayShortForDay(month, day){
+  if(!month || month === 'ALL') return '';
+  const parts = String(month).split('-').map(Number);
+  const y = parts[0], m = parts[1];
+  if(!y || !m) return '';
+  const d = new Date(y, m - 1, day);
+  return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
+}
+function dailyTrendLabels(dayCount){
+  const month = getPeriod();
+  const count = dayCount || daysInMonth(month);
+  if(month === 'ALL') return trendLabels();
+  return Array.from({length:count},(_,i)=>{
+    const day = i + 1;
+    return String(day).padStart(2,'0') + ' ' + weekdayShortForDay(month, day);
+  });
+}
+
+function trendLabels(){ return getPeriod() === 'ALL' ? Array.from(new Set(allData.map(d=>d.month))).sort() : dailyTrendLabels(31); }
 function trendSeries(rows,key){
   if(getPeriod() !== 'ALL') return sumDaily(rows,'daily' + (key==='membership'?'Membership':key==='ptSales'?'Pt':key==='ptss'?'Ptss':'Guest'));
   const clubs = new Set(rows.map(r=>r.club));
@@ -707,7 +726,7 @@ function renderCash(rows){
     const lm = previousMonthString(getPeriod());
     const lmRows = rowsForMonthWithCurrentFilters(lm);
     const cutoff = lm ? sameDayCutoffForMonth(lm) : comparisonDayForSelectedPeriod();
-    const labels = Array.from({length:cutoff},(_,i)=>'Day '+(i+1));
+    const labels = dailyTrendLabels(cutoff);
     const currentDaily = cumulative(sumDailyCashArray(rows, cutoff));
     const lmDaily = cumulative(sumDailyCashArray(lmRows, cutoff));
     byId('cashTrendNote').textContent = lm ? 'Cumulative cash: current vs '+lm+' D'+cutoff : 'Cumulative cash by day';
