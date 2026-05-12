@@ -60,13 +60,13 @@
           <div>
             <div class="text-xs uppercase tracking-[.25em] text-red-100 font-bold">California Fitness & Yoga</div>
             <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-1">Performance Command Center</h1>
-            <p class="text-red-50 mt-2 max-w-2xl">Dashboard đọc dữ liệu từ Sheet1: Type = Revenue là actual cash; Type = KPIs là non-cash metrics như PTSS, Guest, NMU.</p>
+            <p class="text-red-50 mt-2 max-w-2xl">Dashboard đọc dữ liệu trực tiếp từ JSON: data.json, target.json và Guest.json.</p>
           </div>
           <div class="bg-white/10 border border-white/15 rounded-2xl p-4 min-w-[240px]">
             <div class="text-xs text-red-100 uppercase tracking-widest font-bold">Selected Period</div>
             <div class="text-3xl font-black mt-1" id="headerTotal">$0</div>
             <div class="text-sm text-red-50">Total NMS + PT Sales | USD</div>
-            <div id="dataStatus" class="text-xs text-red-100 mt-2">Loading Google Sheet data...</div>
+            <div id="dataStatus" class="text-xs text-red-100 mt-2">Loading JSON data...</div>
           </div>
         </div>
       </div>
@@ -205,13 +205,16 @@
 'use strict';
 
 const CONFIG = {
-  DATA_SOURCE: 'GITHUB_RAW_JSON',
-  JSON_URL: 'https://raw.githubusercontent.com/dtchien401/cali-dashboard-data/refs/heads/main/data.json',
-  ONEDRIVE_JSON_URL: 'https://raw.githubusercontent.com/dtchien401/cali-dashboard-data/refs/heads/main/data.json',
-  GOOGLE_SHEET_URL: 'https://docs.google.com/spreadsheets/d/1IKTt4zGcDAXBSaHCGyrLZxoe_Kykqi01wM-wp8svQOU/edit?usp=sharing',
-  API_URL: 'https://script.google.com/macros/s/AKfycbx3cJfy8KY3SIJZ2Fz7o7je37vKr8A6lF8KYeG4JxlBxTHiqXtTWg8NJPVMe1FDrXxxTw/exec',
-  TARGET_JSON_URL: 'https://dtchien401.github.io/Dashboard-test/target.json',
-  GUEST_JSON_URL: 'https://dtchien401.github.io/Dashboard-test/Guest.json'
+  DATA_SOURCE: 'JSON',
+
+  JSON_URL: './data.json',
+  JSON_URL_FALLBACK: 'https://dtchien401.github.io/Dashboard-test/data.json',
+
+  TARGET_JSON_URL: './target.json',
+  TARGET_JSON_URL_FALLBACK: 'https://dtchien401.github.io/Dashboard-test/target.json',
+
+  GUEST_JSON_URL: './Guest.json',
+  GUEST_JSON_URL_FALLBACK: 'https://dtchien401.github.io/Dashboard-test/Guest.json'
 };
 const charts = {};
 let activeTab = 'cash';
@@ -578,6 +581,35 @@ function setStatus(text){
   if(el) el.textContent = text;
 }
 
+async function fetchJsonFromUrls(urls, label){
+  const errors = [];
+
+  for(const base of urls.filter(Boolean)){
+    try{
+      const url = base + (base.includes('?') ? '&' : '?') + '_=' + Date.now();
+      const res = await fetch(url, {method:'GET', cache:'no-store'});
+
+      if(!res.ok) throw new Error(label + ' HTTP ' + res.status + ' from ' + base);
+
+      const text = await res.text();
+
+      try{
+        return {
+          payload: JSON.parse(text),
+          url: base
+        };
+      }catch(parseErr){
+        throw new Error('Cannot parse ' + label + ': ' + parseErr.message + ' from ' + base);
+      }
+    }catch(err){
+      errors.push(err.message || String(err));
+    }
+  }
+
+  throw new Error(label + ' failed. Tried: ' + urls.filter(Boolean).join(' | ') + '. Errors: ' + errors.join(' ; '));
+}
+
+
 
 function excelSerialToDate(serial){
   const n = Number(serial);
@@ -810,21 +842,13 @@ function normalizeTargetPayload(payload){
 
 async function loadTargetData(){
   try{
-    const base = CONFIG.TARGET_JSON_URL || 'target.json';
-    const url = base + (base.includes('?') ? '&' : '?') + '_=' + Date.now();
-    const res = await fetch(url, {method:'GET', cache:'no-store'});
-    if(!res.ok) throw new Error('Target JSON HTTP ' + res.status);
+    const result = await fetchJsonFromUrls(
+      [CONFIG.TARGET_JSON_URL, CONFIG.TARGET_JSON_URL_FALLBACK],
+      'target.json'
+    );
 
-    const text = await res.text();
-    let payload;
-    try{
-      payload = JSON.parse(text);
-    }catch(parseErr){
-      throw new Error('Cannot parse target JSON: ' + parseErr.message + ' | first chars: ' + text.slice(0,80));
-    }
-
-    targetData = normalizeTargetPayload(payload);
-    console.log('Loaded target data:', targetData.length, 'club-month target rows', targetData.slice(0,3));
+    targetData = normalizeTargetPayload(result.payload);
+    console.log('Loaded target data:', targetData.length, 'club-month target rows from', result.url, targetData.slice(0,3));
   }catch(err){
     console.error('Target JSON not loaded:', err);
     targetData = [];
@@ -956,22 +980,13 @@ function normalizeGuestPayload(payload){
 
 async function loadGuestData(){
   try{
-    const base = CONFIG.GUEST_JSON_URL || './Guest.json';
-    const url = base + (base.includes('?') ? '&' : '?') + '_=' + Date.now();
-    const res = await fetch(url, {method:'GET', cache:'no-store'});
-    if(!res.ok) throw new Error('Guest JSON HTTP ' + res.status);
+    const result = await fetchJsonFromUrls(
+      [CONFIG.GUEST_JSON_URL, CONFIG.GUEST_JSON_URL_FALLBACK],
+      'Guest.json'
+    );
 
-    const text = await res.text();
-    let payload;
-
-    try{
-      payload = JSON.parse(text);
-    }catch(parseErr){
-      throw new Error('Cannot parse Guest JSON: ' + parseErr.message);
-    }
-
-    guestData = normalizeGuestPayload(payload);
-    console.log('Loaded guest data:', guestData.length, 'rows');
+    guestData = normalizeGuestPayload(result.payload);
+    console.log('Loaded guest data:', guestData.length, 'rows from', result.url);
   }catch(err){
     console.warn('Guest JSON not loaded:', err);
     guestData = [];
@@ -1062,29 +1077,21 @@ function aggregateGuestSourceData(actualRows){
 }
 
 async function loadData(){
-  setStatus('Loading GitHub JSON data...');
+  setStatus('Loading JSON data...');
   await loadTargetData();
   await loadGuestData();
+
   try{
-    const url = (CONFIG.JSON_URL || CONFIG.ONEDRIVE_JSON_URL) + ((CONFIG.JSON_URL || CONFIG.ONEDRIVE_JSON_URL).includes('?') ? '&' : '?') + '_=' + Date.now();
-    const res = await fetch(url, {method:'GET', cache:'no-store'});
+    const result = await fetchJsonFromUrls(
+      [CONFIG.JSON_URL, CONFIG.JSON_URL_FALLBACK],
+      'data.json'
+    );
 
-    if(!res.ok) throw new Error('GitHub JSON HTTP ' + res.status);
-
-    const text = await res.text();
-    let payload;
-
-    try{
-      payload = JSON.parse(text);
-    }catch(parseErr){
-      throw new Error('Cannot parse GitHub JSON: ' + parseErr.message);
-    }
-
-    const json = unwrapJsonPayload(payload);
+    const json = unwrapJsonPayload(result.payload);
     const sourceRows = Array.isArray(json.data) ? json.data : [];
 
     if(!sourceRows.length){
-      throw new Error((json && json.message) || 'GitHub JSON returned 0 rows');
+      throw new Error((json && json.message) || 'data.json returned 0 rows');
     }
 
     allData = transformLongFormatRows(sourceRows).filter(x=>x.club && x.month);
@@ -1096,11 +1103,11 @@ async function loadData(){
     const months = Array.from(new Set(allData.map(d=>d.month))).sort();
     const clubs = Array.from(new Set(allData.map(d=>d.club))).sort();
 
-    setStatus('Loaded from GitHub JSON: ' + sourceRows.length + ' raw rows → ' + allData.length + ' club-month records | ' + months.length + ' periods | ' + clubs.length + ' clubs');
+    setStatus('Loaded from data.json: ' + sourceRows.length + ' raw rows → ' + allData.length + ' club-month records | ' + months.length + ' periods | ' + clubs.length + ' clubs | source: ' + result.url);
   }catch(err){
-    console.error('Cannot load GitHub JSON. Using fallback data.', err);
+    console.error('Cannot load data.json. Using fallback data.', err);
     allData = mapFallbackData();
-    setStatus('GitHub JSON failed, using fallback demo data. ' + err.message);
+    setStatus('data.json failed, using fallback demo data. ' + err.message);
   }
 }
 
