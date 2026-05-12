@@ -1,1 +1,7618 @@
-null
+[
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 62957.7920535721
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 68755
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 4051.5
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 2225
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2003
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 155
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 30
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 60700
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 67500
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 1900
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150.35
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 60700
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 67500
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 1900
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 3346.16403133903
+  },
+  {
+    "No": 1,
+    "Club": "AMY",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 575
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 73720
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 79285.2094025161
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 3885
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 3028
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2004
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 155
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 30
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 65000
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 72000
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 2100
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150.35
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 65000
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 72000
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 2100
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 3153.85633903134
+  },
+  {
+    "No": 2,
+    "Club": "BDS",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 575
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 62764.9439803961
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 67636
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 4051.5
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 2009
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2003
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 155
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 30
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 61800
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 65400
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 1850
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150.35
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 62000
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 65400
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 1850
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 2153.85633903134
+  },
+  {
+    "No": 4,
+    "Club": "FDC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 575
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 75000
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 51607
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 3607.5
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1329
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 7500
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2003
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 180
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 30
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 69100
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 53000
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 3000
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 1450
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 8000
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 174.6
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 72000
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 53000
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 3000
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 1450
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 8000
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 175
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 2730.77941595442
+  },
+  {
+    "No": 5,
+    "Club": "GMC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 575
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 137253.39952091
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 147194
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 8047.5
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 4120
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 12000
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6678
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 110
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 45
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 130500
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 142200
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 4100
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 11500
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 40
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 137000
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 142200
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 4100
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 13500
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 40
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 5955.85064102564
+  },
+  {
+    "No": 6,
+    "Club": "HVP",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 725
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 11415
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 9601
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 999
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 321.6
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 1201.8
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 2002.8
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 60
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 30
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 12
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 0
+  },
+  {
+    "No": 7,
+    "Club": "JVJ",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 0
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 132130.821077912
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 142634
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 7492.5
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 3245
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 12000
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5342
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10685
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 110
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 45
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 126800
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 141700
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 3900
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 11500
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 40
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 130600
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 135000
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 3900
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 11000
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 40
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 6350.43753561254
+  },
+  {
+    "No": 8,
+    "Club": "LMC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 700
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 76700
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 106000
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 4051.5
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1823
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 9000
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2003
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 200
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 75100
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 115000
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 3370
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 9000
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 194
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 75100
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 115000
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 3370
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 9000
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 194
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 5873.22955840456
+  },
+  {
+    "No": 9,
+    "Club": "TTC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 725
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 101754.40057165
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 121143
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 6650
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 3440
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 12000
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5342
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10685
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 250
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 45
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 98200
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 117800
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 3300
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 11000
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 242.5
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 80
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 100000
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 117800
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 3300
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 10000
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 243
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 80
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 6038.47172364672
+  },
+  {
+    "No": 10,
+    "Club": "VVO",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 700
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 127642.540409975
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 102006
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 4900
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 3214
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 6500
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10684
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 110
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 45
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 119000
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 102000
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 3000
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 6500
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 110000
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 100000
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 3000
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 6500
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 5307.70249287749
+  },
+  {
+    "No": 34,
+    "Club": "DNG",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 700
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 93463.8931859403
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 66352
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 3700
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 2215
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 200
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 85
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 30
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 88000
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 66500
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 2000
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 194
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 88000
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 68000
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 2000
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 194
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 4807.70249287749
+  },
+  {
+    "No": 35,
+    "Club": "NTC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 550
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 48000
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 50000
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 2014.27118041701
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1082
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2003
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 155
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 30
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 50000
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 50000
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 2000
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 1200
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150.35
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 20
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 50000
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 50000
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 2000
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 1200
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 20
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 3076.93326210826
+  },
+  {
+    "No": 12,
+    "Club": "AMU",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 525
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 115000
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 140000
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 7423.51852433044
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 3492
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 9000
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6678
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 110
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 45
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 109400
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 125000
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 7200
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 3000
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 9000
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 80
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 109400
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 118600
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 7200
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 3000
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 9000
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 80
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 5615.3948005698
+  },
+  {
+    "No": 13,
+    "Club": "CTC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 700
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 47000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 60000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 3000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1967
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2003
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 155
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 30
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 50000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 60000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 3000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 1700
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150.35
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 29
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 50000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 110000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 3000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 175
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 4438.75662393162
+  },
+  {
+    "No": 14,
+    "Club": "GDC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 575
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 47000
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 50000
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 2789.84642181513
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1638
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2003
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 155
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 30
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 50000
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 44300
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 2700
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 1300
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150.35
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 20
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 50000
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 50000
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 2700
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 1300
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 20
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 3884.62556980057
+  },
+  {
+    "No": 15,
+    "Club": "GVC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 625
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 115000
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 110000
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 6339.29703367344
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 2936
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 12000
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5342
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10684
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 110
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 45
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 111000
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 105900
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 6100
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 2700
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 11500
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 105000
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 105000
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6100
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 2700
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 11000
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 5797.73098290598
+  },
+  {
+    "No": 16,
+    "Club": "PCO",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 725
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 0
+  },
+  {
+    "No": 17,
+    "Club": "PPC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 80500
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 101500
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 5910.91722586695
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 2394
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 9800
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3739.4
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6731.34
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 210
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 77
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 31.5
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 50000
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 2000
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 0
+  },
+  {
+    "No": 18,
+    "Club": "SCC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 0
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 79000
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 130000
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 4500
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 3245
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2003
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 155
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 45
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 85000
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 123000
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 3500
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150.35
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 79900
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 115000
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 3500
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 4615.3948005698
+  },
+  {
+    "No": 19,
+    "Club": "TDC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 625
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 75000
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 100000
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 4113.53982595488
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 2647
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 9000
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5342
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10684
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 250
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 37
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 82500
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 110000
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 4800
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 4050
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 9000
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 20000
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 242.5
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 92000
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 120000
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 4800
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 4100
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 9000
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 15000
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 243
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 6672.37485754986
+  },
+  {
+    "No": 20,
+    "Club": "TDU",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 725
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 56000
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 55000
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 2796.87740016548
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1329
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2003
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 155
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 30
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 60000
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 52800
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 2700
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 1200
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150.35
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 20
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 60000
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 52800
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 2700
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 1200
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 50
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 20
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 2230.77941595442
+  },
+  {
+    "No": 21,
+    "Club": "PBH",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 575
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 99561.536275317
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 110947.55144488
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 5640.50157234532
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 3080
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6678
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 110
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 45
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 99999
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 115000
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 3000
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 100000
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 115000
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 3000
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 5220.80790598291
+  },
+  {
+    "No": 23,
+    "Club": "CPT",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 725
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 62317.4939076778
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 51576.1974344381
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 2132.63607627858
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1473
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2004
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 155
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 80
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 20
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 57000
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 49500
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 3000
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 1400
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150.35
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 60
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 52000
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 49000
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 3000
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 1400
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 60
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 1894.59707977208
+  },
+  {
+    "No": 25,
+    "Club": "HDY",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 550
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 52952.1712550793
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 49303.7837820132
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 2714.54087376623
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1288
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2004
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 155
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 80
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 25
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 52000
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 48500
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 2500
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 1300
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150.35
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 50000
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 49000
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 2500
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 1300
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 150
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 2307.70249287749
+  },
+  {
+    "No": 26,
+    "Club": "MAC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 550
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 103437.366725679
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 97588.8777478285
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 4838.51351200058
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 2235
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 5000
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6678
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 105
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 37
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 99999
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 92000
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 3000
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 2100
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 5000
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 29
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 100000
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 85000
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 3000
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 2100
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 5000
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 29
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 3346.16403133903
+  },
+  {
+    "No": 27,
+    "Club": "MPC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 700
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 58166.4507451266
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 44874.7484099779
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 2468.4833530976
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1432
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2004
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 250
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 100
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 30
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 57000
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 45500
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 2500
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 1250
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 242.5
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 55000
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 48000
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 2500
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 1250
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 243
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 2509.98169515669
+  },
+  {
+    "No": 28,
+    "Club": "PCH",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 625
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 103880.176605373
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 95066.4242298304
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 4859.4007704767
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 2874
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5342
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10684
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 110
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 37
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 95000
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 92000
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 3000
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 2550
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 29
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 92000
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 92000
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 3000
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 2550
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 29
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 4643.88482905983
+  },
+  {
+    "No": 29,
+    "Club": "RCC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 725
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 138590.125435914
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 111504.227209825
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 7237.36654425443
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 3059
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 13000
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6678
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 110
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 45
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 131000
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 109500
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 3000
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 13000
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 135000
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 109500
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 2900
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 13000
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 5423.08710826211
+  },
+  {
+    "No": 30,
+    "Club": "SCT",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 725
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 138910.0839303
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 136797.647928119
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 7365.82565659882
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 3481
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 13000
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6678
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 110
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 45
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 131000
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 125000
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 3300
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 13000
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 131000
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 125000
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 3300
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 13000
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 6700
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 5000.01018518519
+  },
+  {
+    "No": 31,
+    "Club": "TCM",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 725
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 81390.3435713371
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 79457.772421187
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 3843.24459828181
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1967
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2004
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3339
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 220
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 90
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 32
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 75000
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 79500
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 2100
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 213.4
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 69000
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 75000
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 2100
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 2000
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 3300
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 213
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 24
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 3461.54864672365
+  },
+  {
+    "No": 32,
+    "Club": "VSC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 575
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 125904.251548195
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 136492.769391902
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 5249.48704289993
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 2925
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 11000
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5342
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10684
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 110
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 45
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 120000
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 125000
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 3300
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 11000
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 80
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 115000
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 119000
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 6000
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 2900
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 11000
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 80
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 35
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 3846.16403133903
+  },
+  {
+    "No": 33,
+    "Club": "WPC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 700
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 32431.1809803442
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 30949.8781426442
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 1492.66229137998
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1061
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 200
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 25
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 32400
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 30400
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 1400
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 940
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 194
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 60
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 20
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 0
+  },
+  {
+    "No": 3,
+    "Club": "CVC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 0
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 30429.9853193051
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 35422.8975300203
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 2141.27772485092
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 1154
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 200
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 30
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 29100
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 33900
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 2100
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 940
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 194
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 60
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 20
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 35000
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 33900
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 2100
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 940
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 0
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 194
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 60
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 20
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 1651.00733618234
+  },
+  {
+    "No": 22,
+    "Club": "VTC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 525
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46112,
+    "Metric": "NMS",
+    "Club Target": 82368.8337003507
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46112,
+    "Metric": "PT",
+    "Club Target": 88127.2243273356
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46112,
+    "Metric": "PT Supplement",
+    "Club Target": 4606.0599837691
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46112,
+    "Metric": "PTSS served",
+    "Club Target": 2163
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46112,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46112,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5342
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46112,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10685
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46112,
+    "Metric": "No of guests by Sales, Local MKT by club",
+    "Club Target": 300
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46112,
+    "Metric": "No of NMU",
+    "Club Target": 105
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46112,
+    "Metric": "No of new PT clients",
+    "Club Target": 37
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46142,
+    "Metric": "NMS",
+    "Club Target": 82400
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46142,
+    "Metric": "PT",
+    "Club Target": 85000
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46142,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46142,
+    "Metric": "PTSS",
+    "Club Target": 2100
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46142,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46142,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46142,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46142,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46142,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46142,
+    "Metric": "No of new PT clients",
+    "Club Target": 29
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "NMS",
+    "Club Target": 82400
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "PT",
+    "Club Target": 85000
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "Supplement",
+    "Club Target": 3500
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "PTSS",
+    "Club Target": 2100
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "Hypoxi",
+    "Club Target": 0
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "Relationship Mgr (Pro/PT)",
+    "Club Target": 5300
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "Business Mgr (Pro/PT)",
+    "Club Target": 10700
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "No of guests created by Pro.",
+    "Club Target": 291
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "No of NMU",
+    "Club Target": 70
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "No of new PT clients",
+    "Club Target": 29
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "Califresh",
+    "Club Target": 4423.08710826211
+  },
+  {
+    "No": 24,
+    "Club": "HDC",
+    "Month": 46173,
+    "Metric": "Retail",
+    "Club Target": 700
+  }
+]
