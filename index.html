@@ -74,11 +74,13 @@
 
     <main class="max-w-7xl mx-auto px-4 md:px-8 -mt-5 pb-12">
       <section class="card p-4 md:p-5 mb-5">
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+        <div class="grid grid-cols-1 md:grid-cols-7 gap-3 items-end">
           <div><label class="mini-label">Period</label><select id="periodFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
+          <div><label class="mini-label">View</label><select id="viewModeFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"><option value="MTD">MTD</option><option value="DAILY">Daily</option></select></div>
+          <div><label class="mini-label">Day</label><select id="dayFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
+          <div><label class="mini-label">Compare</label><select id="compareFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"><option value="LM">vs Last Month</option><option value="LY">vs Last Year</option><option value="TARGET">vs Target</option></select></div>
           <div><label class="mini-label">Region</label><select id="regionFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
           <div><label class="mini-label">Club</label><select id="clubFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"></select></div>
-          <div><label class="mini-label">Compare</label><select id="compareFilter" class="mt-1 w-full border border-gray-200 rounded-xl px-3 py-3 bg-white"><option value="LM">vs Last Month</option><option value="LY">vs Last Year</option></select></div>
           <button id="applyBtn" class="bg-[#d71920] hover:bg-[#b9141a] text-white rounded-xl px-4 py-3 font-bold">Apply Filter</button>
         </div>
       </section>
@@ -207,12 +209,14 @@ const CONFIG = {
   JSON_URL: 'https://raw.githubusercontent.com/dtchien401/cali-dashboard-data/refs/heads/main/data.json',
   ONEDRIVE_JSON_URL: 'https://raw.githubusercontent.com/dtchien401/cali-dashboard-data/refs/heads/main/data.json',
   GOOGLE_SHEET_URL: 'https://docs.google.com/spreadsheets/d/1IKTt4zGcDAXBSaHCGyrLZxoe_Kykqi01wM-wp8svQOU/edit?usp=sharing',
-  API_URL: 'https://script.google.com/macros/s/AKfycbx3cJfy8KY3SIJZ2Fz7o7je37vKr8A6lF8KYeG4JxlBxTHiqXtTWg8NJPVMe1FDrXxxTw/exec'
+  API_URL: 'https://script.google.com/macros/s/AKfycbx3cJfy8KY3SIJZ2Fz7o7je37vKr8A6lF8KYeG4JxlBxTHiqXtTWg8NJPVMe1FDrXxxTw/exec',
+  TARGET_JSON_URL: 'https://dtchien401.github.io/Dashboard-test/target.json'
 };
 const charts = {};
 let activeTab = 'cash';
 let allData = [];
 let data = [];
+let targetData = [];
 const CLOSED_CLUBS = ['VMC','LTC','TDY','JCQ','JVJ','CVC','SCC','PPC','TC1','FIN SERVE','CA360'];
 
 const fallbackRawData = [
@@ -284,7 +288,7 @@ function targetToDate(targetInput){
   // Example: on day 10, compare actual MTD against dailyTarget day 1 -> day 10.
   if(targetInput && typeof targetInput === 'object'){
     if(month === 'ALL') return safeNumber(targetInput.target);
-    const day = actualDayOfPeriod(month);
+    const day = getEffectiveCutoffDay(month);
     const arr = Array.isArray(targetInput.dailyTarget) ? targetInput.dailyTarget : [];
     if(arr.length){
       return arr.slice(0, day).reduce((a,b)=>a + safeNumber(b), 0);
@@ -295,7 +299,7 @@ function targetToDate(targetInput){
 
   // Numeric fallback for older calls.
   if(month === 'ALL') return safeNumber(targetInput);
-  return safeNumber(targetInput) * actualDayOfPeriod(month) / (daysInMonth(month) || 31);
+  return safeNumber(targetInput) * getEffectiveCutoffDay(month) / (daysInMonth(month) || 31);
 }
 
 function targetAchievement(actual, targetInput){
@@ -305,7 +309,7 @@ function targetAchievement(actual, targetInput){
 function targetToDateLabel(){
   const month = getPeriod();
   if(month === 'ALL') return 'Full KPIs';
-  return 'KPIs to day ' + actualDayOfPeriod(month) + '/' + daysInMonth(month);
+  return (getViewMode() === 'DAILY' ? 'KPIs for day ' : 'KPIs to day ') + getEffectiveCutoffDay(month) + '/' + daysInMonth(month);
 }
 
 
@@ -323,7 +327,7 @@ function previousMonthString(month){
 function comparisonDayForSelectedPeriod(){
   const month = getPeriod();
   if(month === 'ALL') return 31;
-  return actualDayOfPeriod(month);
+  return getEffectiveCutoffDay(month);
 }
 
 function sameDayCutoffForMonth(month){
@@ -336,6 +340,43 @@ function sumDailyToDay(rows, dailyKey, day){
     for(let i=0;i<day;i++) total += safeNumber(arr[i]);
     return total;
   },0);
+}
+
+function sumDailyByMode(rows, dailyKey, day){
+  if(getViewMode() === 'DAILY'){
+    return rows.reduce((total,row)=>{
+      const arr = Array.isArray(row[dailyKey]) ? row[dailyKey] : [];
+      return total + safeNumber(arr[day - 1]);
+    },0);
+  }
+  return sumDailyToDay(rows, dailyKey, day);
+}
+
+function sumDailyProductCashByMode(rows, day){
+  if(getViewMode() === 'DAILY'){
+    return rows.reduce((total,row)=>{
+      Object.keys(row.dailyProductRevenue || {}).forEach(name=>{
+        const arr = row.dailyProductRevenue[name] || [];
+        total += safeNumber(arr[day - 1]);
+      });
+      return total;
+    },0);
+  }
+  return sumDailyProductCashToDay(rows, day);
+}
+
+function sumDailyProductRevenueByMode(rows, day){
+  if(getViewMode() === 'DAILY'){
+    return rows.reduce((map,row)=>{
+      Object.keys(row.dailyProductRevenue || {}).forEach(name=>{
+        if(!map[name]) map[name] = 0;
+        const arr = row.dailyProductRevenue[name] || [];
+        map[name] += safeNumber(arr[day - 1]);
+      });
+      return map;
+    },{});
+  }
+  return aggregateDailyProductRevenueToDay(rows, day);
 }
 
 function rowsForMonthWithCurrentFilters(month){
@@ -381,11 +422,11 @@ function getLastMonthMetrics(){
   if(!lmRows.length) return null;
 
   const cutoff = sameDayCutoffForMonth(lm);
-  const membership = sumDailyToDay(lmRows,'dailyMembership',cutoff);
-  const ptSales = sumDailyToDay(lmRows,'dailyPt',cutoff);
-  const cash = sumDailyProductCashToDay(lmRows, cutoff);
-  const ptss = sumDailyToDay(lmRows,'dailyPtss',cutoff);
-  const guest = sumDailyToDay(lmRows,'dailyGuest',cutoff);
+  const membership = sumDailyByMode(lmRows,'dailyMembership',cutoff);
+  const ptSales = sumDailyByMode(lmRows,'dailyPt',cutoff);
+  const cash = sumDailyProductCashByMode(lmRows, cutoff);
+  const ptss = sumDailyByMode(lmRows,'dailyPtss',cutoff);
+  const guest = sumDailyByMode(lmRows,'dailyGuest',cutoff);
 
   // NMU does not have daily array in the current data model, so estimate same-period NMU by applying full-month close rate to same-period guest.
   const fullGuest = sum(lmRows,'guest');
@@ -425,7 +466,8 @@ function signedPctPoint(v){
 }
 function compareBadgeDetailed(change, label, deltaText){
   if(change === null || !Number.isFinite(change)){
-    return '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">No comparison</span>';
+    const msg = deltaText || 'No comparison';
+    return '<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">'+msg+'</span>';
   }
   const cls = change >= 0 ? 'badge-up' : 'badge-down';
   const sign = change >= 0 ? '▲ ' : '▼ ';
@@ -646,8 +688,182 @@ function unwrapJsonPayload(payload){
   return payload || {success:false,message:'Empty payload',data:[]};
 }
 
+
+function parseTargetMonth(value){
+  if(value === null || value === undefined || value === '') return '';
+
+  if(typeof value === 'number'){
+    const d = new Date(Math.round((value - 25569) * 86400 * 1000));
+    if(!isNaN(d.getTime())) return getLocalMonthString(d);
+  }
+
+  const s = String(value).trim();
+
+  if(/^\d{4}-\d{2}$/.test(s)) return s;
+  if(/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0,7);
+
+  if(/^\d+(\.\d+)?$/.test(s)){
+    const n = Number(s);
+    if(n > 20000){
+      const d = new Date(Math.round((n - 25569) * 86400 * 1000));
+      if(!isNaN(d.getTime())) return getLocalMonthString(d);
+    }
+  }
+
+  const m = s.match(/^(\d{1,2})-([A-Za-z]{3})-(\d{2,4})$/);
+  if(m){
+    const monthMap = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+    const mm = monthMap[m[2].toLowerCase()];
+    let yy = Number(m[3]);
+    if(yy < 100) yy += 2000;
+    if(mm) return yy + '-' + String(mm).padStart(2,'0');
+  }
+
+  const d = new Date(s);
+  if(!isNaN(d.getTime())) return getLocalMonthString(d);
+
+  return s.slice(0,7);
+}
+
+function targetMetricKey(metric){
+  const m = String(metric || '').trim().toLowerCase();
+  if(m === 'nms' || m.includes('membership')) return 'membershipTarget';
+  if(m === 'pt' || m.includes('pt sales')) return 'ptTarget';
+  if(m.includes('pt supplement') || m.includes('supplement')) return 'supplementTarget';
+  if(m.includes('ptss')) return 'ptssTarget';
+  if(m.includes('hypoxi')) return 'hypoxiTarget';
+  if(m.includes('guest')) return 'guestTarget';
+  if(m.includes('nmu')) return 'nmuTarget';
+  if(m.includes('new pt client')) return 'newPtClientTarget';
+  return null;
+}
+
+function normalizeTargetPayload(payload){
+  let raw = [];
+
+  if(Array.isArray(payload)){
+    raw = payload;
+  }else if(payload && Array.isArray(payload.data)){
+    raw = payload.data;
+  }else if(typeof payload === 'string'){
+    try{
+      const parsed = JSON.parse(payload);
+      raw = Array.isArray(parsed) ? parsed : (Array.isArray(parsed.data) ? parsed.data : []);
+    }catch(e){
+      raw = [];
+    }
+  }
+
+  const map = new Map();
+
+  raw.forEach(r=>{
+    const club = String((r && (r.club !== undefined ? r.club : r.Club)) || '').trim().toUpperCase();
+    const month = parseTargetMonth(r && (r.month !== undefined ? r.month : (r.Month !== undefined ? r.Month : (r.period !== undefined ? r.period : r.Period))));
+    if(!club || !month) return;
+
+    const key = month + '|' + club;
+    if(!map.has(key)){
+      map.set(key,{
+        month:month,
+        club:club,
+        region:'',
+        membershipTarget:0,
+        ptTarget:0,
+        supplementTarget:0,
+        hypoxiTarget:0,
+        cashTarget:0,
+        ptssTarget:0,
+        guestTarget:0,
+        nmuTarget:0,
+        newPtClientTarget:0
+      });
+    }
+
+    const obj = map.get(key);
+    const metric = r.Metric !== undefined ? r.Metric : r.metric;
+    const metricKey = targetMetricKey(metric);
+    const value = safeNumber(r['Club Target'] !== undefined ? r['Club Target'] : (r.clubTarget !== undefined ? r.clubTarget : (r.Target !== undefined ? r.Target : (r.target !== undefined ? r.target : (r.Value !== undefined ? r.Value : r.value)))));
+
+    if(metricKey){
+      obj[metricKey] += value;
+    }else{
+      obj.cashTarget += safeNumber(r.cashTarget || r.CashTarget || r['Cash Target']);
+      obj.membershipTarget += safeNumber(r.membershipTarget || r.MembershipTarget || r['Membership Target']);
+      obj.ptTarget += safeNumber(r.ptTarget || r.PTTarget || r['PT Target']);
+      obj.supplementTarget += safeNumber(r.supplementTarget || r.SupplementTarget || r['Supplement Target']);
+      obj.hypoxiTarget += safeNumber(r.hypoxiTarget || r.HypoxiTarget || r['Hypoxi Target']);
+      obj.ptssTarget += safeNumber(r.ptssTarget || r.PTSSTarget || r['PTSS Target']);
+      obj.guestTarget += safeNumber(r.guestTarget || r.GuestTarget || r['Guest Target']);
+      obj.nmuTarget += safeNumber(r.nmuTarget || r.NMUTarget || r['NMU Target']);
+    }
+  });
+
+  const rows = Array.from(map.values());
+  rows.forEach(x=>{
+    x.cashTarget = safeNumber(x.cashTarget) + safeNumber(x.membershipTarget) + safeNumber(x.ptTarget) + safeNumber(x.supplementTarget) + safeNumber(x.hypoxiTarget);
+  });
+
+  return rows;
+}
+
+async function loadTargetData(){
+  try{
+    const base = CONFIG.TARGET_JSON_URL || 'target.json';
+    const url = base + (base.includes('?') ? '&' : '?') + '_=' + Date.now();
+    const res = await fetch(url, {method:'GET', cache:'no-store'});
+    if(!res.ok) throw new Error('Target JSON HTTP ' + res.status);
+
+    const text = await res.text();
+    let payload;
+    try{
+      payload = JSON.parse(text);
+    }catch(parseErr){
+      throw new Error('Cannot parse target JSON: ' + parseErr.message + ' | first chars: ' + text.slice(0,80));
+    }
+
+    targetData = normalizeTargetPayload(payload);
+    console.log('Loaded target data:', targetData.length, 'club-month target rows', targetData.slice(0,3));
+  }catch(err){
+    console.error('Target JSON not loaded:', err);
+    targetData = [];
+    if(byId('dataStatus')) byId('dataStatus').textContent = 'Target JSON failed: ' + err.message;
+  }
+}
+
+function targetRowsForCurrentFilter(){
+  const period = getPeriod();
+  const club = byId('clubFilter') ? byId('clubFilter').value : 'ALL';
+
+  return targetData.filter(t =>
+    (period === 'ALL' || t.month === period) &&
+    (club === 'ALL' || String(t.club).trim().toUpperCase() === String(club).trim().toUpperCase())
+  );
+}
+
+function targetSum(metricKey){
+  const period = getPeriod();
+  const monthlyTarget = targetRowsForCurrentFilter().reduce((total,t)=>total + safeNumber(t[metricKey]), 0);
+
+  if(period === 'ALL') return monthlyTarget;
+
+  const days = daysInMonth(period) || 31;
+  const selectedDay = getEffectiveCutoffDay(period);
+
+  if(getViewMode() === 'DAILY') return monthlyTarget / days;
+  return (monthlyTarget / days) * selectedDay;
+}
+
+function targetDebugText(){
+  const period = getPeriod();
+  const rows = targetRowsForCurrentFilter();
+  const months = Array.from(new Set(targetData.map(t=>t.month))).sort().join(', ');
+  const monthlyCash = rows.reduce((total,t)=>total + safeNumber(t.cashTarget), 0);
+  return 'Target loaded: ' + targetData.length + ' club-month rows | matched ' + period + ': ' + rows.length + ' | monthly cash target: ' + money(monthlyCash) + ' | target months: ' + months;
+}
+
 async function loadData(){
   setStatus('Loading GitHub JSON data...');
+  await loadTargetData();
   try{
     const url = (CONFIG.JSON_URL || CONFIG.ONEDRIVE_JSON_URL) + ((CONFIG.JSON_URL || CONFIG.ONEDRIVE_JSON_URL).includes('?') ? '&' : '?') + '_=' + Date.now();
     const res = await fetch(url, {method:'GET', cache:'no-store'});
@@ -688,6 +904,18 @@ async function loadData(){
 }
 
 function getPeriod(){ return byId('periodFilter').value; }
+function getViewMode(){ const el = byId('viewModeFilter'); return el ? (el.value || 'MTD') : 'MTD'; }
+function getSelectedDay(){
+  const el = byId('dayFilter');
+  if(!el) return actualDayOfPeriod(getPeriod());
+  return el.value === 'ALL' ? 'ALL' : Number(el.value || actualDayOfPeriod(getPeriod()));
+}
+function getEffectiveCutoffDay(month){
+  if(!month || month === 'ALL') return 31;
+  const selected = getSelectedDay();
+  if(selected === 'ALL') return actualDayOfPeriod(month);
+  return Math.min(Number(selected), daysInMonth(month));
+}
 function getPeriodRows(){ const p = getPeriod(); return p === 'ALL' ? allData : allData.filter(r=>r.month === p); }
 function aggregateByClub(rows){
   const map = new Map();
@@ -708,10 +936,80 @@ function aggregateByClub(rows){
   });
   return Array.from(map.values());
 }
+
+function aggregateByClubForView(rows){
+  const period = getPeriod();
+  if(period === 'ALL') return aggregateByClub(rows);
+
+  const day = getEffectiveCutoffDay(period);
+  const isDaily = getViewMode() === 'DAILY';
+
+  const map = new Map();
+  rows.forEach(r=>{
+    if(!map.has(r.club)) map.set(r.club,{club:r.club,region:r.region,membership:0,ptSales:0,ptss:0,guestMkt:0,guestClub:0,guest:0,nmu:0,target:0,dailyMembership:Array(31).fill(0),dailyPt:Array(31).fill(0),dailyPtss:Array(31).fill(0),dailyGuest:Array(31).fill(0),dailyTarget:Array(31).fill(0),productRevenue:{},dailyProductRevenue:{}});
+    const x = map.get(r.club);
+    const start = isDaily ? day - 1 : 0;
+    const end = day;
+
+    for(let i=start;i<end;i++){
+      x.membership += safeNumber((r.dailyMembership || [])[i]);
+      x.ptSales += safeNumber((r.dailyPt || [])[i]);
+      x.ptss += safeNumber((r.dailyPtss || [])[i]);
+      x.guest += safeNumber((r.dailyGuest || [])[i]);
+      x.target += safeNumber((r.dailyTarget || [])[i]);
+
+      x.dailyMembership[i] += safeNumber((r.dailyMembership || [])[i]);
+      x.dailyPt[i] += safeNumber((r.dailyPt || [])[i]);
+      x.dailyPtss[i] += safeNumber((r.dailyPtss || [])[i]);
+      x.dailyGuest[i] += safeNumber((r.dailyGuest || [])[i]);
+      x.dailyTarget[i] += safeNumber((r.dailyTarget || [])[i]);
+    }
+
+    Object.keys(r.dailyProductRevenue || {}).forEach(name=>{
+      if(!x.productRevenue[name]) x.productRevenue[name] = 0;
+      if(!x.dailyProductRevenue[name]) x.dailyProductRevenue[name] = Array(31).fill(0);
+      const arr = r.dailyProductRevenue[name] || [];
+      for(let i=start;i<end;i++){
+        const v = safeNumber(arr[i]);
+        x.productRevenue[name] += v;
+        x.dailyProductRevenue[name][i] += v;
+      }
+    });
+  });
+  return Array.from(map.values());
+}
+function refreshDayFilter(){
+  const period = getPeriod();
+  const dayFilter = byId('dayFilter');
+  if(!dayFilter) return;
+
+  if(period === 'ALL'){
+    dayFilter.innerHTML = '<option value="ALL">All Days</option>';
+    dayFilter.value = 'ALL';
+    dayFilter.disabled = true;
+    return;
+  }
+
+  dayFilter.disabled = false;
+  const totalDays = daysInMonth(period);
+  const recommended = actualDayOfPeriod(period);
+  const old = dayFilter.value || String(recommended);
+
+  let options = '';
+  for(let d=1; d<=totalDays; d++){
+    const dd = String(d).padStart(2,'0');
+    options += '<option value="' + d + '">Day ' + dd + '</option>';
+  }
+  dayFilter.innerHTML = options;
+  dayFilter.value = (Number(old) >= 1 && Number(old) <= totalDays) ? old : String(recommended);
+}
+
 function refreshPeriodData(){
-  data = aggregateByClub(getPeriodRows());
+  data = aggregateByClubForView(getPeriodRows());
   const regions = Array.from(new Set(data.map(d=>d.region))).sort();
-  const clubs = Array.from(new Set(data.map(d=>d.club))).sort();
+  const clubs = Array.from(new Set(data.map(d=>d.club)))
+    .filter(c => !['CA360','FIN SERVE','FIN SERVICE'].includes(String(c).trim().toUpperCase()))
+    .sort();
   const oldRegion = byId('regionFilter').value || 'ALL';
   const oldClub = byId('clubFilter').value || 'ALL';
   byId('regionFilter').innerHTML = '<option value="ALL">All Regions</option>' + regions.map(r=>'<option value="'+r+'">'+r+'</option>').join('');
@@ -757,9 +1055,12 @@ function setupFilters(){
   const months = Array.from(new Set(allData.map(d=>d.month))).filter(Boolean).sort();
   byId('periodFilter').innerHTML = '<option value="ALL">All Periods</option>' + months.map(m=>'<option value="'+m+'">'+m+'</option>').join('');
   byId('periodFilter').value = months[months.length - 1] || 'ALL';
+  refreshDayFilter();
   refreshPeriodData();
   byId('applyBtn').addEventListener('click', renderDashboard);
-  byId('periodFilter').addEventListener('change',()=>{ refreshPeriodData(); renderDashboard(); });
+  byId('periodFilter').addEventListener('change',()=>{ refreshDayFilter(); refreshPeriodData(); renderDashboard(); });
+  byId('viewModeFilter').addEventListener('change',()=>{ refreshPeriodData(); renderDashboard(); });
+  byId('dayFilter').addEventListener('change',()=>{ refreshPeriodData(); renderDashboard(); });
   byId('regionFilter').addEventListener('change', renderDashboard);
   byId('clubFilter').addEventListener('change', renderDashboard);
   byId('compareFilter').addEventListener('change', renderDashboard);
@@ -793,8 +1094,24 @@ function renderCards(rows){
       ['PTSS Served', Math.round(ptss).toLocaleString(), compareBadgeDetailed(lm ? comparePct(ptss,lm.ptss) : null, label, lm ? signedNumber(ptss-lm.ptss)+' sessions' : '')],
       ['Guest Close Rate', pct(closeRate), compareBadgeDetailed(lm ? comparePct(closeRate,lm.closeRate) : null, label, lm ? signedPctPoint(closeRate-lm.closeRate)+' vs '+lm.month : '')]
     ];
+  }else if(compareMode === 'TARGET'){
+    const targetCash = targetSum('cashTarget');
+    const targetMembership = targetSum('membershipTarget');
+    const targetPt = targetSum('ptTarget');
+    const targetPtss = targetSum('ptssTarget');
+    const targetGuest = targetSum('guestTarget');
+    const targetNmu = targetSum('nmuTarget');
+    const targetCloseRate = targetGuest ? targetNmu / targetGuest : 0;
+
+    cards = [
+      ['Total Cash', money(total), compareBadgeDetailed(targetCash ? total/targetCash - 1 : null, 'vs Target', targetCash ? money(targetCash)+' target · '+pct(total/targetCash) : 'No target data')],
+      ['Membership Sales', money(membership), compareBadgeDetailed(targetMembership ? membership/targetMembership - 1 : null, 'vs Target', targetMembership ? money(targetMembership)+' target · '+pct(membership/targetMembership) : 'No target data')],
+      ['PT Sales', money(pt), compareBadgeDetailed(targetPt ? pt/targetPt - 1 : null, 'vs Target', targetPt ? money(targetPt)+' target · '+pct(pt/targetPt) : 'No target data')],
+      ['PTSS Served', Math.round(ptss).toLocaleString(), compareBadgeDetailed(targetPtss ? ptss/targetPtss - 1 : null, 'vs Target', targetPtss ? Math.round(targetPtss).toLocaleString()+' target · '+pct(ptss/targetPtss) : 'No target data')],
+      ['Guest Close Rate', pct(closeRate), compareBadgeDetailed(targetCloseRate ? closeRate/targetCloseRate - 1 : null, 'vs Target', targetGuest ? Math.round(targetNmu).toLocaleString()+'/'+Math.round(targetGuest).toLocaleString()+' target NMU/Guest' : 'No target data')]
+    ];
   }else{
-    const periodText = getPeriod() === 'ALL' ? 'All Periods' : getPeriod();
+    const periodText = getPeriod() === 'ALL' ? 'All Periods' : (getViewMode() === 'DAILY' ? getPeriod() + ' · Day ' + String(getEffectiveCutoffDay(getPeriod())).padStart(2,'0') : getPeriod() + ' · MTD D' + getEffectiveCutoffDay(getPeriod()));
     cards = [
       ['Total Cash',money(total),'<span class="badge-up px-2 py-1 rounded-full text-xs font-bold">Actual Revenue · '+periodText+'</span>'],
       ['Membership Sales',money(membership),'<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">'+pct(total?membership/total:0)+' mix</span>'],
@@ -869,12 +1186,21 @@ function sumDailyProductLineToDay(rows, productLine, day){
     return total;
   },0);
 }
+function sumDailyProductLineOnDay(rows, productLine, day){
+  if(!productLine || productLine === 'ALL') return sumDailyProductCashByMode(rows, day);
+  return rows.reduce((total,row)=>{
+    const arr = ((row.dailyProductRevenue || {})[productLine]) || [];
+    return total + safeNumber(arr[day - 1]);
+  },0);
+}
 function lastMonthCashForClubProduct(club, productLine){
   const lm = previousMonthString(getPeriod());
   const lmRows = lastMonthRowsForClub(club);
   if(!lm || !lmRows.length) return null;
   const cutoff = sameDayCutoffForMonth(lm);
-  const value = sumDailyProductLineToDay(lmRows, productLine, cutoff);
+  const value = getViewMode() === 'DAILY'
+    ? sumDailyProductLineOnDay(lmRows, productLine, cutoff)
+    : sumDailyProductLineToDay(lmRows, productLine, cutoff);
   return {month:lm, cutoff, value};
 }
 function trendTotalRevenueSeries(rows){
@@ -902,7 +1228,7 @@ function renderCash(rows){
     const lm = previousMonthString(getPeriod());
     const lmRows = rowsForMonthWithCurrentFilters(lm);
     const cutoff = lm ? sameDayCutoffForMonth(lm) : comparisonDayForSelectedPeriod();
-    const lmMap = aggregateDailyProductRevenueToDay(lmRows, cutoff);
+    const lmMap = sumDailyProductRevenueByMode(lmRows, cutoff);
     lmRevenueLines = revenueLines.map(x=>({label:x.label,value:safeNumber(lmMap[x.label])}));
   }
 
@@ -916,7 +1242,7 @@ function renderCash(rows){
     data:{
       labels:revenueLines.map(x=>x.label),
       datasets: compareMode === 'LM' ? [
-        {type:'bar',label:'Current Month MTD',data:revenueLines.map(x=>x.value),borderRadius:14},
+        {type:'bar',label:(getViewMode() === 'DAILY' ? 'Current Day' : 'Current MTD'),data:revenueLines.map(x=>x.value),borderRadius:14},
         {type:'line',label:'Last Month Same-Day',data:lmRevenueLines.map(x=>x.value),tension:.25,borderWidth:2,pointRadius:4,spanGaps:true}
       ] : [{
         label:'Revenue',
@@ -938,13 +1264,13 @@ function renderCash(rows){
     const labels = dailyTrendLabels(cutoff);
     const currentDaily = sumDailyCashArray(rows, cutoff);
     const lmDaily = sumDailyCashArray(lmRows, cutoff);
-    byId('cashTrendNote').textContent = lm ? 'Daily cash: current vs '+lm+' D'+cutoff : 'Daily cash by day';
+    byId('cashTrendNote').textContent = lm ? (getViewMode() === 'DAILY' ? 'Daily cash: selected day vs '+lm+' D'+cutoff : 'Daily cash: current MTD vs '+lm+' D'+cutoff) : 'Daily cash by day';
     drawChart('cashTrendChart',{
       type:'line',
       data:{
         labels,
         datasets:[
-          {label:'Current Month MTD',data:currentDaily,tension:.35,borderWidth:3},
+          {label:(getViewMode() === 'DAILY' ? 'Current Day' : 'Current MTD'),data:currentDaily,tension:.35,borderWidth:3},
           {label:'Last Month Same-Day',data:lmDaily,tension:.35,borderWidth:2,borderDash:[6,4]}
         ]
       },
@@ -995,7 +1321,7 @@ function renderCash(rows){
     data:{
       labels,
       datasets: compareMode === 'LM' ? [
-        {type:'bar',label:'Current MTD · '+productNote,data:currentClubData,borderRadius:10},
+        {type:'bar',label:(getViewMode() === 'DAILY' ? 'Current Day · ' : 'Current MTD · ')+productNote,data:currentClubData,borderRadius:10},
         {type:'line',label:'Last Month Same-Day · '+productNote,data:lmClubData,tension:.25,borderWidth:2,pointRadius:3,spanGaps:true}
       ] : [{
         label:productNote,
@@ -1204,7 +1530,7 @@ function renderAiInsights(rows){
     return scoreB-scoreA;
   })[0];
 
-  const periodText = getPeriod() === 'ALL' ? 'All Periods' : getPeriod();
+  const periodText = getPeriod() === 'ALL' ? 'All Periods' : (getViewMode() === 'DAILY' ? getPeriod() + ' · Day ' + String(getEffectiveCutoffDay(getPeriod())).padStart(2,'0') : getPeriod() + ' · MTD D' + getEffectiveCutoffDay(getPeriod()));
   byId('aiInsightPeriod').textContent = periodText + ' | ' + (byId('compareFilter') ? byId('compareFilter').selectedOptions[0].text : 'Current');
 
   const revNote = revChange === null ? 'No LM base' : (revChange >= 0 ? '▲ '+pct(Math.abs(revChange))+' vs LM' : '▼ '+pct(Math.abs(revChange))+' vs LM');
@@ -1274,6 +1600,10 @@ function renderDashboard(){
   if(activeTab === 'guest') renderGuest(rows);
   if(activeTab === 'club') renderRanking(rows);
   if(activeTab === 'ai') renderAiInsights(rows);
+
+  if(byId('compareFilter') && byId('compareFilter').value === 'TARGET' && byId('dataStatus')){
+    byId('dataStatus').textContent = targetDebugText();
+  }
 }
 function runSelfTests(){
   console.assert(typeof renderDashboard === 'function','renderDashboard must be defined');
