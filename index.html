@@ -210,13 +210,15 @@ const CONFIG = {
   ONEDRIVE_JSON_URL: 'https://raw.githubusercontent.com/dtchien401/cali-dashboard-data/refs/heads/main/data.json',
   GOOGLE_SHEET_URL: 'https://docs.google.com/spreadsheets/d/1IKTt4zGcDAXBSaHCGyrLZxoe_Kykqi01wM-wp8svQOU/edit?usp=sharing',
   API_URL: 'https://script.google.com/macros/s/AKfycbx3cJfy8KY3SIJZ2Fz7o7je37vKr8A6lF8KYeG4JxlBxTHiqXtTWg8NJPVMe1FDrXxxTw/exec',
-  TARGET_JSON_URL: 'https://dtchien401.github.io/Dashboard-test/target.json'
+  TARGET_JSON_URL: 'https://dtchien401.github.io/Dashboard-test/target.json',
+  GUEST_JSON_URL: 'https://dtchien401.github.io/Dashboard-test/Guest.json'
 };
 const charts = {};
 let activeTab = 'cash';
 let allData = [];
 let data = [];
 let targetData = [];
+let guestData = [];
 const CLOSED_CLUBS = ['VMC','LTC','TDY','JCQ','JVJ','CVC','SCC','PPC','TC1','FIN SERVE','CA360'];
 
 const fallbackRawData = [
@@ -912,20 +914,157 @@ function targetCashTrendSeries(){
   const monthlyTarget = targetRowsForCurrentFilter().reduce((total,t)=>total + safeNumber(t.cashTarget), 0);
   const days = daysInMonth(period) || 31;
   const dailyTarget = monthlyTarget / days;
+  const cutoff = getEffectiveCutoffDay(period);
 
+  // Trend target should be daily target by day, not cumulative MTD target.
+  // Example: monthly target / days = target for each day.
   return Array.from({length:days},(_,i)=>{
     const day = i + 1;
-    if(getViewMode() === 'DAILY'){
-      return day === getEffectiveCutoffDay(period) ? dailyTarget : null;
-    }
-    return day <= getEffectiveCutoffDay(period) ? dailyTarget * day : null;
+    return day <= cutoff ? dailyTarget : null;
   });
 }
 
 
+
+function normalizeGuestPayload(payload){
+  let raw = [];
+
+  if(Array.isArray(payload)){
+    raw = payload;
+  }else if(payload && Array.isArray(payload.data)){
+    raw = payload.data;
+  }else if(typeof payload === 'string'){
+    try{
+      const parsed = JSON.parse(payload);
+      raw = Array.isArray(parsed) ? parsed : (Array.isArray(parsed.data) ? parsed.data : []);
+    }catch(e){
+      raw = [];
+    }
+  }
+
+  return raw.map(r=>({
+    month: normalizeRawMonth(r.Month || r.month, r.MMM || r.mmm, r.YYYY || r.yyyy),
+    source: String(r.Source || r.source || '').trim(),
+    club: String(r.Club || r.club || '').trim().toUpperCase(),
+    region: String(r.Region || r.region || 'Unassigned').trim() || 'Unassigned',
+    type: String(r.Type || r.type || '').trim(),
+    category: String(r.Categories || r.categories || r.Category || r.category || '').trim(),
+    day: Number(r.Day || r.day || 0),
+    value: safeNumber(r.Value || r.value)
+  })).filter(r=>r.month && r.club && r.day >= 1 && r.day <= 31);
+}
+
+async function loadGuestData(){
+  try{
+    const base = CONFIG.GUEST_JSON_URL || './Guest.json';
+    const url = base + (base.includes('?') ? '&' : '?') + '_=' + Date.now();
+    const res = await fetch(url, {method:'GET', cache:'no-store'});
+    if(!res.ok) throw new Error('Guest JSON HTTP ' + res.status);
+
+    const text = await res.text();
+    let payload;
+
+    try{
+      payload = JSON.parse(text);
+    }catch(parseErr){
+      throw new Error('Cannot parse Guest JSON: ' + parseErr.message);
+    }
+
+    guestData = normalizeGuestPayload(payload);
+    console.log('Loaded guest data:', guestData.length, 'rows');
+  }catch(err){
+    console.warn('Guest JSON not loaded:', err);
+    guestData = [];
+  }
+}
+
+function isGuestRow(row){
+  const type = String(row.type || '').toLowerCase();
+  const cat = String(row.category || '').toLowerCase();
+  return type === 'guest' && !cat.includes('nmu');
+}
+
+function isNmuRow(row){
+  const cat = String(row.category || '').toLowerCase();
+  const type = String(row.type || '').toLowerCase();
+
+  return (
+    cat.includes('no of nmu') ||
+    cat.includes('nmu') ||
+    type === 'nmu'
+  );
+}
+
+function guestRowsForCurrentFilter(){
+  const period = getPeriod();
+  const region = byId('regionFilter') ? byId('regionFilter').value : 'ALL';
+  const club = byId('clubFilter') ? byId('clubFilter').value : 'ALL';
+  const selectedDay = getSelectedDay();
+  const viewMode = getViewMode();
+
+  return guestData.filter(r=>{
+    if(period !== 'ALL' && r.month !== period) return false;
+    if(region !== 'ALL' && r.region !== region) return false;
+    if(club !== 'ALL' && String(r.club).toUpperCase() !== String(club).toUpperCase()) return false;
+    if(CLOSED_CLUBS.includes(String(r.club).toUpperCase())) return false;
+
+    if(period !== 'ALL' && selectedDay !== 'ALL'){
+      const d = Number(selectedDay);
+      if(viewMode === 'DAILY' && r.day !== d) return false;
+      if(viewMode !== 'DAILY' && r.day > d) return false;
+    }
+
+    return true;
+  });
+}
+
+function guestSourceLabel(row){
+  const category = String(row.category || '').trim();
+  const source = String(row.source || '').trim();
+
+  // For source charts, use actual guest source category, but keep NMU mapped by same source/category.
+  if(category && !String(category).toLowerCase().includes('nmu')) return category;
+  return source || 'Unknown';
+}
+
+function aggregateGuestSourceData(actualRows){
+  const rows = guestRowsForCurrentFilter();
+
+  if(!rows.length){
+    const mkt=sum(actualRows,'guestMkt'), club=sum(actualRows,'guestClub'), totalGuest=mkt+club, nmu=sum(actualRows,'nmu');
+    return [
+      {source:'Guest from MKT',guest:mkt,closed:totalGuest?nmu*(mkt/totalGuest):0},
+      {source:'Guest from Club Dept',guest:club,closed:totalGuest?nmu*(club/totalGuest):0}
+    ].filter(x=>x.guest || x.closed);
+  }
+
+  const map = new Map();
+
+  rows.forEach(r=>{
+    const label = guestSourceLabel(r);
+
+    if(!map.has(label)){
+      map.set(label,{source:label,guest:0,closed:0});
+    }
+
+    const x = map.get(label);
+
+    if(isNmuRow(r)){
+      x.closed += safeNumber(r.value);
+    }else if(isGuestRow(r)){
+      x.guest += safeNumber(r.value);
+    }
+  });
+
+  return Array.from(map.values())
+    .filter(x=>x.guest || x.closed)
+    .sort((a,b)=>b.guest-a.guest);
+}
+
 async function loadData(){
   setStatus('Loading GitHub JSON data...');
   await loadTargetData();
+  await loadGuestData();
   try{
     const url = (CONFIG.JSON_URL || CONFIG.ONEDRIVE_JSON_URL) + ((CONFIG.JSON_URL || CONFIG.ONEDRIVE_JSON_URL).includes('?') ? '&' : '?') + '_=' + Date.now();
     const res = await fetch(url, {method:'GET', cache:'no-store'});
@@ -1352,15 +1491,15 @@ function renderCash(rows){
 
     byId('cashTrendNote').textContent = getViewMode() === 'DAILY'
       ? 'Daily cash vs daily target'
-      : 'MTD cash vs MTD target';
+      : 'Daily cash vs daily target';
 
     drawChart('cashTrendChart',{
       type:'line',
       data:{
         labels,
         datasets:[
-          {label:(getViewMode() === 'DAILY' ? 'Actual Day' : 'Actual MTD'),data:getViewMode() === 'DAILY' ? currentDaily.map((v,i)=>i+1===getEffectiveCutoffDay(getPeriod())?v:null) : cumulative(currentDaily),tension:.35,borderWidth:3},
-          {label:'Target',data:targetDaily,tension:.25,borderWidth:2,pointRadius:3,spanGaps:true,borderColor:'#d71920',backgroundColor:'#d71920'}
+          {label:(getViewMode() === 'DAILY' ? 'Actual Day' : 'Actual Daily'),data:getViewMode() === 'DAILY' ? currentDaily.map((v,i)=>i+1===getEffectiveCutoffDay(getPeriod())?v:null) : currentDaily.map((v,i)=>i+1<=getEffectiveCutoffDay(getPeriod())?v:null),tension:.35,borderWidth:3},
+          {label:'Daily Target',data:targetDaily,tension:.25,borderWidth:2,pointRadius:3,spanGaps:true,borderColor:'#d71920',backgroundColor:'#d71920'}
         ]
       },
       options:{
@@ -1511,11 +1650,41 @@ function renderPtss(rows){
     '</div>';
 }
 function renderGuest(rows){
-  const mkt=sum(rows,'guestMkt'), club=sum(rows,'guestClub'), totalGuest=mkt+club, nmu=sum(rows,'nmu');
-  const sourceData=[{source:'Guest from MKT',guest:mkt,closed:totalGuest?nmu*(mkt/totalGuest):0},{source:'Guest from Club Dept',guest:club,closed:totalGuest?nmu*(club/totalGuest):0}];
-  drawChart('guestSourceChart',{type:'doughnut',data:{labels:sourceData.map(d=>d.source),datasets:[{data:sourceData.map(d=>d.guest)}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
-  drawChart('guestCloseChart',{type:'bar',data:{labels:sourceData.map(d=>d.source),datasets:[{label:'Guest',data:sourceData.map(d=>d.guest),borderRadius:10},{label:'NMU / Closed',data:sourceData.map(d=>d.closed),borderRadius:10}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
-  byId('guestTable').innerHTML = sourceData.map(d=>'<tr class="table-row border-b"><td class="py-3 font-bold">'+d.source+'</td><td>'+Math.round(d.guest).toLocaleString()+'</td><td>'+d.closed.toFixed(1)+'</td><td>'+pct(d.guest?d.closed/d.guest:0)+'</td><td>'+(d.guest && d.closed/d.guest<0.18?'Improve follow-up script':'Scale this source')+'</td></tr>').join('');
+  const sourceData = aggregateGuestSourceData(rows);
+  const topSources = sourceData.slice(0,8);
+
+  drawChart('guestSourceChart',{
+    type:'doughnut',
+    data:{
+      labels:topSources.map(d=>d.source),
+      datasets:[{data:topSources.map(d=>d.guest)}]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom'}}
+    }
+  });
+
+  drawChart('guestCloseChart',{
+    type:'bar',
+    data:{
+      labels:topSources.map(d=>d.source),
+      datasets:[
+        {label:'Guest',data:topSources.map(d=>d.guest),borderRadius:10},
+        {label:'NMU / Closed',data:topSources.map(d=>d.closed),borderRadius:10}
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom'}},
+      scales:{y:{beginAtZero:true}}
+    }
+  });
+
+  byId('guestTable').innerHTML = sourceData.map(d=>{
+    const closeRate = d.guest ? d.closed/d.guest : 0;
+    return '<tr class="table-row border-b"><td class="py-3 font-bold">'+escapeHtml(d.source)+'</td><td>'+Math.round(d.guest).toLocaleString()+'</td><td>'+Math.round(d.closed).toLocaleString()+'</td><td>'+pct(closeRate)+'</td><td>'+(d.guest && closeRate<0.18?'Improve follow-up script':'Scale this source')+'</td></tr>';
+  }).join('');
 }
 function renderRanking(rows){
   const sorted=[...rows].sort((a,b)=>cashTotal(b)-cashTotal(a));
@@ -1695,6 +1864,11 @@ function renderDashboard(){
 
   if(byId('compareFilter') && byId('compareFilter').value === 'TARGET' && byId('dataStatus')){
     byId('dataStatus').textContent = targetDebugText();
+  }else if(activeTab === 'guest' && byId('dataStatus')){
+    const matched = guestRowsForCurrentFilter();
+    const guestCount = matched.filter(isGuestRow).length;
+    const nmuCount = matched.filter(isNmuRow).length;
+    byId('dataStatus').textContent = 'Guest loaded: ' + guestData.length + ' rows | matched guest rows: ' + guestCount + ' | matched NMU rows: ' + nmuCount;
   }
 }
 function runSelfTests(){
