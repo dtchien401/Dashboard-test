@@ -861,6 +861,68 @@ function targetDebugText(){
   return 'Target loaded: ' + targetData.length + ' club-month rows | matched ' + period + ': ' + rows.length + ' | monthly cash target: ' + money(monthlyCash) + ' | target months: ' + months;
 }
 
+function targetValueForProductLine(productLine){
+  if(!productLine || productLine === 'ALL') return targetSum('cashTarget');
+  const p = String(productLine).trim().toLowerCase();
+
+  if(p === 'nms' || p.includes('membership')) return targetSum('membershipTarget');
+  if(p === 'pt') return targetSum('ptTarget');
+  if(p.includes('supplement')) return targetSum('supplementTarget');
+  if(p.includes('hypoxi')) return targetSum('hypoxiTarget');
+
+  return 0;
+}
+
+function monthlyTargetByClub(club, metricKey){
+  const period = getPeriod();
+  return targetData
+    .filter(t =>
+      (period === 'ALL' || t.month === period) &&
+      String(t.club).trim().toUpperCase() === String(club).trim().toUpperCase()
+    )
+    .reduce((total,t)=>total + safeNumber(t[metricKey]), 0);
+}
+
+function targetValueForClubProduct(club, productLine){
+  const period = getPeriod();
+  if(period === 'ALL') return 0;
+
+  let metricKey = 'cashTarget';
+  if(productLine && productLine !== 'ALL'){
+    const p = String(productLine).trim().toLowerCase();
+    if(p === 'nms' || p.includes('membership')) metricKey = 'membershipTarget';
+    else if(p === 'pt') metricKey = 'ptTarget';
+    else if(p.includes('supplement')) metricKey = 'supplementTarget';
+    else if(p.includes('hypoxi')) metricKey = 'hypoxiTarget';
+    else return 0;
+  }
+
+  const monthly = monthlyTargetByClub(club, metricKey);
+  const days = daysInMonth(period) || 31;
+  const selectedDay = getEffectiveCutoffDay(period);
+
+  if(getViewMode() === 'DAILY') return monthly / days;
+  return (monthly / days) * selectedDay;
+}
+
+function targetCashTrendSeries(){
+  const period = getPeriod();
+  if(period === 'ALL') return [];
+
+  const monthlyTarget = targetRowsForCurrentFilter().reduce((total,t)=>total + safeNumber(t.cashTarget), 0);
+  const days = daysInMonth(period) || 31;
+  const dailyTarget = monthlyTarget / days;
+
+  return Array.from({length:days},(_,i)=>{
+    const day = i + 1;
+    if(getViewMode() === 'DAILY'){
+      return day === getEffectiveCutoffDay(period) ? dailyTarget : null;
+    }
+    return day <= getEffectiveCutoffDay(period) ? dailyTarget * day : null;
+  });
+}
+
+
 async function loadData(){
   setStatus('Loading GitHub JSON data...');
   await loadTargetData();
@@ -1244,6 +1306,9 @@ function renderCash(rows){
       datasets: compareMode === 'LM' ? [
         {type:'bar',label:(getViewMode() === 'DAILY' ? 'Current Day' : 'Current MTD'),data:revenueLines.map(x=>x.value),borderRadius:14},
         {type:'line',label:'Last Month Same-Day',data:lmRevenueLines.map(x=>x.value),tension:.25,borderWidth:2,pointRadius:4,spanGaps:true}
+      ] : compareMode === 'TARGET' ? [
+        {type:'bar',label:(getViewMode() === 'DAILY' ? 'Actual Day' : 'Actual MTD'),data:revenueLines.map(x=>x.value),borderRadius:14},
+        {type:'line',label:'Target',data:revenueLines.map(x=>targetValueForProductLine(x.label)),tension:.25,borderWidth:2,pointRadius:4,spanGaps:true,borderColor:'#d71920',backgroundColor:'#d71920'}
       ] : [{
         label:'Revenue',
         data:revenueLines.map(x=>x.value),
@@ -1252,7 +1317,7 @@ function renderCash(rows){
     },
     options:{
       responsive:true,
-      plugins:{legend:{display:compareMode === 'LM', position:'bottom'}},
+      plugins:{legend:{display:compareMode === 'LM' || compareMode === 'TARGET', position:'bottom'}},
       scales:{x:{ticks:{autoSkip:false,maxRotation:60,minRotation:35}},y:{ticks:{callback:v=>money(v)}}}
     }
   });
@@ -1272,6 +1337,30 @@ function renderCash(rows){
         datasets:[
           {label:(getViewMode() === 'DAILY' ? 'Current Day' : 'Current MTD'),data:currentDaily,tension:.35,borderWidth:3},
           {label:'Last Month Same-Day',data:lmDaily,tension:.35,borderWidth:2,borderDash:[6,4]}
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{position:'bottom'}},
+        scales:{y:{ticks:{callback:v=>money(v)}}}
+      }
+    });
+  }else if(compareMode === 'TARGET' && getPeriod() !== 'ALL'){
+    const labels = dailyTrendLabels(daysInMonth(getPeriod()));
+    const currentDaily = sumDailyCashArray(rows, daysInMonth(getPeriod()));
+    const targetDaily = targetCashTrendSeries();
+
+    byId('cashTrendNote').textContent = getViewMode() === 'DAILY'
+      ? 'Daily cash vs daily target'
+      : 'MTD cash vs MTD target';
+
+    drawChart('cashTrendChart',{
+      type:'line',
+      data:{
+        labels,
+        datasets:[
+          {label:(getViewMode() === 'DAILY' ? 'Actual Day' : 'Actual MTD'),data:getViewMode() === 'DAILY' ? currentDaily.map((v,i)=>i+1===getEffectiveCutoffDay(getPeriod())?v:null) : cumulative(currentDaily),tension:.35,borderWidth:3},
+          {label:'Target',data:targetDaily,tension:.25,borderWidth:2,pointRadius:3,spanGaps:true,borderColor:'#d71920',backgroundColor:'#d71920'}
         ]
       },
       options:{
@@ -1323,6 +1412,9 @@ function renderCash(rows){
       datasets: compareMode === 'LM' ? [
         {type:'bar',label:(getViewMode() === 'DAILY' ? 'Current Day · ' : 'Current MTD · ')+productNote,data:currentClubData,borderRadius:10},
         {type:'line',label:'Last Month Same-Day · '+productNote,data:lmClubData,tension:.25,borderWidth:2,pointRadius:3,spanGaps:true}
+      ] : compareMode === 'TARGET' ? [
+        {type:'bar',label:'Actual · '+productNote,data:currentClubData,borderRadius:10},
+        {type:'line',label:'Target · '+productNote,data:topClubChart.map(d=>targetValueForClubProduct(d.club, selectedProductLine)),tension:.25,borderWidth:2,pointRadius:3,spanGaps:true,borderColor:'#d71920',backgroundColor:'#d71920'}
       ] : [{
         label:productNote,
         data:currentClubData,
