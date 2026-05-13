@@ -143,20 +143,20 @@ logo.png
         <button class="tab" data-tab="club"><span class="ico">▤</span><span>Club Ranking</span></button>
         <button class="tab" data-tab="ai"><span class="ico">✦</span><span>AI Insights</span></button>
       </nav>
-      <div class="sidebar-footer">Commercial dashboard powered by JSON data, same-day comparison and target tracking.</div>
+      <div class="sidebar-footer">Commercial dashboard powered by CSV data, same-day comparison and target tracking.</div>
     </aside>
     <main class="main-area">
       <section class="topbar">
         <div>
           <div class="page-kicker">California Fitness & Yoga</div>
           <h1 class="page-title">Performance Dashboard</h1>
-          <p class="page-subtitle">Commercial Performance Intelligence Dashboard · JSON powered · MTD / Daily / Same-day comparison</p>
+          <p class="page-subtitle">Commercial Performance Intelligence Dashboard · CSV powered · MTD / Daily / Same-day comparison</p>
         </div>
         <div class="status-card">
           <div class="label">Selected Period</div>
           <div class="value" id="headerTotal">$0</div>
           <div class="desc">Total NMS + PT Sales | USD</div>
-          <div id="dataStatus">Loading JSON data...</div>
+          <div id="dataStatus">Loading CSV data...</div>
         </div>
       </section>
       <section class="filter-card">
@@ -314,10 +314,10 @@ logo.png
 'use strict';
 
 const CONFIG = {
-  DATA_SOURCE: 'JSON',
+  DATA_SOURCE: 'CSV',
 
-  JSON_URL: './data.json',
-  JSON_URL_FALLBACK: 'https://dtchien401.github.io/Dashboard-test/data.json',
+  CSV_URL: './data.csv',
+  CSV_URL_FALLBACK: 'https://raw.githubusercontent.com/dtchien401/Dashboard-test/main/data.csv',
 
   TARGET_JSON_URL: './target.json',
   TARGET_JSON_URL_FALLBACK: 'https://dtchien401.github.io/Dashboard-test/target.json',
@@ -716,6 +716,81 @@ async function fetchJsonFromUrls(urls, label){
   }
 
   throw new Error(label + ' failed. Tried: ' + urls.filter(Boolean).join(' | ') + '. Errors: ' + errors.join(' ; '));
+}
+
+
+
+async function fetchTextFromUrls(urls, label){
+  const errors = [];
+
+  for(const base of urls.filter(Boolean)){
+    try{
+      const url = base + (base.includes('?') ? '&' : '?') + '_=' + Date.now();
+      const res = await fetch(url, {method:'GET', cache:'no-store'});
+
+      if(!res.ok) throw new Error(label + ' HTTP ' + res.status + ' from ' + base);
+
+      return {
+        text: await res.text(),
+        url: base
+      };
+    }catch(err){
+      errors.push(err.message || String(err));
+    }
+  }
+
+  throw new Error(label + ' failed. Tried: ' + urls.filter(Boolean).join(' | ') + '. Errors: ' + errors.join(' ; '));
+}
+
+function parseCsvText(text){
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+
+  for(let i=0;i<text.length;i++){
+    const char = text[i];
+    const next = text[i + 1];
+
+    if(char === '"'){
+      if(inQuotes && next === '"'){
+        field += '"';
+        i++;
+      }else{
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if(char === ',' && !inQuotes){
+      row.push(field);
+      field = '';
+      continue;
+    }
+
+    if((char === '\n' || char === '\r') && !inQuotes){
+      if(char === '\r' && next === '\n') i++;
+      row.push(field);
+      if(row.some(v=>String(v).trim() !== '')) rows.push(row);
+      row = [];
+      field = '';
+      continue;
+    }
+
+    field += char;
+  }
+
+  row.push(field);
+  if(row.some(v=>String(v).trim() !== '')) rows.push(row);
+
+  if(!rows.length) return [];
+
+  const headers = rows.shift().map(h=>String(h || '').trim());
+  return rows.map(values=>{
+    const obj = {};
+    headers.forEach((h,i)=>{ obj[h] = values[i] !== undefined ? values[i] : ''; });
+    return obj;
+  });
 }
 
 
@@ -1316,37 +1391,36 @@ function aggregateGuestClubData(){
 }
 
 async function loadData(){
-  setStatus('Loading JSON data...');
+  setStatus('Loading CSV data...');
   await loadTargetData();
   await loadGuestData();
 
   try{
-    const result = await fetchJsonFromUrls(
-      [CONFIG.JSON_URL, CONFIG.JSON_URL_FALLBACK],
-      'data.json'
+    const result = await fetchTextFromUrls(
+      [CONFIG.CSV_URL, CONFIG.CSV_URL_FALLBACK],
+      'data.csv'
     );
 
-    const json = unwrapJsonPayload(result.payload);
-    const sourceRows = Array.isArray(json.data) ? json.data : [];
+    const sourceRows = parseCsvText(result.text);
 
     if(!sourceRows.length){
-      throw new Error((json && json.message) || 'data.json returned 0 rows');
+      throw new Error('data.csv returned 0 rows');
     }
 
     allData = transformLongFormatRows(sourceRows).filter(x=>x.club && x.month);
 
     if(!allData.length){
-      throw new Error('0 usable aggregated rows after long-format mapping.');
+      throw new Error('0 usable aggregated rows after CSV long-format mapping. Check columns: MMM, YYYY, Month, Source, Club, Region, Type, Categories, Day, Value.');
     }
 
     const months = Array.from(new Set(allData.map(d=>d.month))).sort();
     const clubs = Array.from(new Set(allData.map(d=>d.club))).sort();
 
-    setStatus('Loaded from data.json: ' + sourceRows.length + ' raw rows → ' + allData.length + ' club-month records | ' + months.length + ' periods | ' + clubs.length + ' clubs | source: ' + result.url);
+    setStatus('Loaded from data.csv: ' + sourceRows.length + ' raw rows → ' + allData.length + ' club-month records | ' + months.length + ' periods | ' + clubs.length + ' clubs | source: ' + result.url);
   }catch(err){
-    console.error('Cannot load data.json. Using fallback data.', err);
+    console.error('Cannot load data.csv. Using fallback data.', err);
     allData = mapFallbackData();
-    setStatus('data.json failed, using fallback demo data. ' + err.message);
+    setStatus('data.csv failed. Please upload data.csv to the same GitHub folder as index.html, then open the GitHub Pages URL. Details: ' + err.message);
   }
 }
 
