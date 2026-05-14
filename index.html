@@ -1597,6 +1597,7 @@ function setupFilters(){
 }
 function renderCards(rows){
   const membership=sum(rows,'membership'), pt=sum(rows,'ptSales'), total=cashTotalRows(rows), ptss=sum(rows,'ptss'), guest=sum(rows,'guest'), nmu=sum(rows,'nmu');
+  const otherRevenue = Math.max(0, total - membership - pt);
   const closeRate = guest ? nmu / guest : 0;
   const compareMode = byId('compareFilter').value;
   const periodText = getPeriod() === 'ALL' ? 'All Periods' : (getViewMode() === 'DAILY' ? getPeriod() + ' · Day ' + String(getEffectiveCutoffDay(getPeriod())).padStart(2,'0') : getPeriod() + ' · MTD D' + getEffectiveCutoffDay(getPeriod()));
@@ -1703,7 +1704,7 @@ function renderCards(rows){
         ['Membership Sales', money(membership), compareBadgeDetailed(lm ? comparePct(membership,lm.membership) : null, label, lm ? signedMoney(membership-lm.membership)+' vs '+lm.month : '')],
         ['PT Sales', money(pt), compareBadgeDetailed(lm ? comparePct(pt,lm.ptSales) : null, label, lm ? signedMoney(pt-lm.ptSales)+' vs '+lm.month : '')],
         ['PTSS Served', Math.round(ptss).toLocaleString(), compareBadgeDetailed(lm ? comparePct(ptss,lm.ptss) : null, label, lm ? signedNumber(ptss-lm.ptss)+' sessions' : '')],
-        ['Guest Close Rate', pct(closeRate), compareBadgeDetailed(lm ? comparePct(closeRate,lm.closeRate) : null, label, lm ? signedPctPoint(closeRate-lm.closeRate)+' vs '+lm.month : '')]
+        ['Other Revenue', money(otherRevenue), compareBadgeDetailed(lm ? comparePct(otherRevenue, Math.max(0, lm.cash - lm.membership - lm.ptSales)) : null, label, lm ? signedMoney(otherRevenue - Math.max(0, lm.cash - lm.membership - lm.ptSales))+' vs '+lm.month : '')]
       ];
     }else if(compareMode === 'TARGET'){
       const targetCash = targetSum('cashTarget');
@@ -1713,13 +1714,14 @@ function renderCards(rows){
       const targetGuest = targetSum('guestTarget');
       const targetNmu = targetSum('nmuTarget');
       const targetCloseRate = targetGuest ? targetNmu / targetGuest : 0;
+      const targetOther = Math.max(0, targetCash - targetMembership - targetPt);
 
       cards = [
         ['Total Cash', money(total), compareBadgeDetailed(targetCash ? total/targetCash - 1 : null, 'vs Target', targetCash ? money(targetCash)+' target · '+pct(total/targetCash) : 'No target data')],
         ['Membership Sales', money(membership), compareBadgeDetailed(targetMembership ? membership/targetMembership - 1 : null, 'vs Target', targetMembership ? money(targetMembership)+' target · '+pct(membership/targetMembership) : 'No target data')],
         ['PT Sales', money(pt), compareBadgeDetailed(targetPt ? pt/targetPt - 1 : null, 'vs Target', targetPt ? money(targetPt)+' target · '+pct(pt/targetPt) : 'No target data')],
         ['PTSS Served', Math.round(ptss).toLocaleString(), compareBadgeDetailed(targetPtss ? ptss/targetPtss - 1 : null, 'vs Target', targetPtss ? Math.round(targetPtss).toLocaleString()+' target · '+pct(ptss/targetPtss) : 'No target data')],
-        ['Guest Close Rate', pct(closeRate), compareBadgeDetailed(targetCloseRate ? closeRate/targetCloseRate - 1 : null, 'vs Target', targetGuest ? Math.round(targetNmu).toLocaleString()+'/'+Math.round(targetGuest).toLocaleString()+' target NMU/Guest' : 'No target data')]
+        ['Other Revenue', money(otherRevenue), compareBadgeDetailed(targetOther ? otherRevenue/targetOther - 1 : null, 'vs Target', targetOther ? money(targetOther)+' target · '+pct(otherRevenue/targetOther) : 'No other target data')]
       ];
     }else{
       cards = [
@@ -1727,7 +1729,7 @@ function renderCards(rows){
         ['Membership Sales',money(membership),'<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">'+pct(total?membership/total:0)+' mix</span>'],
         ['PT Sales',money(pt),'<span class="'+(total && pt/total>=0.42?'badge-up':'badge-neutral')+' px-2 py-1 rounded-full text-xs font-bold">'+pct(total?pt/total:0)+' mix</span>'],
         ['PTSS Served',Math.round(ptss).toLocaleString(),'<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">Non-cash KPI</span>'],
-        ['Guest Close Rate',pct(closeRate),'<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">'+Math.round(guest).toLocaleString()+' guests</span>']
+        ['Other Revenue',money(otherRevenue),'<span class="badge-neutral px-2 py-1 rounded-full text-xs font-bold">'+pct(total?otherRevenue/total:0)+' mix</span>']
       ];
     }
   }
