@@ -217,6 +217,32 @@ logo.png
       </section>
 
       <section id="guest" class="tabPanel hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="card p-5 lg:col-span-3">
+          <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+            <div>
+              <div class="mini-label">Guest Time Frame</div>
+              <h2 class="text-xl font-black">Select Guest View</h2>
+              <p class="text-xs text-gray-400 mt-1">Custom Date Range uses From–To. Monthly MTD uses Period / Day and keeps Last Month same-day comparison.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 w-full lg:w-auto lg:min-w-[720px]">
+              <div class="filter-field md:col-span-2">
+                <label>Guest View Mode</label>
+                <select id="guestViewModeFilter" class="filter-control">
+                  <option value="CUSTOM">Custom Date Range</option>
+                  <option value="MONTHLY_MTD">Monthly MTD + Last Month</option>
+                </select>
+              </div>
+              <div class="filter-field guest-custom-date">
+                <label>From</label>
+                <input id="guestFromDate" type="date" class="filter-control" />
+              </div>
+              <div class="filter-field guest-custom-date">
+                <label>To</label>
+                <input id="guestToDate" type="date" class="filter-control" />
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="card p-5"><div class="mini-label">Source Mix</div><h2 class="text-xl font-black mb-4">Guest by Source</h2><canvas id="guestSourceChart" height="210"></canvas></div>
         <div class="card p-5 lg:col-span-2"><div class="mini-label">Funnel Quality</div><h2 class="text-xl font-black mb-4">Guest → Close by Source</h2><canvas id="guestCloseChart" height="120"></canvas></div>
         <div class="card p-5 lg:col-span-3">
@@ -230,7 +256,7 @@ logo.png
           </div>
           <canvas id="guestClubChart" height="180"></canvas>
         </div>
-        <div class="card p-5 lg:col-span-3">
+        <div id="guestMomCard" class="card p-5 lg:col-span-3">
           <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-4">
             <div>
               <div class="mini-label">Month on Month</div>
@@ -321,6 +347,9 @@ const CONFIG = {
 
   TARGET_JSON_URL: './target.json',
   TARGET_JSON_URL_FALLBACK: 'https://dtchien401.github.io/Dashboard-test/target.json',
+
+  GUEST_CSV_URL: './guest.csv',
+  GUEST_CSV_URL_FALLBACK: 'https://raw.githubusercontent.com/dtchien401/Dashboard-test/main/guest.csv',
 
   GUEST_JSON_URL: './Guest.json',
   GUEST_JSON_URL_FALLBACK: 'https://dtchien401.github.io/Dashboard-test/Guest.json'
@@ -1164,6 +1193,29 @@ function normalizeGuestPayload(payload){
 }
 
 async function loadGuestData(){
+  // Primary source: guest.csv
+  // Expected columns: MMM, YYYY, Month, Source, Club, Region, Type, Categories, Day, Value
+  // Logic: Type = Guest counts Total Guest; Type = NMU counts NMU / Closed; Categories = source bucket such as APPT / OL / TM / MKT / WI.
+  try{
+    const result = await fetchTextFromUrls(
+      [CONFIG.GUEST_CSV_URL, CONFIG.GUEST_CSV_URL_FALLBACK],
+      'guest.csv'
+    );
+
+    const csvRows = parseCsvText(result.text);
+    guestData = normalizeGuestPayload(csvRows);
+
+    if(!guestData.length){
+      throw new Error('guest.csv returned 0 usable rows');
+    }
+
+    console.log('Loaded guest data:', guestData.length, 'rows from', result.url);
+    return;
+  }catch(csvErr){
+    console.warn('Guest CSV not loaded, trying Guest.json fallback:', csvErr);
+  }
+
+  // Fallback only for older deployments that still have Guest.json.
   try{
     const result = await fetchJsonFromUrls(
       [CONFIG.GUEST_JSON_URL, CONFIG.GUEST_JSON_URL_FALLBACK],
@@ -1171,9 +1223,9 @@ async function loadGuestData(){
     );
 
     guestData = normalizeGuestPayload(result.payload);
-    console.log('Loaded guest data:', guestData.length, 'rows from', result.url);
-  }catch(err){
-    console.warn('Guest JSON not loaded:', err);
+    console.log('Loaded guest data from JSON fallback:', guestData.length, 'rows from', result.url);
+  }catch(jsonErr){
+    console.warn('Guest data not loaded:', jsonErr);
     guestData = [];
   }
 }
@@ -1195,19 +1247,73 @@ function isNmuRow(row){
   );
 }
 
+function getGuestViewMode(){
+  const el = byId('guestViewModeFilter');
+  return el ? (el.value || 'MONTHLY_MTD') : 'MONTHLY_MTD';
+}
+function rowGuestDate(row){
+  if(!row || !row.month || !row.day) return null;
+  return row.month + '-' + String(row.day).padStart(2,'0');
+}
+function guestDefaultFromDate(){
+  const period = getPeriod();
+  const month = period && period !== 'ALL' ? period : (Array.from(new Set(guestData.map(r=>r.month))).filter(Boolean).sort().pop() || getLocalMonthString(new Date()));
+  return month + '-01';
+}
+function guestDefaultToDate(){
+  const period = getPeriod();
+  const month = period && period !== 'ALL' ? period : (Array.from(new Set(guestData.map(r=>r.month))).filter(Boolean).sort().pop() || getLocalMonthString(new Date()));
+  return month + '-' + String(Math.min(actualDayOfPeriod(month), daysInMonth(month))).padStart(2,'0');
+}
+function ensureGuestDateDefaults(){
+  const from = byId('guestFromDate');
+  const to = byId('guestToDate');
+  if(from && !from.value) from.value = guestDefaultFromDate();
+  if(to && !to.value) to.value = guestDefaultToDate();
+}
+function getGuestDateRange(){
+  ensureGuestDateDefaults();
+  let from = byId('guestFromDate') ? byId('guestFromDate').value : '';
+  let to = byId('guestToDate') ? byId('guestToDate').value : '';
+  if(from && to && from > to){
+    const tmp = from;
+    from = to;
+    to = tmp;
+  }
+  return {from, to};
+}
+function syncGuestViewModeUi(){
+  const isCustom = getGuestViewMode() === 'CUSTOM';
+  document.querySelectorAll('.guest-custom-date').forEach(el=>{
+    el.style.display = isCustom ? '' : 'none';
+  });
+  const momCard = byId('guestMomCard');
+  if(momCard) momCard.style.display = isCustom ? 'none' : '';
+}
 function guestRowsForCurrentFilter(){
   const period = getPeriod();
   const region = byId('regionFilter') ? byId('regionFilter').value : 'ALL';
   const club = byId('clubFilter') ? byId('clubFilter').value : 'ALL';
   const selectedDay = getSelectedDay();
   const viewMode = getViewMode();
+  const guestViewMode = getGuestViewMode();
+  const range = getGuestDateRange();
 
   return guestData.filter(r=>{
-    if(period !== 'ALL' && r.month !== period) return false;
     if(region !== 'ALL' && r.region !== region) return false;
     if(club !== 'ALL' && String(r.club).toUpperCase() !== String(club).toUpperCase()) return false;
     if(CLOSED_CLUBS.includes(String(r.club).toUpperCase())) return false;
 
+    if(guestViewMode === 'CUSTOM'){
+      const d = rowGuestDate(r);
+      if(!d) return false;
+      if(range.from && d < range.from) return false;
+      if(range.to && d > range.to) return false;
+      return true;
+    }
+
+    // Monthly MTD mode: follows main Period / View / Day and supports Last Month comparison.
+    if(period !== 'ALL' && r.month !== period) return false;
     if(period !== 'ALL' && selectedDay !== 'ALL'){
       const d = Number(selectedDay);
       if(viewMode === 'DAILY' && r.day !== d) return false;
@@ -1222,8 +1328,9 @@ function guestSourceLabel(row){
   const category = String(row.category || '').trim();
   const source = String(row.source || '').trim();
 
-  // For source charts, use actual guest source category, but keep NMU mapped by same source/category.
-  if(category && !String(category).toLowerCase().includes('nmu')) return category;
+  // guest.csv uses Categories as the real source bucket for both Guest and NMU rows.
+  // Examples: APPT, OL, TM, MKT, WI.
+  if(category) return category;
   return source || 'Unknown';
 }
 
@@ -1313,6 +1420,9 @@ function aggregateGuestSourceDataFromRows(rows){
 }
 
 function aggregateGuestSourceMomData(){
+  if(getGuestViewMode() === 'CUSTOM'){
+    return {lastMonth:null, rows:[]};
+  }
   const currentMonth = getPeriod();
   const lastMonth = previousMonthString(currentMonth);
 
@@ -1588,6 +1698,16 @@ function setupFilters(){
   byId('compareFilter').addEventListener('change', renderDashboard);
   const clubProductFilter = byId('clubProductFilter');
   if(clubProductFilter) clubProductFilter.addEventListener('change', renderDashboard);
+
+  ensureGuestDateDefaults();
+  syncGuestViewModeUi();
+  const guestViewModeFilter = byId('guestViewModeFilter');
+  const guestFromDate = byId('guestFromDate');
+  const guestToDate = byId('guestToDate');
+  if(guestViewModeFilter) guestViewModeFilter.addEventListener('change',()=>{ syncGuestViewModeUi(); renderDashboard(); });
+  if(guestFromDate) guestFromDate.addEventListener('change', renderDashboard);
+  if(guestToDate) guestToDate.addEventListener('change', renderDashboard);
+
   byId('searchClub').addEventListener('input', renderClubTable);
   document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{
     if(currentUserRole === 'guest_only' && btn.dataset.tab !== 'guest') return;
@@ -2091,6 +2211,7 @@ function hexToRgba(hex, alpha){
 
 
 function renderGuest(rows){
+  syncGuestViewModeUi();
   const sourceData = aggregateGuestSourceData(rows);
   const topSources = sourceData.slice(0,8);
   const clubAgg = aggregateGuestClubData();
@@ -2453,7 +2574,10 @@ function renderDashboard(){
     const matched = guestRowsForCurrentFilter();
     const guestCount = matched.filter(isGuestRow).length;
     const nmuCount = matched.filter(isNmuRow).length;
-    byId('dataStatus').textContent = 'Guest loaded: ' + guestData.length + ' rows | matched guest rows: ' + guestCount + ' | matched NMU rows: ' + nmuCount;
+    const mode = getGuestViewMode();
+    const range = getGuestDateRange();
+    const periodText = mode === 'CUSTOM' ? (range.from + ' → ' + range.to) : (getPeriod() + ' · ' + (getViewMode() === 'DAILY' ? 'Day ' + getEffectiveCutoffDay(getPeriod()) : 'MTD D' + getEffectiveCutoffDay(getPeriod())));
+    byId('dataStatus').textContent = 'Guest loaded: ' + guestData.length + ' rows | ' + mode + ' ' + periodText + ' | matched guest rows: ' + guestCount + ' | matched NMU rows: ' + nmuCount;
   }
 }
 function runSelfTests(){
