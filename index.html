@@ -2183,18 +2183,33 @@ function renderPtss(rows){
 }
 
 function guestSourceColor(source){
-  const s = String(source || '').toLowerCase();
-  if(s.includes('appointment')) return '#2563EB';
-  if(s.includes('digital')) return '#DB2777';
-  if(s.includes('partner')) return '#EA580C';
-  if(s.includes('walk')) return '#CA8A04';
-  if(s.includes('tele')) return '#0D9488';
-  if(s.includes('survey')) return '#7C3AED';
-  if(s.includes('aff')) return '#6B7280';
-  if(s.includes('referral')) return '#1D4ED8';
-  if(s.includes('lwt')) return '#16A34A';
+  const raw = String(source || '').trim();
+  const key = raw.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const s = raw.toLowerCase();
 
-  const fallback = ['#0284C7','#059669','#F97316','#4F46E5','#65A30D','#0891B2','#9333EA','#475569'];
+  // High-contrast guest source palette
+  // Keep each source visually distinct in stacked bars, doughnut, and legends.
+  const exact = {
+    APPT:'#16A34A',   // Appointment - green
+    OL:'#334155',     // Online - slate
+    MKT:'#F59E0B',    // Marketing - amber
+    WI:'#2563EB',     // Walk-in - blue
+    TM:'#9333EA'      // Telemarketing - purple
+  };
+  if(exact[key]) return exact[key];
+
+  if(s.includes('appt') || s.includes('appointment')) return '#16A34A';
+  if(s === 'ol' || s.includes('online')) return '#334155';
+  if(s.includes('mkt') || s.includes('marketing') || s.includes('digital')) return '#F59E0B';
+  if(s === 'wi' || s.includes('walk')) return '#2563EB';
+  if(s === 'tm' || s.includes('tele')) return '#9333EA';
+  if(s.includes('partner')) return '#EA580C';
+  if(s.includes('survey')) return '#0D9488';
+  if(s.includes('aff')) return '#64748B';
+  if(s.includes('referral')) return '#EC4899';
+  if(s.includes('lwt')) return '#84CC16';
+
+  const fallback = ['#0EA5E9','#10B981','#F97316','#6366F1','#EAB308','#14B8A6','#A855F7','#64748B'];
   let hash = 0;
   for(let i=0;i<s.length;i++) hash = (hash + s.charCodeAt(i) * (i + 1)) % fallback.length;
   return fallback[hash];
@@ -2244,8 +2259,8 @@ function renderGuest(rows){
     data:{
       labels:topSources.map(d=>d.source),
       datasets:[
-        {label:'Guest',data:topSources.map(d=>d.guest),borderRadius:10,backgroundColor:'#D71920',borderColor:'#A70F15',borderWidth:1},
-        {label:'NMU / Closed',data:topSources.map(d=>d.closed),borderRadius:10,backgroundColor:'#FB7185',borderColor:'#E11D48',borderWidth:1}
+        {label:'Guest',data:topSources.map(d=>d.guest),borderRadius:10,backgroundColor:'#2563EB',borderColor:'#1D4ED8',borderWidth:1},
+        {label:'NMU / Closed',data:topSources.map(d=>d.closed),borderRadius:10,backgroundColor:'#D71920',borderColor:'#A70F15',borderWidth:1}
       ]
     },
     options:{
